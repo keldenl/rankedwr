@@ -6,8 +6,8 @@ export const getNameFromHero = (hero) => {
 
 export const positionIdToName = {
     1: 'Mid',
-    2: 'Baron/Top',
-    3: 'Dragon/ADC',
+    2: 'Baron',
+    3: 'Duo',
     4: 'Support',
     5: 'Jungle'
 }

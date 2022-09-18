@@ -1,27 +1,63 @@
-input[type='radio'] {
-    display: none;
+.tier-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 750px;
+    margin: auto;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.pillContainer {
-    display: flex;
-    flex-direction: row;
+.tier-table {
+    height: 70vh;
     width: 100%;
 }
 
-.pillContainer>span {
-    flex: 1 1 auto;
-    display: block;
+.champion-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 5px;
 }
 
-label {
-    flex: 1 1 auto;
-    border: solid 1px #888;
-    cursor: pointer;
-    display: block;
-    padding: 32px;
+.champion-container>p {
+    font-weight: 600;
 }
 
-:checked+label {
-    background: #333;
-    color: #fff;
+img.avatar-img {
+    width: 35px;
+    border-radius: 10px;
+}
+
+.position-icon {
+    background: url('./assets/position-icons.png') no-repeat;
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+    filter: brightness(0.3);
+    /* TODO: Make this scalable to dark mode */
+    background-size: cover;
+}
+
+
+/* positioning, where number = position  */
+
+.baron {
+    background-position-x: calc(-40px * 0);
+}
+
+.jungle {
+    background-position-x: calc(-40px * 1);
+}
+
+.mid {
+    background-position-x: calc(-40px * 2);
+}
+
+.duo {
+    background-position-x: calc(-40px * 3);
+}
+
+.support {
+    background-position-x: calc(-40px * 4);
 }
