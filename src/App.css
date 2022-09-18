@@ -1,38 +1,27 @@
-.App {
-  text-align: center;
+input[type='radio'] {
+    display: none;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.pillContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.pillContainer>span {
+    flex: 1 1 auto;
+    display: block;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+label {
+    flex: 1 1 auto;
+    border: solid 1px #888;
+    cursor: pointer;
+    display: block;
+    padding: 32px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:checked+label {
+    background: #333;
+    color: #fff;
 }
