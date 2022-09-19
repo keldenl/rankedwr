@@ -43,8 +43,8 @@ function App() {
       )
     },
     { field: 'win', headerName: 'Win Rate', type: 'number', renderCell: renderProgress, minWidth: 100, flex: 1 },
-    { field: 'pick', headerName: 'Pick Rate', type: 'number', minWidth: 100, flex: 1 },
-    { field: 'ban', headerName: 'Ban Rate', type: 'number', minWidth: 100, flex: 1 },
+    { field: 'pick', headerName: 'Pick Rate', type: 'number', renderCell: renderProgress, minWidth: 100, flex: 1 },
+    { field: 'ban', headerName: 'Ban Rate', type: 'number', renderCell: renderProgress, minWidth: 100, flex: 1 },
   ];
 
   const handlePositionChange = (event, newPosition) => {

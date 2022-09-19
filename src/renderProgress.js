@@ -33,8 +33,23 @@ const Bar = styled('div')({
     },
 });
 
+export const levels = {
+    'win': {
+        low: 48.75,
+        medium: 51,
+    },
+    'pick': {
+        low: 3,
+        medium: 8,
+    },
+    'ban': {
+        low: 5,
+        medium: 15,
+    }
+}
+
 const ProgressBar = React.memo(function ProgressBar(props) {
-    const { value } = props;
+    const { value, field } = props;
     const valueInPercent = value * 100;
 
     return (
@@ -42,9 +57,9 @@ const ProgressBar = React.memo(function ProgressBar(props) {
             <Value>{`${valueInPercent.toLocaleString()} %`}</Value>
             <Bar
                 className={clsx({
-                    low: valueInPercent < 48.75,
-                    medium: valueInPercent >= 48.75 && valueInPercent <= 51,
-                    high: valueInPercent > 51,
+                    low: valueInPercent < levels[field].low,
+                    medium: valueInPercent >= levels[field].low && valueInPercent <= levels[field].medium,
+                    high: valueInPercent > levels[field].medium,
                 })}
                 style={{ maxWidth: `${valueInPercent}%` }}
             />
@@ -63,5 +78,5 @@ export function renderProgress(params) {
         return null;
     }
 
-    return <ProgressBar value={params.value} />;
+    return <ProgressBar value={params.value} field={params.field} />;
 }
