@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import ReactGA from "react-ga4";
+import { DateTime } from 'luxon';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -6,7 +9,6 @@ import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { DateTime } from 'luxon';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -67,6 +69,7 @@ function App() {
         rank: index + 1,
         name: name.replace(/([A-Z])/g, ' $1').trim(),
         avatar,
+        tier: win * pick * ban,
         win,
         pick,
         ban
@@ -79,6 +82,9 @@ function App() {
 
 
   useEffect(() => {
+    ReactGA.initialize("G-C2S8YQDJBT", { debug: true });
+
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
     const fetchHeroes = fetchCORS(urls.heroList)
       .then((res) => {
         if (res.ok) return res.json()
@@ -107,11 +113,15 @@ function App() {
       })
       .then((data) => JSON.parse(data.contents))
       .then((contents) => {
+        const lastUpdateDate = contents.data[1][0]['dtstatdate']
+        const updateDate = DateTime.fromISO(lastUpdateDate)
+
         setHeroRankList(contents.data)
         setHeroRankListLoaded(true)
         setPositionList(Object.keys(contents.data));
         setCurrPosition(Object.keys(contents.data)[0])
-        setLastUpdateDate(contents.data[1][0]['dtstatdate'])
+        setLastUpdateDate(lastUpdateDate)
+        document.title = `Wild Rift Ranked Tier List Patch ${getPatchByDate(updateDate)} - RankedWR`
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
@@ -174,8 +184,8 @@ function App() {
 
 
       <div className='footer'>
-        <p>Data by Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
-        <p>Build by <Link href='https://twitter.com/RepotedWR'>RepotedWR</Link> © {DateTime.now().year}</p>
+        <p>Data by Riot's Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
+        <p>Built by <Link href='https://twitter.com/RepotedWR'>RepotedWR</Link> © {DateTime.now().year}</p>
       </div>
     </div>
   )
