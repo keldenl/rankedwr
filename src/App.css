@@ -1,18 +1,38 @@
+@font-face {
+    font-family: 'Hellix';
+    font-style: normal;
+    src: local('Hellix'), url("./assets/fonts/Hellix-Bold.woff") format('woff');
+    /* other formats include: 'woff2', 'truetype, 'opentype',
+                              'embedded-opentype', and 'svg' */
+}
+
 .App {
     height: 100vh;
     margin: 0;
 }
 
-.nav-bar-title {
+.nav-bar-title-container {
     text-align: center;
     max-height: 20px;
     margin: auto;
+    font-family: Hellix !important;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.nav-bar-title {
+    font-family: Hellix !important;
+}
+
+.nav-bar-title-container>img {
+    max-height: 18px;
 }
 
 .footer {
     min-height: 40px;
-    background-color: #272727;
-    padding: 10px 0;
+    padding: 20px 0;
     align-self: stretch;
 }
 
@@ -81,6 +101,11 @@ img.avatar-img {
     /* filter: brightness(0.3); */
     /* TODO: Make this scalable to dark mode */
     background-size: cover;
+}
+
+.Mui-selected .position-icon {
+    /* blue[500], hardcoded */
+    filter: invert(55%) sepia(63%) saturate(3816%) hue-rotate(184deg) brightness(97%) contrast(96%);
 }
 
 

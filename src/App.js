@@ -9,12 +9,13 @@ import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { blue } from '@mui/material/colors';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
 import { getNameFromHero, positionIdToName, getPatchByDate, getTier } from './utils';
 import { renderProgress } from './renderProgress';
-import logo from './assets/logo.png';
+import logo from './assets/ranked-icon.png';
 import './App.css';
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
         </div>
       )
     },
-    { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), minWidth: 50 },
+    // { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), minWidth: 50 },
     { field: 'win', headerName: 'Win %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'pick', headerName: 'Pick %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'ban', headerName: 'Ban %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
@@ -132,9 +133,17 @@ function App() {
 
   return (
     <div className="App">
-      <AppBar position="static" sx={{ bgcolor: "#0477BF" }}>
+      <AppBar position="static" sx={{ bgcolor: blue[500] }}>
         <Toolbar variant="dense">
-          <img className='nav-bar-title' src={logo} alt='RankedWR' />
+          <div className='nav-bar-title-container'>
+            <img src={logo} alt='RankedWR' />
+            <Typography
+              variant="h5"
+              className='nav-bar-title-container'
+            >
+              RankedWR
+            </Typography>
+          </div>
         </Toolbar>
       </AppBar>
 
@@ -146,11 +155,11 @@ function App() {
       >
         {positionList.length && positionList.map(posId => {
           return (
-            <ToggleButton key={posId} value={posId} aria-label={positionIdToName[posId]} fullWidth>
+            <ToggleButton color="primary" key={posId} value={posId} aria-label={positionIdToName[posId]} fullWidth>
               <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
               <Typography
                 variant="subtitle2"
-                sx={{ display: { xs: 'none', sm: 'block' } }}
+                sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600 }}
               >
                 {positionIdToName[posId]}
               </Typography>
