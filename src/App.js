@@ -73,7 +73,7 @@ function App() {
     })
 
     setRows(newRows)
-  }, [currPosition])
+  }, [currPosition, heroDataLoaded, heroRankListLoaded])
 
 
   useEffect(() => {
