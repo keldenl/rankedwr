@@ -74,11 +74,12 @@ function App() {
     })
 
     setRows(newRows)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPosition, heroDataLoaded, heroRankListLoaded])
 
 
   useEffect(() => {
-    fetchCORS(urls.heroList)
+    const fetchHeroes = fetchCORS(urls.heroList)
       .then((res) => {
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
@@ -99,7 +100,7 @@ function App() {
         setHeroDataLoaded(true)
       })
 
-    fetchCORS(urls.heroRankList)
+    const fetchRankedList = fetchCORS(urls.heroRankList)
       .then((res) => {
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
@@ -112,6 +113,8 @@ function App() {
         setCurrPosition(Object.keys(contents.data)[0])
         setLastUpdateDate(contents.data[1][0]['dtstatdate'])
       })
+
+    Promise.all([fetchHeroes, fetchRankedList])
   }, [])
 
   return (
