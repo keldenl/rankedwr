@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-
+import { DateTime } from 'luxon';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -25,10 +25,12 @@ function App() {
   const [positionList, setPositionList] = useState([]);
   const [currPosition, setCurrPosition] = useState();
 
+  const [lastUpdateDate, setLastUpdateDate] = useState();
+
   const [rows, setRows] = useState([]);
 
   const columns = [
-    { field: 'rank', headerName: 'Rank', type: 'number', width: 75 },
+    { field: 'rank', headerName: 'Rank', type: 'number', width: 50 },
     {
       field: 'champion',
       headerName: 'Champion',
@@ -109,50 +111,53 @@ function App() {
         setHeroRankListLoaded(true)
         setPositionList(Object.keys(contents.data));
         setCurrPosition(Object.keys(contents.data)[0])
+        setLastUpdateDate(contents.data[1][0]['dtstatdate'])
         console.log(contents)
-
       })
   }, [])
 
   return (
     <div className="App">
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "#0477BF" }}>
         <Toolbar variant="dense">
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
-            WRTierList
+          <Typography variant="h6" color="inherit" component="div" className='nav-bar-title' sx={{ fontWeight: 600 }}>
+            RankedWR
           </Typography>
         </Toolbar>
       </AppBar>
 
-      <div className='tier-list-container'>
-        <ToggleButtonGroup
-          value={currPosition}
-          exclusive
-          onChange={handlePositionChange}
-          aria-label="text alignment"
-        >
-          {positionList.length && positionList.map(posId => {
-            return (
-              <ToggleButton key={posId} value={posId} aria-label={positionIdToName[posId]}>
-                <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
+      <ToggleButtonGroup
+        value={currPosition}
+        exclusive
+        onChange={handlePositionChange}
+        className='position-container'
+      >
+        {positionList.length && positionList.map(posId => {
+          return (
+            <ToggleButton key={posId} value={posId} aria-label={positionIdToName[posId]} fullWidth>
+              <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
+              <Typography
+                sx={{ display: { xs: 'none', sm: 'block' } }}
+              >
                 {positionIdToName[posId]}
-              </ToggleButton>
-            )
-          })
-          }
-        </ToggleButtonGroup>
+              </Typography>
+            </ToggleButton>
+          )
+        })
+        }
+      </ToggleButtonGroup>
 
-        <div className='tier-table'>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            stickyHeader
-            hideFooterPagination={true}
-          />
-        </div>
+      <div className='tier-table'>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          stickyHeader
+          hideFooterPagination={true}
+        />
+      </div>
+
+      <div className='footer'>
+        <p>Last Updated: {DateTime.fromISO(lastUpdateDate).toLocaleString()}</p>
       </div>
     </div>
   )

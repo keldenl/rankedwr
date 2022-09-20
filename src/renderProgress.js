@@ -23,13 +23,13 @@ const Value = styled('div')({
 const Bar = styled('div')({
     height: '100%',
     '&.low': {
-        backgroundColor: '#f7a9a3',
+        backgroundColor: '#f7a9a370',
     },
     '&.medium': {
-        backgroundColor: '#e5e5e5',
+        backgroundColor: '#d5d5d570',
     },
     '&.high': {
-        backgroundColor: '#47c147',
+        backgroundColor: '#47c14770',
     },
 });
 
