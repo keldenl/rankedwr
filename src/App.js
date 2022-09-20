@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { LinearProgress } from '@mui/material';
+import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -10,9 +10,10 @@ import { DateTime } from 'luxon';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
-import { getNameFromHero, positionIdToName } from './utils';
-import './App.css';
+import { getNameFromHero, positionIdToName, getPatchByDate } from './utils';
 import { renderProgress } from './renderProgress';
+import logo from './assets/logo.png';
+import './App.css';
 
 function App() {
   const [heroData, setHeroData] = useState({});
@@ -29,11 +30,11 @@ function App() {
   const [rows, setRows] = useState([]);
 
   const columns = [
-    { field: 'rank', headerName: 'Rank', type: 'number', width: 50 },
+    { field: 'rank', headerName: 'Rank', type: 'number', width: 25 },
     {
       field: 'champion',
       headerName: 'Champion',
-      minWidth: 50,
+      minWidth: 100,
       flex: 4,
       valueGetter: (params) => params.row.name,
       renderCell: (params) => (
@@ -43,12 +44,12 @@ function App() {
         </div>
       )
     },
-    { field: 'win', headerName: 'Win Rate', type: 'number', renderCell: renderProgress, minWidth: 75, flex: 1 },
-    { field: 'pick', headerName: 'Pick Rate', type: 'number', renderCell: renderProgress, minWidth: 75, flex: 1 },
-    { field: 'ban', headerName: 'Ban Rate', type: 'number', renderCell: renderProgress, minWidth: 75, flex: 1 },
+    { field: 'win', headerName: 'Win %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'pick', headerName: 'Pick %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'ban', headerName: 'Ban %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
   ];
 
-  const handlePositionChange = (event, newPosition) => {
+  const handlePositionChange = (_, newPosition) => {
     setCurrPosition(newPosition);
   };
 
@@ -96,7 +97,6 @@ function App() {
 
         setHeroData(heroData)
         setHeroDataLoaded(true)
-        console.log(heroData)
       })
 
     fetchCORS(urls.heroRankList)
@@ -111,7 +111,6 @@ function App() {
         setPositionList(Object.keys(contents.data));
         setCurrPosition(Object.keys(contents.data)[0])
         setLastUpdateDate(contents.data[1][0]['dtstatdate'])
-        console.log(contents)
       })
   }, [])
 
@@ -119,9 +118,7 @@ function App() {
     <div className="App">
       <AppBar position="static" sx={{ bgcolor: "#0477BF" }}>
         <Toolbar variant="dense">
-          <Typography variant="h6" color="inherit" component="div" className='nav-bar-title' sx={{ fontWeight: 600 }}>
-            RankedWR
-          </Typography>
+          <img className='nav-bar-title' src={logo} alt='RankedWR' />
         </Toolbar>
       </AppBar>
 
@@ -154,13 +151,27 @@ function App() {
           hideFooterPagination={true}
           components={{
             LoadingOverlay: LinearProgress,
+            Footer: () => {
+              const updateDate = DateTime.fromISO(lastUpdateDate)
+              return (
+                <div className='tier-table-footer'>
+                  <p>
+                    Updated {!!lastUpdateDate ? `${updateDate.toRelativeCalendar()} (Patch ${getPatchByDate(updateDate)})`
+                      :
+                      '-'}
+                  </p>
+                </div>
+              )
+            }
           }}
           loading={!heroDataLoaded || !heroRankListLoaded}
         />
       </div>
 
+
       <div className='footer'>
-        <p>Last Updated: {DateTime.fromISO(lastUpdateDate).toLocaleString()}</p>
+        <p>Data by Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
+        <p>Build by <Link href='https://twitter.com/RepotedWR'>RepotedWR</Link> © {DateTime.now().year}</p>
       </div>
     </div>
   )
