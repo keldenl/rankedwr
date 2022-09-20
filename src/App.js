@@ -12,7 +12,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
-import { getNameFromHero, positionIdToName, getPatchByDate } from './utils';
+import { getNameFromHero, positionIdToName, getPatchByDate, getTier } from './utils';
 import { renderProgress } from './renderProgress';
 import logo from './assets/logo.png';
 import './App.css';
@@ -46,6 +46,7 @@ function App() {
         </div>
       )
     },
+    { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), minWidth: 50 },
     { field: 'win', headerName: 'Win %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'pick', headerName: 'Pick %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'ban', headerName: 'Ban %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
@@ -64,12 +65,14 @@ function App() {
       const hero = heroData[hero_id];
       const { name, avatar } = hero;
 
+      const tier = (parseFloat(win) + ((parseFloat(win) * parseFloat(pick) / 5) + (parseFloat(win) * parseFloat(ban) / 5))) * 100
+
       return ({
         id: wr.id,
         rank: index + 1,
         name: name.replace(/([A-Z])/g, ' $1').trim(),
         avatar,
-        tier: win * pick * ban,
+        tier,
         win,
         pick,
         ban
@@ -83,8 +86,8 @@ function App() {
 
   useEffect(() => {
     ReactGA.initialize("G-C2S8YQDJBT", { debug: true });
-
     ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
+
     const fetchHeroes = fetchCORS(urls.heroList)
       .then((res) => {
         if (res.ok) return res.json()
