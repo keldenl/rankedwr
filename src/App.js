@@ -44,9 +44,9 @@ function App() {
         </div>
       )
     },
-    { field: 'win', headerName: 'Win %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'pick', headerName: 'Pick %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'ban', headerName: 'Ban %', type: 'number', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'win', headerName: 'Win %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'pick', headerName: 'Pick %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'ban', headerName: 'Ban %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
   ];
 
   const handlePositionChange = (_, newPosition) => {
@@ -136,6 +136,7 @@ function App() {
             <ToggleButton key={posId} value={posId} aria-label={positionIdToName[posId]} fullWidth>
               <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
               <Typography
+                variant="subtitle2"
                 sx={{ display: { xs: 'none', sm: 'block' } }}
               >
                 {positionIdToName[posId]}
