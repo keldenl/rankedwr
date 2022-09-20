@@ -5,13 +5,14 @@
 
 .nav-bar-title {
     text-align: center;
-    flex-grow: 1;
+    max-height: 20px;
+    margin: auto;
 }
 
 .footer {
     min-height: 40px;
     background-color: #272727;
-    padding: 5px 0;
+    padding: 10px 0;
     align-self: stretch;
 }
 
@@ -48,6 +49,12 @@
     width: 100%;
     padding: 20px;
     max-width: 750px;
+}
+
+.tier-table-footer {
+    text-align: right;
+    margin: 0 10px;
+    color: #aaa;
 }
 
 .champion-container {
@@ -102,5 +109,16 @@ img.avatar-img {
 .footer>p {
     text-align: center;
     color: #ccc;
-    font-size: 0.9em;
+    font-size: 0.8em;
+    margin: 0;
+}
+
+@media only screen and (max-width: 400px) {
+    .champion-container {
+        gap: 5px;
+    }
+    img.avatar-img {
+        width: 20px;
+        border-radius: 5px;
+    }
 }
