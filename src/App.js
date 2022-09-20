@@ -65,7 +65,7 @@ function App() {
       return ({
         id: wr.id,
         rank: index + 1,
-        name,
+        name: name.replace(/([A-Z])/g, ' $1').trim(),
         avatar,
         win,
         pick,
