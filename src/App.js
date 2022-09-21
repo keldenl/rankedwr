@@ -47,7 +47,7 @@ function App() {
         </div>
       )
     },
-    // { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), minWidth: 50 },
+    { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
     { field: 'win', headerName: 'Win %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'pick', headerName: 'Pick %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'ban', headerName: 'Ban %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
