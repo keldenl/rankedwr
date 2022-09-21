@@ -158,7 +158,8 @@ function App() {
               <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
               <Typography
                 variant="subtitle2"
-                sx={{ display: { xs: 'none', sm: 'block' }, fontWeight: 600 }}
+                sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
+
               >
                 {positionIdToName[posId]}
               </Typography>
