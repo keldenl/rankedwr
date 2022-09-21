@@ -12,11 +12,9 @@ export const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      // Purple and green play nicely together.
       main: blue[500],
     },
     secondary: {
-      // Purple and green play nicely together.
       main: yellow[600],
     },
     background: {
@@ -25,14 +23,6 @@ export const theme = createTheme({
     footer: {
       default: "#0f1923"
     }
-    // // type: "dark",
-    // grey: {
-    //   800: "#000000", // overrides failed
-    //   900: "#121212" // overrides success
-    // },
-    // background: {
-    //   paper: "#000000"
-    // }
   },
 });
 console.log(theme)

@@ -9,7 +9,6 @@ import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { blue } from '@mui/material/colors';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -125,7 +124,7 @@ function App() {
         setPositionList(Object.keys(contents.data));
         setCurrPosition(Object.keys(contents.data)[0])
         setLastUpdateDate(lastUpdateDate)
-        document.title = `Wild Rift Ranked Tier List Patch ${getPatchByDate(updateDate)} - RankedWR`
+        document.title = `Wild Rift Ranked Tier List Patch ${getPatchByDate(updateDate)} - rankedwr`
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
@@ -133,7 +132,7 @@ function App() {
 
   return (
     <div className="App">
-      <AppBar position="static" sx={{ bgcolor: blue[500] }}>
+      <AppBar position="static" sx={{ bgcolor: 'primary.main' }}>
         <Toolbar variant="dense">
           <div className='nav-bar-title-container'>
             <img src={logo} alt='RankedWR' />
@@ -141,7 +140,7 @@ function App() {
               variant="h5"
               className='nav-bar-title-container'
             >
-              RankedWR
+              rankedwr
             </Typography>
           </div>
         </Toolbar>
@@ -189,6 +188,15 @@ function App() {
                 </div>
               )
             }
+          }}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+          }
+          sx={{
+            bgcolor: 'footer.default',
+            borderRadius: 2.5,
+            border: 0,
+            padding: '0 20px',
           }}
           loading={!heroDataLoaded || !heroRankListLoaded}
         />
