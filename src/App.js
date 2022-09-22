@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ReactGA from "react-ga4";
 import { DateTime } from 'luxon';
 import CookieConsent from "react-cookie-consent";
+import preval from 'preval.macro'
+
 
 import { blue } from '@mui/material/colors';
 import AppBar from '@mui/material/AppBar';
@@ -11,6 +13,7 @@ import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -20,6 +23,9 @@ import logo from './assets/ranked-icon.png';
 import './App.css';
 
 function App() {
+  const [showBanner, setShowBanner] = useState(true);
+  const [buildDate, setBuildDate] = useState();
+
   const [heroData, setHeroData] = useState({});
   const [heroDataLoaded, setHeroDataLoaded] = useState(false);
 
@@ -91,6 +97,9 @@ function App() {
   }
 
   useEffect(() => {
+    const dateTimeStamp = preval`module.exports = new Date().getTime()`
+    setBuildDate(DateTime.fromMillis(dateTimeStamp));
+
     // Remove this when implementing cookie consent
     handleAcceptCookie()
 
@@ -158,6 +167,15 @@ function App() {
           </Box> */}
         </Toolbar>
       </AppBar>
+      {showBanner ?
+        <div className='banner'>
+          <Typography variant="p">
+            ✨ What's new ({!!buildDate ? buildDate.toFormat('d LLL y') : '-'}) <Link href='#'>Change log</Link>
+          </Typography>
+          <CloseIcon onClick={() => setShowBanner(false)} style={{ justifySelf: 'flex-end', fontSize: '1.25em', cursor: 'pointer' }} />
+        </div>
+        : null
+      }
       {/* <CookieConsent
         enableDeclineButton
         flipButtons

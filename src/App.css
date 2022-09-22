@@ -74,6 +74,27 @@
     margin-top: auto;
 }
 
+.banner {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.7em;
+    background-color: #19364e;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner>span {
+    flex: 1;
+}
+
+.banner * {
+    margin: 0;
+}
+
 .position-container {
     margin-top: 30px;
     padding: 0 20px;
@@ -107,11 +128,11 @@
 /* Hide header borders */
 
 .MuiDataGrid-iconSeparator {
-    color: transparent!important;
+    color: transparent !important;
 }
 
 .MuiDataGrid-columnHeaders {
-    border: none!important;
+    border: none !important;
 }
 
 .even-row {
