@@ -14,6 +14,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -24,6 +26,13 @@ import './App.css';
 
 function App() {
   const [showBanner, setShowBanner] = useState(true);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [buildDate, setBuildDate] = useState();
 
   const [heroData, setHeroData] = useState({});
@@ -145,6 +154,22 @@ function App() {
     Promise.all([fetchHeroes, fetchRankedList])
   }, [])
 
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    maxWidth: 400,
+    width: '80%',
+    bgcolor: 'background.default',
+    border: '2px solid',
+    borderColor: 'primary.main',
+    boxShadow: 24,
+    pt: 1,
+    px: 3,
+    pb: 2,
+  }
+
   return (
     <div className="App">
       <AppBar position="static" sx={{ bgcolor: 'primary.main' }}>
@@ -167,10 +192,28 @@ function App() {
           </Box> */}
         </Toolbar>
       </AppBar>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="parent-modal-title"
+        aria-describedby="parent-modal-description"
+      >
+        <Box sx={{ ...modalStyle }}>
+          <h3>What's New</h3>
+          <ul className='date-new-ul'>
+            <li>{DateTime.fromISO('20220922').toFormat('d LLL y')}</li>
+            <ul className='new-things-ul'>
+              <li>Little design tweaks to tier list table for a cleaner mobile experiecne</li>
+              <li>Added a "What's New" banner to track future feature changes</li>
+            </ul>
+          </ul>
+        </Box>
+      </Modal>
+
       {showBanner ?
         <div className='banner'>
-          <Typography variant="p">
-            ✨ What's new ({!!buildDate ? buildDate.toFormat('d LLL y') : '-'}) <Link href='#'>Change log</Link>
+          <Typography variant="p" onClick={handleOpen} style={{cursor: 'pointer'}}>
+            ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : '-'})
           </Typography>
           <CloseIcon onClick={() => setShowBanner(false)} style={{ justifySelf: 'flex-end', fontSize: '1.25em', cursor: 'pointer' }} />
         </div>

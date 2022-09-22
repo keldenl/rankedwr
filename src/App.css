@@ -95,6 +95,28 @@
     margin: 0;
 }
 
+.date-new-ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+.date-new-ul>li {
+    border-bottom: 1px solid #2196f3;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #2196f3;
+    margin-bottom: 10px;
+}
+
+.new-things-ul {
+    padding-left: 25px;
+    font-size: 0.9em;
+}
+
+.new-things-ul>li {
+    margin-bottom: 5px;
+}
+
 .position-container {
     margin-top: 30px;
     padding: 0 20px;
