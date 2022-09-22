@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactGA from "react-ga4";
 import { DateTime } from 'luxon';
+import CookieConsent from "react-cookie-consent";
 
+import { blue } from '@mui/material/colors';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -32,10 +34,10 @@ function App() {
   const [rows, setRows] = useState([]);
 
   const columns = [
-    { field: 'rank', headerName: 'Rank', type: 'number', width: 25 },
+    { field: 'rank', headerName: 'Rank', headerClassName: 'tier-header', type: 'number', width: 25 },
     {
       field: 'champion',
-      headerName: 'Champion',
+      headerName: 'Champion', headerClassName: 'tier-header',
       minWidth: 100,
       flex: 4,
       valueGetter: (params) => params.row.name,
@@ -46,10 +48,10 @@ function App() {
         </div>
       )
     },
-    { field: 'tier', headerName: 'Tier', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
-    { field: 'win', headerName: 'Win %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'pick', headerName: 'Pick %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'ban', headerName: 'Ban %', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'tier', headerName: 'Tier', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
+    { field: 'win', headerName: 'Win %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'pick', headerName: 'Pick %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    { field: 'ban', headerName: 'Ban %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
   ];
 
   const handlePositionChange = (_, newPosition) => {
@@ -83,10 +85,14 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currPosition, heroDataLoaded, heroRankListLoaded])
 
-
-  useEffect(() => {
+  const handleAcceptCookie = () => {
     ReactGA.initialize("G-C2S8YQDJBT", { debug: true });
     ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
+  }
+
+  useEffect(() => {
+    // Remove this when implementing cookie consent
+    handleAcceptCookie()
 
     const fetchHeroes = fetchCORS(urls.heroList)
       .then((res) => {
@@ -143,8 +149,35 @@ function App() {
               rankedwr
             </Typography>
           </div>
+          {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+            {navItems.map((item) => (
+              <Button key={'test'} sx={{ color: '#fff' }}>
+                test
+              </Button>
+            ))}
+          </Box> */}
         </Toolbar>
       </AppBar>
+      {/* <CookieConsent
+        enableDeclineButton
+        flipButtons
+        onAccept={handleAcceptCookie}
+        containerClasses='cookie-consent-container'
+        buttonWrapperClasses='cookie-consent-button-wrapper'
+        buttonClasses='cookie-consent-button'
+        contentStyle={{
+          wordBreak: 'break-word',
+          flex: 'unset',
+          margin: '15px 0',
+        }}
+        buttonText={'Accept cookies'}
+        declineButtonText={'Reject cookies'}
+        style={{ background: "#3d9ff4" }}
+        buttonStyle={{ borderRadius: 10, backgroundColor: '#fff' }}
+        declineButtonStyle={{ backgroundColor: 'transparent', margin: '5px 0' }}
+      >
+        Site (optionally) uses cookies that help me understand how to improve the website – accepting cookies helps me continue making this the best website it can be!
+      </CookieConsent> */}
 
       <ToggleButtonGroup
         value={currPosition}
