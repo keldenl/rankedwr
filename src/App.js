@@ -19,7 +19,7 @@ import Modal from '@mui/material/Modal';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
-import { getNameFromHero, positionIdToName, getPatchByDate, getTier } from './utils';
+import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId } from './utils';
 import { renderProgress } from './renderProgress';
 import logo from './assets/ranked-icon.png';
 import './App.css';
@@ -70,14 +70,17 @@ function App() {
   ];
 
   const handlePositionChange = (_, newPosition) => {
-    setCurrPosition(newPosition);
+    if (newPosition !== null) {
+      setCurrPosition(newPosition);
+    }
   };
 
 
   useEffect(() => {
-    if (!heroRankListLoaded || !heroDataLoaded || !heroRankList[currPosition]) { return }
+    const positionId = positionNametoId[currPosition]
+    if (!heroRankListLoaded || !heroDataLoaded || !heroRankList[positionId]) { return }
 
-    const newRows = heroRankList[currPosition].map((wr, index) => {
+    const newRows = heroRankList[positionId].map((wr, index) => {
       const { hero_id, win_rate: win, appear_rate: pick, forbid_rate: ban } = wr;
       const hero = heroData[hero_id];
       const { name, avatar } = hero;
@@ -143,10 +146,17 @@ function App() {
         const lastUpdateDate = contents.data[1][0]['dtstatdate']
         const updateDate = DateTime.fromISO(lastUpdateDate)
 
-        setHeroRankList(contents.data)
-        setHeroRankListLoaded(true)
-        setPositionList(Object.keys(contents.data));
-        setCurrPosition(Object.keys(contents.data)[0])
+        setHeroRankList(contents.data);
+        setHeroRankListLoaded(true);
+
+        const posList = Object.keys(contents.data).map(p => positionIdToName[p]);
+        const validPosList = positionOrder.every(val => posList.includes(val));
+
+        // Validate that the typical positions we expect are fetching
+        if (validPosList) {
+          setPositionList([...positionOrder]);
+          setCurrPosition([...positionOrder][0]);
+        }
         setLastUpdateDate(lastUpdateDate)
         document.title = `Wild Rift Ranked Tier List Patch ${getPatchByDate(updateDate)} - rankedwr`
       })
@@ -203,8 +213,11 @@ function App() {
           <ul className='date-new-ul'>
             <li>{DateTime.fromISO('20220922').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
-              <li>Little design tweaks to tier list table for a cleaner mobile experiecne</li>
-              <li>Added a "What's New" banner to track future feature changes</li>
+              <li><b>New:</b> "What's New" banner now tracks new feature changes</li>
+              <li><b>Improved:</b> Roles are now sorted properly (i.e. Solo, Jg, Mid, Duo, Supp) <i>(thanks u/gheycub!)</i></li>
+              <li><b>Improved:</b> "Baron" renamed to "Solo" <i>(thanks u/gheycub!)</i></li>
+              <li><b>Improved:</b> Table design for a cleaner experience</li>
+              <li><b>Bug Fix:</b> Clicking already selected role no longer deselects it <i>(thanks u/PancakeInvaders!)</i></li>
             </ul>
           </ul>
         </Box>
@@ -212,7 +225,7 @@ function App() {
 
       {showBanner ?
         <div className='banner'>
-          <Typography variant="p" onClick={handleOpen} style={{cursor: 'pointer'}}>
+          <Typography variant="p" onClick={handleOpen} style={{ cursor: 'pointer' }}>
             ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : '-'})
           </Typography>
           <CloseIcon onClick={() => setShowBanner(false)} style={{ justifySelf: 'flex-end', fontSize: '1.25em', cursor: 'pointer' }} />
@@ -246,16 +259,16 @@ function App() {
         onChange={handlePositionChange}
         className='position-container'
       >
-        {positionList.length && positionList.map(posId => {
+        {positionList.length && positionList.map(posName => {
           return (
-            <ToggleButton color="primary" key={posId} value={posId} aria-label={positionIdToName[posId]} fullWidth>
-              <span className={`position-icon ${positionIdToName[posId].toLowerCase()}`} />
+            <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
+              <span className={`position-icon ${posName.toLowerCase()}`} />
               <Typography
                 variant="subtitle2"
                 sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
 
               >
-                {positionIdToName[posId]}
+                {posName}
               </Typography>
             </ToggleButton>
           )

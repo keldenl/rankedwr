@@ -8,11 +8,21 @@ export const getNameFromHero = (hero) => {
 
 export const positionIdToName = {
     1: 'Mid',
-    2: 'Baron',
+    2: 'Solo',
     3: 'Duo',
     4: 'Support',
     5: 'Jungle'
 }
+
+export const positionNametoId = {
+    Mid: 1,
+    Solo: 2,
+    Duo: 3,
+    Support: 4,
+    Jungle: 5
+}
+
+export const positionOrder = ['Solo', 'Jungle', 'Mid', 'Duo', 'Support']
 
 const patchDates = [
     { ver: '3.5', date: DateTime.fromISO('20221117') },
