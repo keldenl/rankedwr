@@ -63,7 +63,7 @@ function App() {
         </div>
       )
     },
-    { field: 'tier', headerName: 'Tier', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
+    { field: 'tier', headerName: 'Tier*', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
     { field: 'win', headerName: 'Win %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'pick', headerName: 'Pick %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
     { field: 'ban', headerName: 'Ban %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
@@ -168,9 +168,11 @@ function App() {
     position: 'absolute',
     top: '50%',
     left: '50%',
+    maxHeight: 400,
+    overflowY: 'auto',
     transform: 'translate(-50%, -50%)',
-    maxWidth: 400,
-    width: '80%',
+    maxWidth: 500,
+    width: '85%',
     bgcolor: 'background.default',
     border: '2px solid',
     borderColor: 'primary.main',
@@ -211,6 +213,12 @@ function App() {
         <Box sx={{ ...modalStyle }}>
           <h3>What's New</h3>
           <ul className='date-new-ul'>
+            <li>{DateTime.fromISO('20220923').toFormat('d LLL y')}</li>
+            <ul className='new-things-ul'>
+              <li><b>New:</b> Proper title and description on top of the page to explain how we're sourcing our stats</li>
+              <li><b>New:</b> Disclaimer on "Tier" and how that's calculated by RankedWR (and not Riot)</li>
+              <li><b>Improved:</b> Moved patch notes and update date higher up for better visibility</li>
+            </ul>
             <li>{DateTime.fromISO('20220922').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
               <li><b>New:</b> "What's New" banner now tracks new feature changes</li>
@@ -253,61 +261,80 @@ function App() {
         Site (optionally) uses cookies that help me understand how to improve the website – accepting cookies helps me continue making this the best website it can be!
       </CookieConsent> */}
 
-      <ToggleButtonGroup
-        value={currPosition}
-        exclusive
-        onChange={handlePositionChange}
-        className='position-container'
-      >
-        {positionList.length && positionList.map(posName => {
-          return (
-            <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
-              <span className={`position-icon ${posName.toLowerCase()}`} />
-              <Typography
-                variant="subtitle2"
-                sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
+      <div className='tier-page-wrapper'>
+        <Typography
+          variant="h5"
+        >
+          Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : '-'})</span>
+        </Typography>
+        <div className='last-update-text'>
+          <Typography
+            variant="p"
+          >
+            <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : '-'}
+          </Typography>
+        </div>
+        <Typography
+          variant="subtitle2"
+          sx={{ opacity: 0.8, marginTop: 1 }}
+        >
+          The only Wild Rift tier list based on <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
+          Updates in real-time when new data is published from Riot.
+        </Typography>
 
-              >
-                {posName}
-              </Typography>
-            </ToggleButton>
-          )
-        })
-        }
-      </ToggleButtonGroup>
+        <ToggleButtonGroup
+          value={currPosition}
+          exclusive
+          onChange={handlePositionChange}
+          className='position-container'
+        >
+          {positionList.length && positionList.map(posName => {
+            return (
+              <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
+                <span className={`position-icon ${posName.toLowerCase()}`} />
+                <Typography
+                  variant="subtitle2"
+                  sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
 
-      <div className='tier-table'>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          stickyHeader
-          hideFooterPagination={true}
-          components={{
-            LoadingOverlay: LinearProgress,
-            Footer: () => {
-              const updateDate = DateTime.fromISO(lastUpdateDate)
-              return (
-                <div className='tier-table-footer'>
-                  <p>
-                    Updated {!!lastUpdateDate ? `${updateDate.toRelativeCalendar()} (Patch ${getPatchByDate(updateDate)})`
-                      :
-                      '-'}
-                  </p>
-                </div>
-              )
-            }
-          }}
-          getRowClassName={(params) =>
-            params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+                >
+                  {posName}
+                </Typography>
+              </ToggleButton>
+            )
+          })
           }
-          sx={{
-            bgcolor: 'footer.default',
-            borderRadius: 2.5,
-            border: 0,
-            padding: '0 20px',
-          }}
-          loading={!heroDataLoaded || !heroRankListLoaded}
-        />
+        </ToggleButtonGroup>
+
+        <div className='tier-table'>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            stickyHeader
+            hideFooterPagination={true}
+            components={{
+              LoadingOverlay: LinearProgress,
+              Footer: () => {
+                return (
+                  <div className='tier-table-footer'>
+                    <p>
+                      *= Tier is not provided by Riot. It is calculated by us based on the official win% / pick% / ban%
+                    </p>
+                  </div>
+                )
+              }
+            }}
+            getRowClassName={(params) =>
+              params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+            }
+            sx={{
+              bgcolor: 'footer.default',
+              borderRadius: 2.5,
+              border: 0,
+              padding: '0 20px',
+            }}
+            loading={!heroDataLoaded || !heroRankListLoaded}
+          />
+        </div>
       </div>
 
 

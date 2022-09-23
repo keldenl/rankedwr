@@ -56,8 +56,8 @@
 }
 
 .footer {
-    min-height: 40px;
-    padding: 20px 0;
+    background-color: #0f1923;
+    padding: 15px 0;
     align-self: stretch;
 }
 
@@ -72,6 +72,12 @@
 
 .footer {
     margin-top: auto;
+}
+
+.tier-page-wrapper {
+    width: 100%;
+    padding: 20px;
+    max-width: 750px;
 }
 
 .banner {
@@ -111,15 +117,26 @@
 .new-things-ul {
     padding-left: 25px;
     font-size: 0.9em;
+    margin-bottom: 20px;
 }
 
 .new-things-ul>li {
     margin-bottom: 5px;
 }
 
+.last-update-text {
+    font-weight: bolder;
+    padding: 5px 10px;
+    background-color: #19364e;
+    border-radius: 4px;
+    margin: 5px 0;
+    display: inline-block;
+    font-size: 0.8em;
+}
+
 .position-container {
-    margin-top: 30px;
-    padding: 0 20px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .tier-list-container {
@@ -135,7 +152,6 @@
 .tier-table {
     height: 70vh;
     width: 100%;
-    padding: 20px;
     max-width: 750px;
 }
 
@@ -171,9 +187,10 @@
 }
 
 .tier-table-footer {
-    text-align: right;
+    text-align: center;
     margin: 0 10px;
     color: #aaa;
+    font-size: 0.8em;
 }
 
 .champion-container {
