@@ -15,6 +15,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
+import TwitterIcon from '@mui/icons-material/Twitter';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
@@ -380,8 +381,8 @@ function App() {
 
 
       <div className='footer'>
-        <p>Data by Riot's Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
-        <p>Built by <Link href='https://twitter.com/RepotedWR'>RepotedWR</Link> © {DateTime.now().year}</p>
+        <p>All data sourced from Riot's Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
+        <p>Built by <Link href='https://twitter.com/RepotedWR'><TwitterIcon fontSize={'10px'} />RepotedWR</Link> © {DateTime.now().year}</p>
       </div>
     </div>
   )
