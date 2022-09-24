@@ -329,6 +329,9 @@ function App() {
                 )
               }
             }}
+            onSelectionModelChange={(newSelectionModel) => {
+              // console.log(newSelectionModel);
+            }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
             }
@@ -339,6 +342,7 @@ function App() {
               padding: '0 20px',
             }}
             loading={!heroDataLoaded || !heroRankListLoaded}
+            disableVirtualization // disabling to improve movile performance
           />
         </div>
       </div>

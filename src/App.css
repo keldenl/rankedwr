@@ -173,10 +173,19 @@
     border: none !important;
 }
 
-.even-row {
-    background-color: #15222e;
+.even-row,
+.odd-row {
     border-radius: 5px;
     border: none;
+    cursor: pointer;
+}
+
+.even-row {
+    background-color: #15222e;
+}
+
+.MuiDataGrid-root .MuiDataGrid-cell:focus-within {
+    outline: none !important;
 }
 
 
