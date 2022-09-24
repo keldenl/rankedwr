@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.c1d50a1b.css",
-    "main.js": "/static/js/main.dcffb7e0.js",
+    "main.css": "/static/css/main.8a17b05b.css",
+    "main.js": "/static/js/main.67025fe7.js",
     "static/media/Hellix-Bold.woff": "/static/media/Hellix-Bold.5032fd667cf8a7de05e1.woff",
     "index.html": "/index.html",
-    "main.c1d50a1b.css.map": "/static/css/main.c1d50a1b.css.map",
-    "main.dcffb7e0.js.map": "/static/js/main.dcffb7e0.js.map"
+    "main.8a17b05b.css.map": "/static/css/main.8a17b05b.css.map",
+    "main.67025fe7.js.map": "/static/js/main.67025fe7.js.map"
   },
   "entrypoints": [
-    "static/css/main.c1d50a1b.css",
-    "static/js/main.dcffb7e0.js"
+    "static/css/main.8a17b05b.css",
+    "static/js/main.67025fe7.js"
   ]
 }
