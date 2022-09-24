@@ -246,6 +246,7 @@ function App() {
               <li><b>Improved:</b> Table performance on mobile</li>
               <li><b>Improved:</b> Image and stats loading experience</li>
               <li><b>Improved:</b> Footer wording and Twitter username link</li>
+              <li><b>Fixed:</b> "Monkey King" and "Jarvan I V" -&gt; "Wukong" and "Jarvan IV" :)</li>
             </ul>
             <li>{DateTime.fromISO('20220923').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
