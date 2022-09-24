@@ -256,7 +256,8 @@ function App() {
         contentStyle={{
           wordBreak: 'break-word',
           flex: 'unset',
-          margin: '15px 0',
+          margin: 0,
+          marginBottom: 15,
         }}
         buttonText={'Accept cookies'}
         declineButtonText={'Reject cookies'}

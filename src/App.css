@@ -18,7 +18,7 @@
     max-width: 500px;
     min-width: 350px;
     border-radius: 6px;
-    padding: 5px 20px;
+    padding: 15px 20px;
 }
 
 .cookie-consent-button-wrapper {
@@ -276,8 +276,10 @@ img.avatar-img {
     .champion-container {
         gap: 5px;
     }
-    img.avatar-img {
+    img.avatar-img,
+    .avatar-img-container {
         width: 20px;
+        height: 20px;
         border-radius: 5px;
     }
 }
