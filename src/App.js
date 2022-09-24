@@ -240,6 +240,13 @@ function App() {
         <Box sx={{ ...modalStyle }}>
           <h3>What's New</h3>
           <ul className='date-new-ul'>
+            <li>{DateTime.fromISO('20220924').toFormat('d LLL y')}</li>
+            <ul className='new-things-ul'>
+              <li><b>New:</b> Complete column sorting redesign. It is now easier to tap to sort and more obvious which column is being sorted.</li>
+              <li><b>Improved:</b> Table performance on mobile</li>
+              <li><b>Improved:</b> Image and stats loading experience</li>
+              <li><b>Improved:</b> Footer wording and Twitter username link</li>
+            </ul>
             <li>{DateTime.fromISO('20220923').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
               <li><b>New:</b> Proper title and description on top of the page to explain how we're sourcing our stats</li>
