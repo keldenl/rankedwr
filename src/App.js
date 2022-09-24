@@ -60,7 +60,7 @@ function App() {
       field: 'rank',
       headerName: 'Rank',
       type: 'number',
-      width: 60,
+      width: 55,
       ...tierHeaderSortConfig,
     },
     {
@@ -85,8 +85,8 @@ function App() {
       headerName: 'Tier*',
       ...tierHeaderSortConfig,
       ...statFieldConfig,
-      minWidth: 60,
-      width: 60,
+      minWidth: 55,
+      width: 55,
       renderCell: (params) => getTier(params.row.tier),
     },
     { field: 'win', headerName: 'Win %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
@@ -244,7 +244,7 @@ function App() {
             <ul className='new-things-ul'>
               <li><b>New:</b> Proper title and description on top of the page to explain how we're sourcing our stats</li>
               <li><b>New:</b> Disclaimer on "Tier" and how that's calculated by RankedWR (and not Riot)</li>
-              <li><b>Improved:</b> Moved patch notes and update date higher up for better visibility</li>
+              <li><b>Improved:</b> Moved patch version and update date higher up for better visibility</li>
             </ul>
             <li>{DateTime.fromISO('20220922').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
