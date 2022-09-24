@@ -313,7 +313,7 @@ function App() {
           variant="subtitle2"
           sx={{ opacity: 0.8, marginTop: 1 }}
         >
-          The only Wild Rift tier list based on <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
+          The only Wild Rift tier list based on <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
           Updates in real-time when new data is published from Riot.
         </Typography>
 
@@ -388,8 +388,8 @@ function App() {
 
 
       <div className='footer'>
-        <p>All data sourced from Riot's Official Wild Rift <Link href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
-        <p>Built by <Link href='https://twitter.com/RepotedWR'><TwitterIcon fontSize={'10px'} />RepotedWR</Link> © {DateTime.now().year}</p>
+        <p>All data sourced from Riot's Official Wild Rift <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
+        <p>Built by <Link target='__blank' href='https://twitter.com/RepotedWR'><TwitterIcon fontSize={'10px'} />RepotedWR</Link> © {DateTime.now().year}</p>
       </div>
     </div>
   )
