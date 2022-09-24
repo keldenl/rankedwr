@@ -245,7 +245,7 @@ function App() {
               <li><b>New:</b> Complete column sorting redesign. It is now easier to tap to sort and more obvious which column is being sorted.</li>
               <li><b>Improved:</b> Table performance on mobile</li>
               <li><b>Improved:</b> Image and stats loading experience</li>
-              <li><b>Improved:</b> Footer wording and Twitter username link</li>
+              <li><b>Improved:</b> Footer now has a cute Twitter icon link for my account</li>
               <li><b>Fixed:</b> "Monkey King" and "Jarvan I V" -&gt; "Wukong" and "Jarvan IV" :)</li>
             </ul>
             <li>{DateTime.fromISO('20220923').toFormat('d LLL y')}</li>
