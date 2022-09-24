@@ -21,8 +21,7 @@ import Modal from '@mui/material/Modal';
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
-import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId } from './utils';
-import { renderProgress } from './renderProgress';
+import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId, headerSortConfig, statFieldConfig } from './utils';
 import logo from './assets/ranked-icon.png';
 import './App.css';
 
@@ -50,13 +49,25 @@ function App() {
 
   const [rows, setRows] = useState([]);
 
+  const defaultSortColumn = [{ field: 'win', sort: 'desc' }];
+  const [currSortColumn, setCurrSortColumn] = useState(defaultSortColumn);
+
+  const tierHeaderSortConfig = headerSortConfig(currSortColumn);
+
   const columns = [
-    { field: 'rank', headerName: 'Rank', headerClassName: 'tier-header', type: 'number', width: 25 },
+    {
+      field: 'rank',
+      headerName: 'Rank',
+      type: 'number',
+      width: 60,
+      ...tierHeaderSortConfig,
+    },
     {
       field: 'champion',
-      headerName: 'Champion', headerClassName: 'tier-header',
+      headerName: 'Champion',
       minWidth: 100,
       flex: 4,
+      ...tierHeaderSortConfig,
       valueGetter: (params) => params.row.name,
       renderCell: (params) => (
         <div className='champion-container'>
@@ -65,12 +76,21 @@ function App() {
           </span>
           <p>{params.row.name}</p>
         </div>
-      )
+      ),
+
     },
-    { field: 'tier', headerName: 'Tier*', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: (params) => getTier(params.row.tier), width: 50 },
-    { field: 'win', headerName: 'Win %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'pick', headerName: 'Pick %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
-    { field: 'ban', headerName: 'Ban %', headerClassName: 'tier-header', type: 'number', align: 'left', headerAlign: 'left', renderCell: renderProgress, minWidth: 70, flex: 1 },
+    {
+      field: 'tier',
+      headerName: 'Tier*',
+      ...tierHeaderSortConfig,
+      ...statFieldConfig,
+      minWidth: 60,
+      width: 60,
+      renderCell: (params) => getTier(params.row.tier),
+    },
+    { field: 'win', headerName: 'Win %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
+    { field: 'pick', headerName: 'Pick %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
+    { field: 'ban', headerName: 'Ban %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
   ];
 
   const handlePositionChange = (_, newPosition) => {
@@ -302,7 +322,6 @@ function App() {
                 <Typography
                   variant="subtitle2"
                   sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
-
                 >
                   {posName}
                 </Typography>
@@ -316,10 +335,14 @@ function App() {
           <DataGrid
             rows={rows}
             columns={columns}
+            sortModel={currSortColumn}
             stickyHeader
             hideFooterPagination={true}
             components={{
               LoadingOverlay: LinearProgress,
+              ColumnSortedAscendingIcon: null,
+              ColumnSortedDescendingIcon: null,
+              ColumnUnsortedIcon: null,
               Footer: () => {
                 return (
                   <div className='tier-table-footer'>
@@ -333,6 +356,12 @@ function App() {
             onSelectionModelChange={(newSelectionModel) => {
               // console.log(newSelectionModel);
             }}
+            onSortModelChange={(sortColumn) => {
+              // Sorts go from asc -> desc -> none
+              // To avoid 'none' state, whenever we get it, take us back to asc (start of loop)
+              const newSortColumn = !sortColumn.length ? [{ ...currSortColumn[0], sort: 'asc' }] : sortColumn
+              setCurrSortColumn(newSortColumn);
+            }}
             getRowClassName={(params) =>
               params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
             }
@@ -343,6 +372,7 @@ function App() {
               padding: '0 20px',
             }}
             loading={!heroDataLoaded || !heroRankListLoaded}
+            disableColumnMenu={true}
             disableVirtualization // disabling to improve movile performance
           />
         </div>

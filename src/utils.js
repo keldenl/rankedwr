@@ -1,4 +1,7 @@
 import { DateTime } from "luxon"
+import clsx from 'clsx';
+import { renderProgress } from "./renderProgress";
+
 
 export const getNameFromHero = (hero) => {
     const urlSplit = hero.poster.split('/')
@@ -66,4 +69,33 @@ const tiersCutoffs = Object.keys(tiersByGrade);
 
 export const getTier = (grade) => {
     return tiersByGrade[binarySearch(tiersCutoffs, grade)];
+}
+
+
+
+export const headerSortConfig = (currSortColumn) => {
+    return {
+        headerClassName: (params) => {
+            const baseClass = 'tier-header'
+            if (!currSortColumn || !currSortColumn[0] || params.field !== currSortColumn[0].field) {
+                return baseClass;
+            }
+            return clsx(`${baseClass} active-sorting-cell active-sorting-cell-${currSortColumn[0].sort}`)
+
+        },
+        cellClassName: (params) => {
+            if (!currSortColumn || !currSortColumn[0] || params.field !== currSortColumn[0].field) {
+                return;
+            }
+            return clsx(`active-sorting-cell`)
+        },
+    }
+}
+
+export const statFieldConfig = {
+    type: 'number',
+    align: 'center',
+    headerAlign: 'center',
+    minWidth: 70,
+    renderCell: renderProgress,
 }
