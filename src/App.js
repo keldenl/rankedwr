@@ -9,6 +9,7 @@ import { blue } from '@mui/material/colors';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 import { LinearProgress, Link } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -16,6 +17,7 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -234,7 +236,7 @@ function App() {
       {showBanner ?
         <div className='banner'>
           <Typography variant="p" onClick={handleOpen} style={{ cursor: 'pointer' }}>
-            ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : '-'})
+            ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : <CircularProgress size={10} thickness={7} />})
           </Typography>
           <CloseIcon onClick={() => setShowBanner(false)} style={{ justifySelf: 'flex-end', fontSize: '1.25em', cursor: 'pointer' }} />
         </div>
@@ -265,13 +267,13 @@ function App() {
         <Typography
           variant="h5"
         >
-          Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : '-'})</span>
+          Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
         </Typography>
         <div className='last-update-text'>
           <Typography
             variant="p"
           >
-            <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : '-'}
+            <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : <CircularProgress size={10} thickness={7} />}
           </Typography>
         </div>
         <Typography
