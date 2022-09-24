@@ -2,11 +2,16 @@ import { DateTime } from "luxon"
 import clsx from 'clsx';
 import { renderProgress } from "./renderProgress";
 
+const championNameRemap = {
+    'Monkey King': 'Wukong'
+}
 
 export const getNameFromHero = (hero) => {
     const urlSplit = hero.poster.split('/')
     const nameWithNum = urlSplit[urlSplit.length - 1]
-    return nameWithNum.split('_')[0]
+    const nameNoSpaces = nameWithNum.split('_')[0];
+    const name = nameNoSpaces.replace(/([A-Z]+)/g, ' $1').trim();
+    return championNameRemap[name] ?? name;
 }
 
 export const positionIdToName = {
@@ -70,7 +75,6 @@ const tiersCutoffs = Object.keys(tiersByGrade);
 export const getTier = (grade) => {
     return tiersByGrade[binarySearch(tiersCutoffs, grade)];
 }
-
 
 
 export const headerSortConfig = (currSortColumn) => {
