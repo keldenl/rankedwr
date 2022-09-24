@@ -60,7 +60,9 @@ function App() {
       valueGetter: (params) => params.row.name,
       renderCell: (params) => (
         <div className='champion-container'>
-          <img className={'avatar-img'} src={params.row.avatar} alt={params.row.name} />
+          <span className='avatar-img-container'>
+            <img className={'avatar-img'} src={params.row.avatar} alt={params.row.name} />
+          </span>
           <p>{params.row.name}</p>
         </div>
       )
@@ -106,7 +108,7 @@ function App() {
   }, [currPosition, heroDataLoaded, heroRankListLoaded])
 
   const handleAcceptCookie = () => {
-    ReactGA.initialize("G-C2S8YQDJBT", { debug: true });
+    ReactGA.initialize("G-C2S8YQDJBT", { debug: process.env.NODE_ENV === 'development' });
     ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search });
   }
 
@@ -115,7 +117,9 @@ function App() {
     setBuildDate(DateTime.fromMillis(dateTimeStamp));
 
     // Remove this when implementing cookie consent
-    handleAcceptCookie()
+    if (process.env.NODE_ENV !== 'development') {
+      handleAcceptCookie()
+    }
 
     const fetchHeroes = fetchCORS(urls.heroList)
       .then((res) => {
