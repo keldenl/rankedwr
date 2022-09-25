@@ -191,7 +191,7 @@ function App() {
           setCurrPosition([...positionOrder][0]);
         }
         setLastUpdateDate(lastUpdateDate)
-        document.title = `Wild Rift Ranked Tier List Patch ${getPatchByDate(updateDate)} - rankedwr`
+        document.title = `Wild Rift Tier List Stats (Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
