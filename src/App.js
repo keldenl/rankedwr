@@ -10,7 +10,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
-import { LinearProgress, Link } from '@mui/material';
+import { LinearProgress, Link, TextField } from '@mui/material';
 import Input from '@mui/material/Input';
 import Tooltip from '@mui/material/Tooltip';
 
@@ -326,8 +326,7 @@ function App() {
           Updates in real-time when new data is published from Riot.
         </Typography>
 
-        <div>
-
+        <div className='table-options-container'>
           <ToggleButtonGroup
             value={currPosition}
             exclusive
@@ -336,11 +335,11 @@ function App() {
           >
             {positionList.length && positionList.map(posName => {
               return (
-                <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
+                <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} size="small">
                   <span className={`position-icon ${posName.toLowerCase()}`} />
                   <Typography
                     variant="subtitle2"
-                    sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
+                    sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, marginRight: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
                   >
                     {posName}
                   </Typography>
@@ -350,9 +349,16 @@ function App() {
             }
           </ToggleButtonGroup>
 
-          <Input
+          <TextField
             onChange={(e) => setFilter(f => ({ ...f, value: e.target.value }))}
             value={filter.value ?? ''}
+            label='Search Champion...'
+            variant="outlined"
+            size="small"
+            sx={{
+              flexGrow: 1,
+              fontSize: '0.9em'
+            }}
           />
         </div>
 
