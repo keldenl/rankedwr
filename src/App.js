@@ -11,6 +11,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LinearProgress, Link } from '@mui/material';
+import Input from '@mui/material/Input';
+import Tooltip from '@mui/material/Tooltip';
+
+
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -52,6 +56,8 @@ function App() {
 
   const defaultSortColumn = [{ field: 'win', sort: 'desc' }];
   const [currSortColumn, setCurrSortColumn] = useState(defaultSortColumn);
+
+  const [filter, setFilter] = useState({ columnField: 'champion', operatorValue: 'contains', value: '' });
 
   const tierHeaderSortConfig = headerSortConfig(currSortColumn);
 
@@ -303,13 +309,15 @@ function App() {
         >
           Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
         </Typography>
-        <div className='last-update-text'>
-          <Typography
-            variant="p"
-          >
-            <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : <CircularProgress size={10} thickness={7} />}
-          </Typography>
-        </div>
+        <Tooltip title={!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toFormat('d LLL y') : ''} placement="right" arrow>
+          <div className='last-update-text'>
+            <Typography
+              variant="p"
+            >
+              <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : <CircularProgress size={10} thickness={7} />}
+            </Typography>
+          </div>
+        </Tooltip>
         <Typography
           variant="subtitle2"
           sx={{ opacity: 0.8, marginTop: 1 }}
@@ -318,33 +326,42 @@ function App() {
           Updates in real-time when new data is published from Riot.
         </Typography>
 
-        <ToggleButtonGroup
-          value={currPosition}
-          exclusive
-          onChange={handlePositionChange}
-          className='position-container'
-        >
-          {positionList.length && positionList.map(posName => {
-            return (
-              <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
-                <span className={`position-icon ${posName.toLowerCase()}`} />
-                <Typography
-                  variant="subtitle2"
-                  sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
-                >
-                  {posName}
-                </Typography>
-              </ToggleButton>
-            )
-          })
-          }
-        </ToggleButtonGroup>
+        <div>
+
+          <ToggleButtonGroup
+            value={currPosition}
+            exclusive
+            onChange={handlePositionChange}
+            className='position-container'
+          >
+            {positionList.length && positionList.map(posName => {
+              return (
+                <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} fullWidth>
+                  <span className={`position-icon ${posName.toLowerCase()}`} />
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
+                  >
+                    {posName}
+                  </Typography>
+                </ToggleButton>
+              )
+            })
+            }
+          </ToggleButtonGroup>
+
+          <Input
+            onChange={(e) => setFilter(f => ({ ...f, value: e.target.value }))}
+            value={filter.value ?? ''}
+          />
+        </div>
 
         <div className='tier-table'>
           <DataGrid
             rows={rows}
             columns={columns}
             sortModel={currSortColumn}
+            filterModel={{ items: [filter] }}
             stickyHeader
             hideFooterPagination={true}
             components={{
@@ -352,6 +369,7 @@ function App() {
               ColumnSortedAscendingIcon: null,
               ColumnSortedDescendingIcon: null,
               ColumnUnsortedIcon: null,
+              ColumnHeaderFilterIconButton: () => <></>,
               Footer: () => {
                 return (
                   <div className='tier-table-footer'>
@@ -392,7 +410,7 @@ function App() {
         <p>All data sourced from Riot's Official Wild Rift <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
         <p>Built by <Link target='__blank' href='https://twitter.com/RepotedWR'><TwitterIcon fontSize={'10px'} />RepotedWR</Link> © {DateTime.now().year}</p>
       </div>
-    </div>
+    </div >
   )
 }
 
