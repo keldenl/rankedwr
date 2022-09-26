@@ -11,7 +11,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LinearProgress, Link, TextField } from '@mui/material';
-import Input from '@mui/material/Input';
 import Tooltip from '@mui/material/Tooltip';
 
 
@@ -246,6 +245,10 @@ function App() {
         <Box sx={{ ...modalStyle }}>
           <h3>What's New</h3>
           <ul className='date-new-ul'>
+            <li>{DateTime.fromISO('20220926').toFormat('d LLL y')}</li>
+            <ul className='new-things-ul'>
+              <li><b>New:</b> Added search for champions in the tier table!</li>
+            </ul>
             <li>{DateTime.fromISO('20220924').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
               <li><b>New:</b> Complete column sorting redesign. It is now easier to tap to sort and more obvious which column is being sorted.</li>
