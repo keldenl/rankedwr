@@ -182,11 +182,14 @@ function App() {
           const positionHeroes = input[i];
           const pos = positionIdToName[i];
           for (let j = 0; j < positionHeroes.length; j++) {
-            const { hero_id, position, ...hero } = positionHeroes[j];
-            data[hero_id] = { ...data[hero_id], [pos]: hero };
+            const { hero_id, position, dtstatdate, ...hero } = positionHeroes[j];
+            if (data[hero_id] && !!data[hero_id][dtstatdate]) {
+              data[hero_id][dtstatdate] = { ...data[hero_id][dtstatdate], [pos]: hero }
+            } else {
+              data[hero_id] = { ...data[hero_id], [dtstatdate]: { [pos]: hero } };
+            }
           }
         }
-
 
         const lastUpdateDate = contents.data[1][0]['dtstatdate']
         const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
