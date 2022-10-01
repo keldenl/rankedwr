@@ -175,6 +175,19 @@ function App() {
       })
       .then((data) => JSON.parse(data.contents))
       .then((contents) => {
+        const data = {}
+
+        const input = contents.data;
+        for (let i of Object.keys(input)) {
+          const positionHeroes = input[i];
+          const pos = positionIdToName[i];
+          for (let j = 0; j < positionHeroes.length; j++) {
+            const { hero_id, position, ...hero } = positionHeroes[j];
+            data[hero_id] = { ...data[hero_id], [pos]: hero };
+          }
+        }
+
+
         const lastUpdateDate = contents.data[1][0]['dtstatdate']
         const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
         setHeroRankList(contents.data);
@@ -316,7 +329,7 @@ function App() {
             <Typography
               variant="p"
             >
-              <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar() : <CircularProgress size={10} thickness={7} />}
+              <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar({ unit: 'days' }) : <CircularProgress size={10} thickness={7} />}
             </Typography>
           </div>
         </Tooltip>
