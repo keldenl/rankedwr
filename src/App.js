@@ -176,8 +176,7 @@ function App() {
       .then((data) => JSON.parse(data.contents))
       .then((contents) => {
         const lastUpdateDate = contents.data[1][0]['dtstatdate']
-        const updateDate = DateTime.fromISO(lastUpdateDate)
-
+        const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
         setHeroRankList(contents.data);
         setHeroRankListLoaded(true);
 
