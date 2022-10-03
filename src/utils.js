@@ -34,6 +34,7 @@ export const positionOrder = ['solo', 'jungle', 'mid', 'duo', 'support']
 
 const patchDates = [
     { ver: '3.5', date: DateTime.fromISO('20221117') },
+    { ver: '3.4a', date: DateTime.fromISO('20220928') },
     { ver: '3.4', date: DateTime.fromISO('20220915') },
     { ver: '3.3', date: DateTime.fromISO('20220714') },
 ]
@@ -100,6 +101,6 @@ export const statFieldConfig = {
     type: 'number',
     align: 'center',
     headerAlign: 'center',
-    minWidth: 70,
+    minWidth: 60,
     renderCell: renderProgress,
 }

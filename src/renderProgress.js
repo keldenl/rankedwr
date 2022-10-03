@@ -8,13 +8,14 @@ const Root = styled('div')(({ theme }) => ({
     position: 'relative',
     overflow: 'hidden',
     width: '100%',
-    height: 26,
-    borderRadius: 2,
+    height: 25,
+    borderRadius: 5,
 }));
 
 const Value = styled('div')({
     position: 'absolute',
-    lineHeight: '24px',
+    fontSize: '0.85em',
+    lineHeight: '25px',
     width: '100%',
     display: 'flex',
     justifyContent: 'center',

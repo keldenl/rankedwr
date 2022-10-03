@@ -22,6 +22,14 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
+import StarRateIcon from '@mui/icons-material/StarRate';
+import PersonIcon from '@mui/icons-material/Person';
+import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
@@ -60,18 +68,31 @@ function App() {
 
   const tierHeaderSortConfig = headerSortConfig(currSortColumn);
 
+  const mobileHeader = (Icon, name, additionalText) =>
+    () =>
+      <span className='MuiDataGrid-columnHeaderTitle'>
+        <Tooltip className='mobile-only' title={name} placement='top'>
+          <Icon fontSize='small' />
+        </Tooltip>
+        <span className='mobile-only'>{additionalText}</span>
+        <span className='desktop-only'>{name}</span>
+      </span>
+
+
   const columns = [
     {
       field: 'rank',
       headerName: 'Rank',
       type: 'number',
-      width: 55,
       ...tierHeaderSortConfig,
+      minWidth: 40,
+      flex: 1,
+      renderHeader: mobileHeader(StarRateIcon, 'Rank'),
     },
     {
       field: 'champion',
       headerName: 'Champion',
-      minWidth: 100,
+      minWidth: 40,
       flex: 4,
       ...tierHeaderSortConfig,
       valueGetter: (params) => params.row.name,
@@ -83,20 +104,22 @@ function App() {
           <p>{params.row.name}</p>
         </div>
       ),
-
+      renderHeader: mobileHeader(PersonIcon, 'Champion'),
     },
     {
       field: 'tier',
       headerName: 'Tier*',
       ...tierHeaderSortConfig,
       ...statFieldConfig,
-      minWidth: 55,
-      width: 55,
+      width: 50,
+      minWidth: 45,
+      // width: 55,
       renderCell: (params) => getTier(params.row.tier),
+      renderHeader: mobileHeader(WorkspacePremiumIcon, 'Tier*', '*'),
     },
-    { field: 'win', headerName: 'Win %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
-    { field: 'pick', headerName: 'Pick %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
-    { field: 'ban', headerName: 'Ban %', ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
+    { field: 'win', headerName: 'Win %', renderHeader: mobileHeader(EmojiEventsIcon, 'Win %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
+    { field: 'pick', headerName: 'Pick %', renderHeader: mobileHeader(PanToolAltIcon, 'Pick %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
+    { field: 'ban', headerName: 'Ban %', renderHeader: mobileHeader(DoNotDisturbIcon, 'Ban %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
   ];
 
   const handlePositionChange = (_, newPosition) => {
@@ -175,7 +198,10 @@ function App() {
       })
       .then((data) => JSON.parse(data.contents))
       .then((contents) => {
-        const data = {}
+        const lastUpdateDate = contents.data[1][0]['dtstatdate']
+        const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
+
+        const championData = {}
 
         const input = contents.data;
         for (let i of Object.keys(input)) {
@@ -183,16 +209,21 @@ function App() {
           const pos = positionIdToName[i];
           for (let j = 0; j < positionHeroes.length; j++) {
             const { hero_id, position, dtstatdate, ...hero } = positionHeroes[j];
-            if (data[hero_id] && !!data[hero_id][dtstatdate]) {
-              data[hero_id][dtstatdate] = { ...data[hero_id][dtstatdate], [pos]: hero }
+            if (championData[hero_id] && !!championData[hero_id][dtstatdate]) {
+              championData[hero_id][dtstatdate] = { ...championData[hero_id][dtstatdate], [pos]: hero }
             } else {
-              data[hero_id] = { ...data[hero_id], [dtstatdate]: { [pos]: hero } };
+              championData[hero_id] = { ...championData[hero_id], [dtstatdate]: { [pos]: hero } };
             }
           }
         }
 
-        const lastUpdateDate = contents.data[1][0]['dtstatdate']
-        const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
+        const data = {
+          championData,
+          lastUpdateDate
+        }
+
+        console.log(data);
+
         setHeroRankList(contents.data);
         setHeroRankListLoaded(true);
 
