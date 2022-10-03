@@ -25,7 +25,6 @@ import Modal from '@mui/material/Modal';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import StarRateIcon from '@mui/icons-material/StarRate';
 import PersonIcon from '@mui/icons-material/Person';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
@@ -291,6 +290,10 @@ function App() {
         <Box sx={{ ...modalStyle }}>
           <h3>What's New</h3>
           <ul className='date-new-ul'>
+            <li>{DateTime.fromISO('20221002').toFormat('d LLL y')}</li>
+            <ul className='new-things-ul'>
+              <li><b>New:</b> Table is now mobile friendly!</li>
+            </ul>
             <li>{DateTime.fromISO('20220926').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
               <li><b>New:</b> Added search for champions in the tier table!</li>
