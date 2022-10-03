@@ -93,7 +93,7 @@ function App() {
       field: 'champion',
       headerName: 'Champion',
       minWidth: 40,
-      flex: 4,
+      flex: 2,
       ...tierHeaderSortConfig,
       valueGetter: (params) => params.row.name,
       renderCell: (params) => (
