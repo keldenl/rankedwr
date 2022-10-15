@@ -204,28 +204,29 @@ function App() {
       handleAcceptCookie()
     }
 
-    const fetchHeroes = fetchCORS(urls.heroList)
+    const champTypeRemap = {
+      '刺客': 'Assassin',
+      '战士': 'Fighter',
+      '法师': 'Mage',
+      '射手': 'Marksman',
+      '辅助': 'Support',
+      '坦克': 'Tank',
+    }
+    const fetchHeroes = fetch('http://localhost:5001/champion/all')
       .then((res) => {
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
       })
-      .then((data) => JSON.parse(data.contents))
       .then((contents) => {
         const heroData = {}
-        const roles = []
-        Object.keys(contents.heroList).map(heroId => {
-          const hero = contents.heroList[heroId];
-          const name = getNameFromHero(hero);
-          hero.roles.map(r => !roles.includes(r) && roles.push(r))
-          heroData[heroId] = {
-            name,
+        contents.heroList.map(hero => {
+          heroData[hero._id] = {
+            name: hero.engName,
             avatar: hero.avatar
           }
         })
 
-        console.log(roles);
         setHeroData(heroData)
-        console.log(contents)
         setHeroDataLoaded(true)
       })
 
