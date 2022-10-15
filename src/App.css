@@ -271,7 +271,7 @@ img.avatar-img {
     height: 20px;
     /* filter: brightness(0.3); */
     /* TODO: Make this scalable to dark mode */
-    background-size: cover;
+    background-size: cover!important;
 }
 
 .Mui-selected .position-icon {
@@ -281,6 +281,10 @@ img.avatar-img {
 
 
 /* positioning, where number = position  */
+
+.all {
+    background: url('./assets/all-icon.png');
+}
 
 .baron {
     background-position-x: calc(-31.5px * 0);

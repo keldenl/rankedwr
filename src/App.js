@@ -87,6 +87,15 @@ function App() {
       minWidth: 40,
       flex: 1,
       renderHeader: mobileHeader(StarRateIcon, 'Rank'),
+      renderCell: (params) => {
+        const { sort } = params.api.getSortModel()[0];
+        const i = params.api.getRowIndex(params.row.id) + 1;
+        if (sort === 'asc') {
+          const itemCount = params.api.getRowsCount();
+          return itemCount - i;
+        }
+        return i;
+      },
     },
     {
       field: 'champion',
@@ -127,21 +136,29 @@ function App() {
     }
   };
 
+  const getFloat = (nd) => parseFloat(nd.$numberDecimal);
+
 
   useEffect(() => {
-    const positionId = positionNametoId[currPosition]
-    if (!heroRankListLoaded || !heroDataLoaded || !heroRankList[positionId]) { return }
-
-    const newRows = heroRankList[positionId].map((wr, index) => {
-      const { hero_id, win_rate: win, appear_rate: pick, forbid_rate: ban } = wr;
+    if (!heroRankListLoaded || !heroDataLoaded) { return }
+    let rank = 0;
+    const newRows = heroRankList.flatMap(wr => {
+      if (currPosition !== positionOrder[0] && currPosition !== wr.position) {
+        return [];
+      }
+      rank++;
+      const { hero_id, win_rate: winR, appear_rate: pickR, forbid_rate: banR } = wr;
+      const win = getFloat(winR)
+      const pick = getFloat(pickR)
+      const ban = getFloat(banR)
       const hero = heroData[hero_id];
       const { name, avatar } = hero;
 
       const tier = (parseFloat(win) + ((parseFloat(win) * parseFloat(pick) / 5) + (parseFloat(win) * parseFloat(ban) / 5))) * 100
 
       return ({
-        id: wr.id,
-        rank: index + 1,
+        id: wr._id,
+        rank,
         name,
         avatar,
         tier,
@@ -150,6 +167,8 @@ function App() {
         ban
       })
     })
+
+    console.log('rows: ', newRows)
 
     setRows(newRows)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -177,63 +196,47 @@ function App() {
       .then((data) => JSON.parse(data.contents))
       .then((contents) => {
         const heroData = {}
+        const roles = []
         Object.keys(contents.heroList).map(heroId => {
           const hero = contents.heroList[heroId];
           const name = getNameFromHero(hero);
+          hero.roles.map(r => !roles.includes(r) && roles.push(r))
           heroData[heroId] = {
             name,
             avatar: hero.avatar
           }
         })
 
+        console.log(roles);
         setHeroData(heroData)
+        console.log(contents)
         setHeroDataLoaded(true)
       })
 
-    const fetchRankedList = fetchCORS(urls.heroRankList)
+    // const fetchRankedList = fetchCORS(urls.heroRankList)
+    const fetchRankedList = fetch('http://localhost:5001/rank/getCurrentList')
       .then((res) => {
+        console.log(res)
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
       })
-      .then((data) => JSON.parse(data.contents))
-      .then((contents) => {
-        const lastUpdateDate = contents.data[1][0]['dtstatdate']
+      .then((data) => {
+        console.log(data)
+        // const lastUpdateDate = contents.data[1][0]['dtstatdate']
+        const { dtstatdate: lastUpdateDate, positionRanks } = data;
         const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
 
-        const championData = {}
-
-        const input = contents.data;
-        for (let i of Object.keys(input)) {
-          const positionHeroes = input[i];
-          const pos = positionIdToName[i];
-          for (let j = 0; j < positionHeroes.length; j++) {
-            const { hero_id, position, dtstatdate, ...hero } = positionHeroes[j];
-            if (championData[hero_id] && !!championData[hero_id][dtstatdate]) {
-              championData[hero_id][dtstatdate] = { ...championData[hero_id][dtstatdate], [pos]: hero }
-            } else {
-              championData[hero_id] = { ...championData[hero_id], [dtstatdate]: { [pos]: hero } };
-            }
-          }
-        }
-
-        const data = {
-          championData,
-          lastUpdateDate
-        }
-
-        console.log(data);
-
-        setHeroRankList(contents.data);
+        setHeroRankList(positionRanks);
         setHeroRankListLoaded(true);
 
-        const posList = Object.keys(contents.data).map(p => positionIdToName[p]);
-        const validPosList = positionOrder.every(val => posList.includes(val));
+        // const posList = Object.keys(contents.data).map(p => positionIdToName[p]);
+        // const validPosList = positionOrder.every(val => posList.includes(val));
 
         // Validate that the typical positions we expect are fetching
-        if (validPosList) {
-          setPositionList([...positionOrder]);
-          setCurrPosition([...positionOrder][0]);
-        }
+        // if (validPosList) {
+        setPositionList([...positionOrder]);
+        setCurrPosition([...positionOrder][0]);
+        // }
         setLastUpdateDate(lastUpdateDate)
         document.title = `Wild Rift Tier List Stats (Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })
@@ -290,6 +293,11 @@ function App() {
         <Box sx={{ ...modalStyle }}>
           <h3>What's New</h3>
           <ul className='date-new-ul'>
+
+            {/* 
+            add all icon, change rank to match columns, use new api
+            
+            */}
             <li>{DateTime.fromISO('20221002').toFormat('d LLL y')}</li>
             <ul className='new-things-ul'>
               <li><b>New:</b> Table is now mobile friendly!</li>

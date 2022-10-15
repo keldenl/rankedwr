@@ -30,7 +30,7 @@ export const positionNametoId = {
     jungle: 5
 }
 
-export const positionOrder = ['solo', 'jungle', 'mid', 'duo', 'support']
+export const positionOrder = ['all', 'solo', 'jungle', 'mid', 'duo', 'support']
 
 const patchDates = [
     { ver: '3.5', date: DateTime.fromISO('20221117') },
