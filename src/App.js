@@ -23,7 +23,6 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import StarRateIcon from '@mui/icons-material/StarRate';
 import PersonIcon from '@mui/icons-material/Person';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
@@ -31,9 +30,7 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AppsIcon from '@mui/icons-material/Apps';
 
 
-import { fetchCORS } from './fetchUtils';
-import { urls } from './urls';
-import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId, headerSortConfig, statFieldConfig, getRole } from './utils';
+import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole } from './utils';
 import logo from './assets/ranked-icon.png';
 import './App.css';
 
@@ -85,9 +82,9 @@ function App() {
       headerName: '#',
       type: 'number',
       ...tierHeaderSortConfig,
-      width: 25,
-      minWidth: 25,
-      maxWidth: 25,
+      width: 30,
+      minWidth: 30,
+      maxWidth: 30,
       // flex: 1,
       // renderHeader: mobileHeader(undefined, '#'),
       renderCell: (params) => {
@@ -204,14 +201,6 @@ function App() {
       handleAcceptCookie()
     }
 
-    const champTypeRemap = {
-      '刺客': 'Assassin',
-      '战士': 'Fighter',
-      '法师': 'Mage',
-      '射手': 'Marksman',
-      '辅助': 'Support',
-      '坦克': 'Tank',
-    }
     const fetchHeroes = fetch('http://localhost:5001/champion/all')
       .then((res) => {
         if (res.ok) return res.json()
@@ -238,22 +227,14 @@ function App() {
         throw new Error('Network response was not ok.')
       })
       .then((data) => {
-        console.log(data)
-        // const lastUpdateDate = contents.data[1][0]['dtstatdate']
         const { dtstatdate: lastUpdateDate, positionRanks } = data;
         const updateDate = DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' })
 
         setHeroRankList(positionRanks);
         setHeroRankListLoaded(true);
 
-        // const posList = Object.keys(contents.data).map(p => positionIdToName[p]);
-        // const validPosList = positionOrder.every(val => posList.includes(val));
-
-        // Validate that the typical positions we expect are fetching
-        // if (validPosList) {
         setPositionList([...positionOrder]);
         setCurrPosition([...positionOrder][0]);
-        // }
         setLastUpdateDate(lastUpdateDate)
         document.title = `Wild Rift Tier List Stats (Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })
@@ -501,17 +482,3 @@ function App() {
 }
 
 export default App;
-
-
-//  <h1> All Champions </h1>
-//       <div>
-//         {heroDataLoaded && Object.keys(heroData).map(heroId => {
-//           const hero = heroData[heroId]
-//           return (
-//             <div>
-//               <img src={hero.avatar} alt={hero.name} />
-//               <h2>{hero.name}</h2>
-//             </div>
-//           )
-//         })}
-//       </div> 
