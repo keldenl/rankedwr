@@ -196,6 +196,11 @@
     user-select: none;
 }
 
+.MuiDataGrid-columnHeader,
+.MuiDataGrid-cell {
+    padding: 0 5px!important;
+}
+
 .even-row,
 .odd-row {
     border-radius: 5px;

@@ -78,6 +78,10 @@ export const getTier = (grade) => {
 }
 
 
+export const getRole = (role) => {
+    return <span className={`position-icon ${role}`} />
+}
+
 export const headerSortConfig = (currSortColumn) => {
     return {
         headerClassName: (params) => {

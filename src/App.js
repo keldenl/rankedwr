@@ -28,11 +28,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import AppsIcon from '@mui/icons-material/Apps';
 
 
 import { fetchCORS } from './fetchUtils';
 import { urls } from './urls';
-import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId, headerSortConfig, statFieldConfig } from './utils';
+import { getNameFromHero, positionIdToName, getPatchByDate, getTier, positionOrder, positionNametoId, headerSortConfig, statFieldConfig, getRole } from './utils';
 import logo from './assets/ranked-icon.png';
 import './App.css';
 
@@ -70,9 +71,9 @@ function App() {
   const mobileHeader = (Icon, name, additionalText) =>
     () =>
       <span className='MuiDataGrid-columnHeaderTitle'>
-        <Tooltip className='mobile-only' title={name} placement='top'>
+        {Icon ? <Tooltip className='mobile-only' title={name} placement='top'>
           <Icon fontSize='small' />
-        </Tooltip>
+        </Tooltip> : undefined}
         <span className='mobile-only'>{additionalText}</span>
         <span className='desktop-only'>{name}</span>
       </span>
@@ -81,26 +82,28 @@ function App() {
   const columns = [
     {
       field: 'rank',
-      headerName: 'Rank',
+      headerName: '#',
       type: 'number',
       ...tierHeaderSortConfig,
-      minWidth: 40,
-      flex: 1,
-      renderHeader: mobileHeader(StarRateIcon, 'Rank'),
+      width: 25,
+      minWidth: 25,
+      maxWidth: 25,
+      // flex: 1,
+      // renderHeader: mobileHeader(undefined, '#'),
       renderCell: (params) => {
         const { sort } = params.api.getSortModel()[0];
-        const i = params.api.getRowIndex(params.row.id) + 1;
+        const i = params.api.getRowIndex(params.row.id);
         if (sort === 'asc') {
           const itemCount = params.api.getRowsCount();
           return itemCount - i;
         }
-        return i;
+        return i + 1;
       },
     },
     {
       field: 'champion',
       headerName: 'Champion',
-      minWidth: 40,
+      minWidth: 30,
       flex: 2,
       ...tierHeaderSortConfig,
       valueGetter: (params) => params.row.name,
@@ -113,6 +116,7 @@ function App() {
         </div>
       ),
       renderHeader: mobileHeader(PersonIcon, 'Champion'),
+      onColumnHeaderClick: () => console.log('hi!')
     },
     {
       field: 'tier',
@@ -122,8 +126,18 @@ function App() {
       width: 50,
       minWidth: 45,
       // width: 55,
-      renderCell: (params) => getTier(params.row.tier),
       renderHeader: mobileHeader(WorkspacePremiumIcon, 'Tier*', '*'),
+      renderCell: (params) => getTier(params.row.tier),
+    },
+    {
+      field: 'role',
+      headerName: 'Role',
+      ...tierHeaderSortConfig,
+      ...statFieldConfig,
+      width: 50,
+      minWidth: 10,
+      renderHeader: mobileHeader(AppsIcon, 'Role'),
+      renderCell: (params) => getRole(params.row.role),
     },
     { field: 'win', headerName: 'Win %', renderHeader: mobileHeader(EmojiEventsIcon, 'Win %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
     { field: 'pick', headerName: 'Pick %', renderHeader: mobileHeader(PanToolAltIcon, 'Pick %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
@@ -140,14 +154,15 @@ function App() {
 
 
   useEffect(() => {
-    if (!heroRankListLoaded || !heroDataLoaded) { return }
+    if (!heroRankListLoaded || !heroDataLoaded || !heroRankList.length) { return }
     let rank = 0;
+    // console.log(heroRankList)
     const newRows = heroRankList.flatMap(wr => {
       if (currPosition !== positionOrder[0] && currPosition !== wr.position) {
         return [];
       }
       rank++;
-      const { hero_id, win_rate: winR, appear_rate: pickR, forbid_rate: banR } = wr;
+      const { hero_id, win_rate: winR, appear_rate: pickR, forbid_rate: banR, position: role } = wr;
       const win = getFloat(winR)
       const pick = getFloat(pickR)
       const ban = getFloat(banR)
@@ -161,6 +176,7 @@ function App() {
         rank,
         name,
         avatar,
+        role,
         tier,
         win,
         pick,
@@ -168,7 +184,7 @@ function App() {
       })
     })
 
-    console.log('rows: ', newRows)
+    // console.log('rows: ', newRows)
 
     setRows(newRows)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -364,27 +380,29 @@ function App() {
       </CookieConsent> */}
 
       <div className='tier-page-wrapper'>
-        <Typography
-          variant="h5"
-        >
-          Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
-        </Typography>
-        <Tooltip title={!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toFormat('d LLL y') : ''} placement="right" arrow>
-          <div className='last-update-text'>
-            <Typography
-              variant="p"
-            >
-              <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar({ unit: 'days' }) : <CircularProgress size={10} thickness={7} />}
-            </Typography>
-          </div>
-        </Tooltip>
-        <Typography
-          variant="subtitle2"
-          sx={{ opacity: 0.8, marginTop: 1 }}
-        >
-          The only Wild Rift tier list based on <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
-          Updates in real-time when new data is published from Riot.
-        </Typography>
+        <div className='page-header'>
+          <Typography
+            variant="h5"
+          >
+            Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
+          </Typography>
+          <Tooltip title={!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toFormat('d LLL y') : ''} placement="right" arrow>
+            <div className='last-update-text'>
+              <Typography
+                variant="p"
+              >
+                <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar({ unit: 'days' }) : <CircularProgress size={10} thickness={7} />}
+              </Typography>
+            </div>
+          </Tooltip>
+          <Typography
+            variant="subtitle2"
+            sx={{ opacity: 0.8, marginTop: 1 }}
+          >
+            The only Wild Rift tier list based on <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
+            Updates in real-time when new data is published from Riot.
+          </Typography>
+        </div>
 
         <div className='table-options-container'>
           <ToggleButtonGroup
@@ -396,7 +414,7 @@ function App() {
             {positionList.length && positionList.map(posName => {
               return (
                 <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} size="small">
-                  <span className={`position-icon ${posName.toLowerCase()}`} />
+                  <span className={`position-icon ${posName}`} />
                   <Typography
                     variant="subtitle2"
                     sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, marginRight: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
