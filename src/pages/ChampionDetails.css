@@ -1,0 +1,54 @@
+@import './FullTierList.css';
+.gold-border {
+    /* golden game like border */
+    border: 3px solid transparent;
+    background: linear-gradient(var(--blue900) 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(to bottom, #dbc69c, #4d4229) border-box;
+    border-radius: 100%;
+}
+
+.champ-turn {
+    width: 100%;
+    max-height: 450px;
+    min-height: 300px;
+    object-fit: cover;
+    object-position: top;
+    filter: brightness(0.5);
+    -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.champ-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.champ-header>h1,
+.champ-header p {
+    margin: 0;
+}
+
+.champ-details-container {
+    top: -300px;
+    position: relative;
+}
+
+.ability-thumb-container {
+    display: flex;
+    gap: 10px;
+}
+
+.ability-thumb-container>img {
+    max-width: 75px;
+}
+
+@media only screen and (max-width: 540px) {
+    .champ-details-container {
+        top: -250px;
+    }
+    .ability-thumb-container>img {
+        max-width: 50px;
+    }
+}

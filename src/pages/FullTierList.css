@@ -1,7 +1,7 @@
 @font-face {
     font-family: 'Hellix';
     font-style: normal;
-    src: local('Hellix'), url("./assets/fonts/Hellix-Bold.woff") format('woff');
+    src: local('Hellix'), url("../assets/fonts/Hellix-Bold.woff") format('woff');
     /* other formats include: 'woff2', 'truetype, 'opentype',
                               'embedded-opentype', and 'svg' */
 }
@@ -271,7 +271,7 @@ img.avatar-img {
 }
 
 .position-icon {
-    background: url('./assets/position-icons.png') no-repeat;
+    background: url('../assets/position-icons.png') no-repeat;
     width: 20px;
     height: 20px;
     /* filter: brightness(0.3); */
@@ -288,7 +288,7 @@ img.avatar-img {
 /* positioning, where number = position  */
 
 .all {
-    background: url('./assets/all-icon.png');
+    background: url('../assets/all-icon.png');
 }
 
 .baron {
