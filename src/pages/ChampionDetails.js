@@ -25,7 +25,7 @@ import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
-import { convertStatToAppearPie, convertStatToLineGraph, lineOptions, pieOptions } from '../utils';
+import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../utils';
 import { Card } from '../components/Card';
 import './ChampionDetails.css';
 
@@ -39,6 +39,8 @@ export function ChampionDetails({ }) {
     const [champDetails, setChampDetails] = useState({});
     const [champInfo, setChampInfo] = useState({});
     const [champStat, setChampStat] = useState({});
+    const [champTldr, setChampTldr] = useState([]);
+    const [selectedChampTldr, setSelectedChampTldr] = useState(0);
 
     const [champWinData, setChampWinData] = useState();
     const [champPickData, setChampPickData] = useState();
@@ -76,11 +78,10 @@ export function ChampionDetails({ }) {
                 throw new Error('Network response was not ok.')
             })
             .then((contents) => {
-                const { champWRDetails: champDetails, champInfo, champStat } = contents;
+                const { champWRDetails: champDetails, champInfo, champStat, lastChecked } = contents;
                 setChampDetails(champDetails);
                 setChampInfo(champInfo);
                 setChampStat(champStat);
-                setIsLoading(false);
 
                 const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
                 const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
@@ -92,6 +93,47 @@ export function ChampionDetails({ }) {
                 setChampCurrPickData(currPickData);
                 setChampBanData(banData);
                 // setChampPickOption(pickOptions);
+                console.log(lastChecked)
+
+                const dupedLatestStats = champStat.positionRanks.filter(r => r.dtstatdate === lastChecked.updateDate)
+                const latestStats =
+                    dupedLatestStats
+                        .filter((v, i, a) => a.findIndex(v2 => (v2.position === v.position)) === i)
+                        .sort((a, b) => getFloat(b.appear_rate) - getFloat(a.appear_rate))
+                const newTldr = latestStats.map(ls => {
+                    const {
+                        win_bzc: winRank,
+                        appear_bzc: pickRank,
+                        forbid_bzc: banRank,
+                        win_rate,
+                        appear_rate,
+                        forbid_rate,
+                        position
+                    } = ls
+
+                    // console.log({
+                    //     win_bzc: winRank,
+                    //     appear_bzc: pickRank,
+                    //     forbid_bzc: banRank,
+                    //     win_rate,
+                    //     appear_rate,
+                    //     forbid_rate,
+                    // })
+
+                    const winR = `${Number((getFloat(win_rate) * 100).toFixed(2))}%`
+                    const pickR = `${Number((getFloat(appear_rate) * 100).toFixed(2))}%`
+                    const banR = `${Number((getFloat(forbid_rate) * 100).toFixed(2))}%`
+                    const tier = getTier(calculateTier(getFloat(win_rate), getFloat(appear_rate), getFloat(forbid_rate)));
+
+                    // console.log(tier)
+                    return { tier, winR, pickR, banR, winRank, pickRank, banRank, position }
+                })
+
+                console.log(newTldr[0]);
+
+                setChampTldr(newTldr);
+                // setSelectedChampTldr(0);
+                // champStat.positionRanks
 
                 // console.log(sets);
 
@@ -100,6 +142,9 @@ export function ChampionDetails({ }) {
                     champInfo,
                     champStat
                 })
+
+                setIsLoading(false);
+
             })
             .catch((err) => {
                 setNotFound(true);
@@ -128,16 +173,64 @@ export function ChampionDetails({ }) {
                             </Typography>
                         </div>
 
-                        <div className='champ-tldr'>
-                            <div></div>
-
-                        </div>
-                        <div className='champ-roles'>
-                            {champInfo.engRoles.map(r =>
-                                <Typography key={r} variant="p" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                    {r}
+                        <div className='champ-tldr-wrapper'>
+                            <div className='champ-tldr-roles'>
+                                <Typography variant="button" sx={{ fontWeight: 'bolder', flex: 1 }}>
+                                    {champInfo.engRoles.join(', ')}
                                 </Typography>
-                            )}
+                                {champTldr.map((ct, i) =>
+                                    <Typography
+                                        variant="button"
+                                        sx={{ fontWeight: 'bolder', opacity: 0.4, transition: '0.2s opacity ease-in-out' }}
+                                        className={`${i === selectedChampTldr ? 'tldr-role-active' : ''}`}
+                                        onClick={() => setSelectedChampTldr(i)}
+                                    >
+                                        {ct.position}
+                                    </Typography>
+                                )}
+                            </div>
+                            <div className='champ-tldr'>
+                                <div>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                        {champTldr[selectedChampTldr].tier}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                        TIER
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                        {champTldr[selectedChampTldr].winR}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                        WIN%
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                        #{champTldr[selectedChampTldr].winRank}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                        RANK
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                        {champTldr[selectedChampTldr].pickR}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                        PICK%
+                                    </Typography>
+                                </div>
+                                <div>
+                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                        {champTldr[selectedChampTldr].banR}
+                                    </Typography>
+                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                        BAN%
+                                    </Typography>
+                                </div>
+                            </div>
                         </div>
 
                         <div className='rates-container'>

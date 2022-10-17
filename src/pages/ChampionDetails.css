@@ -35,19 +35,61 @@
     align-items: center;
 }
 
+.champ-tldr-roles {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.tldr-role-active {
+    opacity: 1 !important;
+}
+
+.champ-tldr-wrapper {
+    background-color: var(--blue500);
+    border-radius: 15px;
+    flex-wrap: wrap;
+    box-shadow: 0 12px 17px 2px rgb(0 0 0 / 14%), 0 5px 22px 4px rgb(0 0 0 / 12%), 0 7px 8px -4px rgb(0 0 0 / 20%);
+}
+
+.champ-tldr {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: var(--blue500);
+    /* padding: 20px 10px; */
+    border-radius: 15px;
+    flex-wrap: wrap;
+}
+
+.champ-tldr>div {
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
+    flex: 1 1 auto;
+    position: relative;
+    text-align: center;
+    padding: 10px;
+}
+
+.champ-tldr>div:last-child {
+    border-right: none;
+}
+
 .champ-details-container {
     top: -300px;
     position: relative;
     margin: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
 }
 
 .rates-container {
     display: flex;
     flex-wrap: wrap;
     gap: 25px 10px;
+    margin-top: 20px;
 }
 
 .ability-thumb-container {
