@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Hellix';
+    font-style: normal;
+    src: local('Hellix'), url("./assets/fonts/Hellix-Bold.woff") format('woff');
+    /* other formats include: 'woff2', 'truetype, 'opentype',
+                              'embedded-opentype', and 'svg' */
+}
+
+:root {
+    --blue900: #0f1923;
+    --blue800: #19364e;
+    --blue500: #2196f3;
+}

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import 'chartjs-adapter-moment';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -13,12 +15,14 @@ import {
     Tooltip,
     Legend,
     TimeScale,
+    ArcElement
 } from 'chart.js';
-import { Line } from 'react-chartjs-2';
+import { Doughnut, Line } from 'react-chartjs-2';
 
 import './ChampionDetails.css';
-import { chartColorList, getFloat, positionOrder } from '../utils';
+import { chartColorList, convertStatToAppearPie, convertStatToLineGraph, getFloat, positionOrder } from '../utils';
 import { DateTime } from 'luxon';
+import { Card } from '../components/Card';
 
 
 export function ChampionDetails({ }) {
@@ -31,8 +35,10 @@ export function ChampionDetails({ }) {
     const [champInfo, setChampInfo] = useState({});
     const [champStat, setChampStat] = useState({});
 
-    const [champPickData, setChampPickData] = useState({});
-    const [champPickOption, setChampPickOption] = useState([]);
+    const [champWinData, setChampWinData] = useState();
+    const [champPickData, setChampPickData] = useState();
+    const [champCurrPickData, setChampCurrPickData] = useState();
+    const [champBanData, setChampBanData] = useState();
 
     const [viewingAbility, setViewingAbility] = useState(0);
 
@@ -52,6 +58,8 @@ export function ChampionDetails({ }) {
             LinearScale,
             PointElement,
             LineElement,
+            ArcElement,
+            ChartDataLabels,
             Title,
             Tooltip,
             Legend,
@@ -68,50 +76,19 @@ export function ChampionDetails({ }) {
                 setChampInfo(champInfo);
                 setChampStat(champStat);
                 setIsLoading(false);
-                console.log(champStat);
-                const dataSet = {};
-                champStat.positionRanks.map(stat => {
-                    if (!dataSet[stat.updateDate]) {
-                        dataSet[stat.updateDate] = {};
-                    }
 
-                    dataSet[stat.updateDate] = { ...dataSet[stat.updateDate], [stat.position]: getFloat(stat.appear_rate) };
-                })
+                const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
+                const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
+                const currPickData = convertStatToAppearPie(champStat.positionRanks);
+                const banData = convertStatToLineGraph(champStat.positionRanks, 'forbid_rate')
 
-                console.log(dataSet)
+                setChampWinData(winData);
+                setChampPickData(pickData);
+                setChampCurrPickData(currPickData);
+                setChampBanData(banData);
+                // setChampPickOption(pickOptions);
 
-                const xData = Object.keys(dataSet).sort((a, b) => DateTime.fromISO(a).toMillis() - DateTime.fromISO(b).toMillis());
-                const pickOptions = xData.map(date => DateTime.fromISO(date, { zone: 'UTC+8' }).toFormat('d LLL y'))
-
-                // const sets = [];
-
-                const sets = positionOrder.flatMap((pos, i) => {
-                    let valid = false;
-                    const data = xData.map(x => {
-                        if (dataSet[x] && dataSet[x][pos]) {
-                            valid = true;
-                            return dataSet[x][pos] * 100;
-                        }
-                        return null;
-                    });
-
-                    console.log(chartColorList[i]);
-
-                    return valid ?
-                        {
-                            label: pos,
-                            data,
-                            borderColor: chartColorList[i],
-                            backgroundColor: chartColorList[i],
-                            lineTension: 0.5,
-                            spanGaps: true,
-                        } :
-                        [];
-                })
-                setChampPickData({ labels: pickOptions, datasets: sets });
-                setChampPickOption(pickOptions);
-
-                console.log(sets);
+                // console.log(sets);
 
                 // console.log({
                 //     champDetails,
@@ -131,14 +108,49 @@ export function ChampionDetails({ }) {
     const options =
     {
         responsive: true,
+        maintainAspectRatio: true,
+
+        aspectRatio: 4 / 3,
+        layout: {
+            padding: {
+                // left: 20,
+                // right: 10,
+                top:20,
+                // bottom: 10
+            }
+        },
         plugins: {
             legend: {
-                position: 'top',
+                position: 'bottom',
                 labels: {
                     color: () => '#fff',
                     usePointStyle: true,
                 }
             },
+            datalabels: {
+                display: 'auto',
+                align: -65,
+                // offset:10,
+                clamp: true,
+                backgroundColor: '#19364eaa',
+                color: '#fff',
+                borderRadius: 3,
+                formatter: function (value, ctx) {
+                    return (value).toFixed(1) + '%'; 
+                  },
+              },
+        },
+        autocolors: false,
+        annotation: {
+            annotations: {
+                line1: {
+                    type: 'line',
+                    yMin: 50,
+                    yMax: 50,
+                    borderColor: '#fff',
+                    borderWidth: 2,
+                }
+            }
         },
         scales: {
             x: {
@@ -157,9 +169,32 @@ export function ChampionDetails({ }) {
                     color: '#fff'
                 },
             }
-        }
-
+        },
     };
+
+    const pieOptions = {
+        responsive: true,
+        aspectRatio: 4 / 3,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: () => '#fff',
+                    usePointStyle: true,
+                }
+            },
+            datalabels: {
+                display: true,
+                align: 'center',
+                backgroundColor: '#19364eaa',
+                color: '#fff',
+                borderRadius: 3,
+                formatter: function (value, ctx) {
+                    return `${ctx.chart.data.labels[ctx.dataIndex]} ${(value).toFixed(1) + '%'}`;
+                  },
+              },
+        },
+    }
 
     return (
         <div >
@@ -186,14 +221,23 @@ export function ChampionDetails({ }) {
                             )}
                         </div>
 
-                        <div className='card'>
-                            {champPickOption.length > 0 && <Line options={options} data={champPickData} />}
+                        <div className='rates-container'>
+                            <Card title='Win Rate'>
+                                {!!champWinData && <Line options={options} data={champWinData} />}
+                            </Card>
+                            <Card title='Ban Rate'>
+                                {!!champBanData && <Line options={options} data={champBanData} />}
+                            </Card>
+                            <Card title='Popular Roles'>
+                                {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
+                            </Card>
+                            <Card title='Pick Rate'>
+                                {!!champPickData && <div className='chart-child'><Line options={options} data={champPickData} /></div>}
+                            </Card>
                         </div>
 
-                        <div className='card'>
-                            <Typography variant="h5" className='card-title' sx={{ fontWeight: 'bolder' }}>
-                                Abilities
-                            </Typography>
+
+                        <Card title='Abilities'>
                             <div className='abilities-wrapper'>
                                 <div className='ability-thumb-container'>
                                     {champDetails.abilities.map((ability, i) => {
@@ -222,7 +266,8 @@ export function ChampionDetails({ }) {
                                 </div>
                             </div>
 
-                        </div>
+                        </Card>
+
                     </div>
                 </>
                 : undefined

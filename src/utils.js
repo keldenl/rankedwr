@@ -119,3 +119,77 @@ export const chartColorList = [
     '#FF729F',
     '#D3C4D1'
 ]
+
+export const convertStatToLineGraph = (positionRanks, statToGet) => {
+    const dataSet = {};
+    positionRanks.map(stat => {
+        if (!dataSet[stat.updateDate]) {
+            dataSet[stat.updateDate] = {};
+        }
+
+        dataSet[stat.updateDate] = { ...dataSet[stat.updateDate], [stat.position]: getFloat(stat[statToGet]) };
+    })
+
+    const xData = Object.keys(dataSet).sort((a, b) => DateTime.fromISO(a).toMillis() - DateTime.fromISO(b).toMillis());
+    const pickOptions = xData.map(date => DateTime.fromISO(date, { zone: 'UTC+8' }).toFormat('d LLL y'))
+
+    const sets = positionOrder.flatMap((pos, i) => {
+        let valid = false;
+        const data = xData.map(x => {
+            if (dataSet[x] && dataSet[x][pos]) {
+                valid = true;
+                return dataSet[x][pos] * 100;
+            }
+            return null;
+        });
+
+        return valid ?
+            {
+                label: pos,
+                data,
+                borderColor: chartColorList[i],
+                backgroundColor: chartColorList[i],
+                lineTension: 0.5,
+                spanGaps: true,
+            } :
+            [];
+    })
+
+    return { labels: pickOptions, datasets: sets };
+}
+
+export const convertStatToAppearPie = (positionRanks) => {
+    const dataSet = {};
+    positionRanks.map(stat => {
+        if (!dataSet[stat.updateDate]) {
+            dataSet[stat.updateDate] = {};
+        }
+
+        dataSet[stat.updateDate] = { ...dataSet[stat.updateDate], [stat.position]: getFloat(stat['appear_rate']) };
+    })
+
+    const xData = Object.keys(dataSet).sort((a, b) => DateTime.fromISO(b).toMillis() - DateTime.fromISO(a).toMillis());
+    const appearData = dataSet[xData[0]];
+    const labels = Object.keys(appearData);
+    const data = Object.values(appearData).map(v => v * 100);
+    return {
+        labels,
+        datasets: [{
+            label: 'Pick ratio',
+            data,
+            backgroundColor: labels.map((l, i) => chartColorList[i+1]),
+            hoverOffset: 4
+        }]
+    }
+}
+
+// {
+//     label: 'My First Dataset',
+//     data: [300, 50, 100],
+//     backgroundColor: [
+//       'rgb(255, 99, 132)',
+//       'rgb(54, 162, 235)',
+//       'rgb(255, 205, 86)'
+//     ],
+//     hoverOffset: 4
+//   }

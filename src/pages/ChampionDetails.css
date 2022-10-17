@@ -1,4 +1,4 @@
-@import './FullTierList.css';
+@import '../globalVariables.css';
 .gold-border {
     /* golden game like border */
     border: 3px solid transparent;
@@ -10,19 +10,6 @@
 .gold-border.selected {
     background: linear-gradient(var(--blue900) 0 0) padding-box, /*this is your grey background*/
     linear-gradient(to bottom, #bbe1ff, var(--blue500)) border-box;
-}
-
-.card {
-    padding: 25px;
-    padding-top: 20px;
-    background-color: var(--blue900);
-    border-radius: 20px;
-}
-
-.card-title {
-    border-left: 3px solid var(--blue500);
-    padding-left: 10px;
-    margin-bottom: 15px;
 }
 
 .champ-avatar {
@@ -57,10 +44,16 @@
     gap: 10px;
 }
 
+.rates-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
 .ability-thumb-container {
     display: flex;
     gap: 20px;
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .ability-thumb-container>img {
