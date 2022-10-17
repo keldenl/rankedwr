@@ -108,3 +108,14 @@ export const statFieldConfig = {
     minWidth: 60,
     renderCell: renderProgress,
 }
+
+export const getFloat = (nd) => parseFloat(nd.$numberDecimal);
+
+export const chartColorList = [
+    '#2196F3', // all will never be used
+    '#2196F3',
+    '#ffffff',
+    '#81F4E1',
+    '#FF729F',
+    '#D3C4D1'
+]

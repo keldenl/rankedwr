@@ -30,7 +30,7 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AppsIcon from '@mui/icons-material/Apps';
 
 
-import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole } from '../utils';
+import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat } from '../utils';
 import logo from '../assets/ranked-icon.png';
 import './FullTierList.css';
 import { ConstructionOutlined } from '@mui/icons-material';
@@ -147,9 +147,6 @@ export function FullTierList() {
       setCurrPosition(newPosition);
     }
   };
-
-  const getFloat = (nd) => parseFloat(nd.$numberDecimal);
-
 
   useEffect(() => {
     if (!heroRankListLoaded || !heroDataLoaded || !heroRankList || !heroRankList.length) { return }
