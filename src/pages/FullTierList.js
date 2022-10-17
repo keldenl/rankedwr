@@ -30,7 +30,7 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AppsIcon from '@mui/icons-material/Apps';
 
 
-import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat } from '../utils';
+import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier } from '../utils';
 import logo from '../assets/ranked-icon.png';
 import './FullTierList.css';
 import { ConstructionOutlined } from '@mui/icons-material';
@@ -164,7 +164,7 @@ export function FullTierList() {
       const hero = heroData[hero_id];
       const { name, avatar } = hero;
 
-      const tier = (parseFloat(win) + ((parseFloat(win) * parseFloat(pick) / 5) + (parseFloat(win) * parseFloat(ban) / 5))) * 100
+      const tier = calculateTier(win, pick, ban)
 
       return ({
         id: wr._id,
@@ -233,7 +233,7 @@ export function FullTierList() {
         setHeroRankListLoaded(true);
 
         setPositionList([...positionOrder]);
-        setCurrPosition([...positionOrder][0]);
+        setCurrPosition([...positionOrder][1]);
         setLastUpdateDate(lastUpdateDate);
         document.title = `Wild Rift Tier List Stats (Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })

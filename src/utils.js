@@ -63,6 +63,9 @@ function binarySearch(arr, target, lo = 0, hi = arr.length - 1) {
                 : arr[mid]
 }
 
+export const calculateTier = (win, pick, ban) =>
+    (parseFloat(win) + ((parseFloat(win) * parseFloat(pick) / 5) + (parseFloat(win) * parseFloat(ban) / 5))) * 100
+
 const tiersByGrade = {
     58: 'S',
     54: 'A',
