@@ -171,13 +171,14 @@ export const convertStatToAppearPie = (positionRanks) => {
     const xData = Object.keys(dataSet).sort((a, b) => DateTime.fromISO(b).toMillis() - DateTime.fromISO(a).toMillis());
     const appearData = dataSet[xData[0]];
     const labels = Object.keys(appearData);
-    const data = Object.values(appearData).map(v => v * 100);
+    const totalPick = Object.values(appearData).reduce((prev, curr) => prev + curr);
+    const data = Object.values(appearData).map(v => (v / totalPick) * 100);
     return {
         labels,
         datasets: [{
             label: 'Pick ratio',
             data,
-            backgroundColor: labels.map((l, i) => chartColorList[i+1]),
+            backgroundColor: labels.map((l, i) => chartColorList[i + 1]),
             hoverOffset: 4
         }]
     }

@@ -19,10 +19,15 @@ import {
 } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
 
-import './ChampionDetails.css';
-import { chartColorList, convertStatToAppearPie, convertStatToLineGraph, getFloat, positionOrder } from '../utils';
-import { DateTime } from 'luxon';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
+
+import { convertStatToAppearPie, convertStatToLineGraph } from '../utils';
 import { Card } from '../components/Card';
+import './ChampionDetails.css';
 
 
 export function ChampionDetails({ }) {
@@ -90,11 +95,11 @@ export function ChampionDetails({ }) {
 
                 // console.log(sets);
 
-                // console.log({
-                //     champDetails,
-                //     champInfo,
-                //     champStat
-                // })
+                console.log({
+                    champDetails,
+                    champInfo,
+                    champStat
+                })
             })
             .catch((err) => {
                 setNotFound(true);
@@ -114,8 +119,8 @@ export function ChampionDetails({ }) {
         layout: {
             padding: {
                 // left: 20,
-                // right: 10,
-                top:20,
+                right: 30,
+                top: 20,
                 // bottom: 10
             }
         },
@@ -136,9 +141,9 @@ export function ChampionDetails({ }) {
                 color: '#fff',
                 borderRadius: 3,
                 formatter: function (value, ctx) {
-                    return (value).toFixed(1) + '%'; 
-                  },
-              },
+                    return (value).toFixed(1) + '%';
+                },
+            },
         },
         autocolors: false,
         annotation: {
@@ -191,9 +196,10 @@ export function ChampionDetails({ }) {
                 borderRadius: 3,
                 formatter: function (value, ctx) {
                     return `${ctx.chart.data.labels[ctx.dataIndex]} ${(value).toFixed(1) + '%'}`;
-                  },
-              },
+                },
+            },
         },
+        events: []
     }
 
     return (
@@ -222,22 +228,22 @@ export function ChampionDetails({ }) {
                         </div>
 
                         <div className='rates-container'>
-                            <Card title='Win Rate'>
+                            <Card title='Win Rate' Icon={EmojiEventsIcon}>
                                 {!!champWinData && <Line options={options} data={champWinData} />}
                             </Card>
-                            <Card title='Ban Rate'>
-                                {!!champBanData && <Line options={options} data={champBanData} />}
-                            </Card>
-                            <Card title='Popular Roles'>
+                            <Card title='Popular Roles' Icon={WhatshotIcon}>
                                 {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
                             </Card>
-                            <Card title='Pick Rate'>
+                            <Card title='Ban Rate' Icon={DoNotDisturbIcon}>
+                                {!!champBanData && <Line options={options} data={champBanData} />}
+                            </Card>
+                            <Card title='Pick Rate' Icon={PanToolAltIcon}>
                                 {!!champPickData && <div className='chart-child'><Line options={options} data={champPickData} /></div>}
                             </Card>
                         </div>
 
 
-                        <Card title='Abilities'>
+                        <Card title='Abilities' Icon={AutoFixHighIcon}>
                             <div className='abilities-wrapper'>
                                 <div className='ability-thumb-container'>
                                     {champDetails.abilities.map((ability, i) => {
