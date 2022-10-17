@@ -47,7 +47,7 @@
 .rates-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 25px 10px;
 }
 
 .ability-thumb-container {

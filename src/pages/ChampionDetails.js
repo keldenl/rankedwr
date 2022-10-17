@@ -25,7 +25,7 @@ import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
-import { convertStatToAppearPie, convertStatToLineGraph } from '../utils';
+import { convertStatToAppearPie, convertStatToLineGraph, lineOptions, pieOptions } from '../utils';
 import { Card } from '../components/Card';
 import './ChampionDetails.css';
 
@@ -110,98 +110,6 @@ export function ChampionDetails({ }) {
     }, [])
 
 
-    const options =
-    {
-        responsive: true,
-        maintainAspectRatio: true,
-
-        aspectRatio: 4 / 3,
-        layout: {
-            padding: {
-                // left: 20,
-                right: 30,
-                top: 20,
-                // bottom: 10
-            }
-        },
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    color: () => '#fff',
-                    usePointStyle: true,
-                }
-            },
-            datalabels: {
-                display: 'auto',
-                align: -65,
-                // offset:10,
-                clamp: true,
-                backgroundColor: '#19364eaa',
-                color: '#fff',
-                borderRadius: 3,
-                formatter: function (value, ctx) {
-                    return (value).toFixed(1) + '%';
-                },
-            },
-        },
-        autocolors: false,
-        annotation: {
-            annotations: {
-                line1: {
-                    type: 'line',
-                    yMin: 50,
-                    yMax: 50,
-                    borderColor: '#fff',
-                    borderWidth: 2,
-                }
-            }
-        },
-        scales: {
-            x: {
-                type: 'time',
-                display: true,
-                ticks: {
-                    color: () => '#fff'
-                },
-                time: {
-                    tooltipFormat: 'll',
-                }
-            },
-            y: {
-                ticks: {
-                    callback: (value, index, ticks) => `${value}%`,
-                    color: '#fff'
-                },
-            }
-        },
-    };
-
-    const pieOptions = {
-        responsive: true,
-        aspectRatio: 4 / 3,
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    color: () => '#fff',
-                    usePointStyle: true,
-                }
-            },
-            datalabels: {
-                display: true,
-                align: 'center',
-                backgroundColor: '#19364eaa',
-                color: '#fff',
-                borderRadius: 3,
-                formatter: function (value, ctx) {
-                    return `${ctx.chart.data.labels[ctx.dataIndex]} ${(value).toFixed(1) + '%'}`;
-                },
-            },
-        },
-        events: []
-    }
-
     return (
         <div >
             {!isLoading ?
@@ -219,6 +127,11 @@ export function ChampionDetails({ }) {
                                 {champDetails.subtitle}
                             </Typography>
                         </div>
+
+                        <div className='champ-tldr'>
+                            <div></div>
+
+                        </div>
                         <div className='champ-roles'>
                             {champInfo.engRoles.map(r =>
                                 <Typography key={r} variant="p" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
@@ -229,16 +142,16 @@ export function ChampionDetails({ }) {
 
                         <div className='rates-container'>
                             <Card title='Win Rate' Icon={EmojiEventsIcon}>
-                                {!!champWinData && <Line options={options} data={champWinData} />}
+                                {!!champWinData && <Line options={lineOptions} data={champWinData} />}
                             </Card>
                             <Card title='Popular Roles' Icon={WhatshotIcon}>
                                 {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
                             </Card>
                             <Card title='Ban Rate' Icon={DoNotDisturbIcon}>
-                                {!!champBanData && <Line options={options} data={champBanData} />}
+                                {!!champBanData && <Line options={lineOptions} data={champBanData} />}
                             </Card>
                             <Card title='Pick Rate' Icon={PanToolAltIcon}>
-                                {!!champPickData && <div className='chart-child'><Line options={options} data={champPickData} /></div>}
+                                {!!champPickData && <div className='chart-child'><Line options={lineOptions} data={champPickData} /></div>}
                             </Card>
                         </div>
 

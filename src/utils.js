@@ -184,13 +184,84 @@ export const convertStatToAppearPie = (positionRanks) => {
     }
 }
 
-// {
-//     label: 'My First Dataset',
-//     data: [300, 50, 100],
-//     backgroundColor: [
-//       'rgb(255, 99, 132)',
-//       'rgb(54, 162, 235)',
-//       'rgb(255, 205, 86)'
-//     ],
-//     hoverOffset: 4
-//   }
+const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 4 / 3,
+    autocolors: false,
+
+    plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                color: () => '#fff',
+                usePointStyle: true,
+            }
+        },
+        datalabels: {
+            display: 'auto',
+            align: -65,
+            // offset:10,
+            clamp: true,
+            backgroundColor: '#19364eaa',
+            color: '#fff',
+            borderRadius: 3,
+            formatter: function (value, ctx) {
+                return Number((value).toFixed(1)) + '%';
+            },
+        },
+    },
+}
+
+export const lineOptions =
+{
+    ...commonOptions,
+    layout: {
+        padding: {
+            right: 30,
+            top: 20,
+        }
+    },
+    scales: {
+        x: {
+            type: 'time',
+            display: true,
+            ticks: {
+                color: () => '#fff'
+            },
+            time: {
+                tooltipFormat: 'll',
+            }
+        },
+        y: {
+            ticks: {
+                callback: (value, index, ticks) => Number((value).toFixed(1)) + '%',
+                color: '#fff'
+            },
+        }
+    },
+};
+
+export const pieOptions = {
+    ...commonOptions,
+    plugins: {
+        legend: {
+            position: 'bottom',
+            labels: {
+                color: () => '#fff',
+                usePointStyle: true,
+            }
+        },
+        datalabels: {
+            display: true,
+            align: 'center',
+            backgroundColor: '#19364eaa',
+            color: '#fff',
+            borderRadius: 3,
+            formatter: function (value, ctx) {
+                return `${ctx.chart.data.labels[ctx.dataIndex]} ${(value).toFixed(1) + '%'}`;
+            },
+        },
+    },
+    events: []
+}
