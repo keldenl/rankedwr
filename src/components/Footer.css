@@ -1,0 +1,6 @@
+@import '../globalVariables.css';
+.footer {
+    background-color: var(--blue900);
+    padding: 15px 0;
+    align-self: stretch;
+}

@@ -28,6 +28,8 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../utils';
 import { Card } from '../components/Card';
 import './ChampionDetails.css';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 
 export function ChampionDetails({ }) {
@@ -156,7 +158,8 @@ export function ChampionDetails({ }) {
 
 
     return (
-        <div >
+        <div>
+            <Navbar />
             {!isLoading ?
                 <>
                     <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
@@ -234,23 +237,28 @@ export function ChampionDetails({ }) {
                         </div>
 
                         <div className='rates-container'>
-                            <Card title='Win Rate' Icon={EmojiEventsIcon}>
+                            <Card title='Win Rate' Icon={EmojiEventsIcon} color='gold'>
                                 {!!champWinData && <Line options={lineOptions} data={champWinData} />}
                             </Card>
-                            <Card title='Popular Roles' Icon={WhatshotIcon}>
+                            <Card title='Popular Roles' Icon={WhatshotIcon} color='orangered'>
                                 {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
                             </Card>
-                            <Card title='Ban Rate' Icon={DoNotDisturbIcon}>
+                            <Card title='Ban Rate' Icon={DoNotDisturbIcon} color='red'>
                                 {!!champBanData && <Line options={lineOptions} data={champBanData} />}
                             </Card>
-                            <Card title='Pick Rate' Icon={PanToolAltIcon}>
+                            <Card title='Pick Rate' Icon={PanToolAltIcon} color='lightskyblue'>
                                 {!!champPickData && <div className='chart-child'><Line options={lineOptions} data={champPickData} /></div>}
                             </Card>
                         </div>
 
 
-                        <Card title='Abilities' Icon={AutoFixHighIcon}>
+                        <Card title='Abilities' Icon={AutoFixHighIcon} color='primary.main'>
+
                             <div className='abilities-wrapper'>
+
+                                <video key={viewingAbility} className='ability-vid' preload="yes" autoPlay muted loop playsInline>
+                                    <source src={champDetails.abilities[viewingAbility].videos[0].video.file.url} type="video/mp4" />
+                                </video>
                                 <div className='ability-thumb-container'>
                                     {champDetails.abilities.map((ability, i) => {
                                         const { thumbnail, title } = ability;
@@ -265,6 +273,7 @@ export function ChampionDetails({ }) {
                                         )
                                     })}
                                 </div>
+
                                 <div className='ability-curr-container'>
                                     <Typography variant="subtitle2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
                                         {abilityTypeToName(champDetails.abilities[viewingAbility].type)}
@@ -289,6 +298,7 @@ export function ChampionDetails({ }) {
                     <p>Champion Not Found</p>
                 </div>
                 : undefined}
+            <Footer />
         </div>
     )
 }

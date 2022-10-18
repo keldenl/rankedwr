@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import './Card.css'
 
 
-export function Card({ Icon, title, children }) {
+export function Card({ Icon, color, title, children }) {
     const childrenArray = Children.toArray(children)
     const isCarousal = childrenArray.length > 1;
 
@@ -13,9 +13,9 @@ export function Card({ Icon, title, children }) {
                 fontWeight: 'bolder',
                 display: 'flex',
                 alignItems: 'center',
-                gap: 1/2
+                gap: 1 / 2
             }}>
-                <Icon />{title.toUpperCase()}
+                <Icon sx={{ color: color || 'white' }} />{title.toUpperCase()}
             </Typography>
             <div className={`${isCarousal ? 'carousal' : ''}`}>
                 {childrenArray.map(c =>

@@ -28,32 +28,6 @@
     font-weight: bold;
 }
 
-.nav-bar-title-container {
-    text-align: center;
-    max-height: 20px;
-    margin: auto;
-    font-family: Hellix !important;
-    display: flex;
-    align-content: center;
-    align-items: center;
-    gap: 3px;
-}
-
-.nav-bar-title {
-    font-family: Hellix !important;
-}
-
-.nav-bar-title-container>img {
-    max-height: 13px;
-    margin-top: 4px;
-}
-
-.footer {
-    background-color: var(--blue900);
-    padding: 15px 0;
-    align-self: stretch;
-}
-
 
 /* Trick */
 
@@ -185,7 +159,7 @@
 
 .MuiDataGrid-columnHeader,
 .MuiDataGrid-cell {
-    padding: 0 5px!important;
+    padding: 0 5px !important;
 }
 
 .even-row,
@@ -263,7 +237,7 @@ img.avatar-img {
     height: 20px;
     /* filter: brightness(0.3); */
     /* TODO: Make this scalable to dark mode */
-    background-size: cover!important;
+    background-size: cover !important;
 }
 
 .Mui-selected .position-icon {

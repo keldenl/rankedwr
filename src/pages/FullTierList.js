@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import ReactGA from "react-ga4";
 import { DateTime } from 'luxon';
 import CookieConsent from "react-cookie-consent";
@@ -6,8 +8,7 @@ import preval from 'preval.macro'
 
 
 import { blue } from '@mui/material/colors';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
+
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LinearProgress, Link, TextField } from '@mui/material';
@@ -18,7 +19,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CloseIcon from '@mui/icons-material/Close';
-import TwitterIcon from '@mui/icons-material/Twitter';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 
@@ -31,11 +31,13 @@ import AppsIcon from '@mui/icons-material/Apps';
 
 
 import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier } from '../utils';
-import logo from '../assets/ranked-icon.png';
 import './FullTierList.css';
-import { ConstructionOutlined } from '@mui/icons-material';
+import { Navbar } from '../components/Navbar';
+import { Footer } from '../components/Footer';
 
 export function FullTierList() {
+  let navigate = useNavigate();
+
   const [showBanner, setShowBanner] = useState(true);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -261,26 +263,7 @@ export function FullTierList() {
 
   return (
     <div className="App">
-      <AppBar position="static" sx={{ bgcolor: 'primary.main' }}>
-        <Toolbar variant="dense">
-          <div className='nav-bar-title-container'>
-            <img src={logo} alt='RankedWR' />
-            <Typography
-              variant="h5"
-              className='nav-bar-title-container'
-            >
-              rankedwr
-            </Typography>
-          </div>
-          {/* <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={'test'} sx={{ color: '#fff' }}>
-                test
-              </Button>
-            ))}
-          </Box> */}
-        </Toolbar>
-      </AppBar>
+      <Navbar />
       <Modal
         open={open}
         onClose={handleClose}
@@ -446,8 +429,11 @@ export function FullTierList() {
                 )
               }
             }}
-            onSelectionModelChange={(newSelectionModel) => {
+            onSelectionModelChange={(ids, details) => {
               // console.log(newSelectionModel);
+              const item = ids.map((id) => rows.find((row) => row.id === id))[0];
+              const urlFriendlyName = item.name.split(' ').join('-');
+              !!navigate && navigate(`/champion/${urlFriendlyName}`)
             }}
             onSortModelChange={(sortColumn) => {
               // Sorts go from asc -> desc -> none
@@ -470,12 +456,7 @@ export function FullTierList() {
           />
         </div>
       </div>
-
-
-      <div className='footer'>
-        <p>All data sourced from Riot's Official Wild Rift <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>CN Dia+ Statistics</Link></p>
-        <p>Built by <Link target='__blank' href='https://twitter.com/RepotedWR'><TwitterIcon fontSize={'10px'} />RepotedWR</Link> © {DateTime.now().year}</p>
-      </div>
-    </div >
+      <Footer />
+    </div>
   )
 }

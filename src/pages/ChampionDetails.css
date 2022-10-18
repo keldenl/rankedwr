@@ -18,15 +18,24 @@
     height: 150px;
 }
 
-.champ-turn {
+.champ-turn,
+.ability-vid {
     width: 100%;
     max-height: 450px;
     min-height: 300px;
     object-fit: cover;
     object-position: top;
-    filter: brightness(0.5);
     -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+}
+
+.champ-turn {
+    filter: brightness(0.5);
+}
+
+.ability-vid {
+    border-radius: 15px;
+    aspect-ratio: 2;
 }
 
 .champ-header {
@@ -77,9 +86,10 @@
 }
 
 .champ-details-container {
-    top: -300px;
-    position: relative;
     margin: auto;
+    top: -300px;
+    margin-bottom: -220px;
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 25px;
