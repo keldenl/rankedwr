@@ -268,3 +268,5 @@ export const pieOptions = {
     },
     events: []
 }
+
+export const getUrlFriendlyName = (name) => name.split(' ').join('-');

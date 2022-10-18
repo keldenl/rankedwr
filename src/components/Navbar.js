@@ -8,11 +8,10 @@ import './Navbar.css'
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
-export function Navbar({ hasBg = true }) {
+export function Navbar({ hasIcon = true, hasBg = true }) {
     const navigate = useNavigate();
     const { pathname } = useLocation();
     const navItems = [
-        // { title: 'Home', url: '/' },
         { title: 'Champions', url: '/champions' },
         { title: 'Tier List', url: '/tier-list' },
     ]
@@ -20,8 +19,8 @@ export function Navbar({ hasBg = true }) {
 
     return (
         <div className='navbar-bg' style={!hasBg ? { backgroundColor: 'transparent' } : {}}>
-            <div className='navbar-container' >
-                <div className='navbar-title-container' onClick={() => navigate('/')}>
+            <div className='navbar-container' style={!hasIcon ? { justifyContent: 'flex-end' } : {}}>
+                {hasIcon ? <div className='navbar-title-container' onClick={() => navigate('/')}>
                     <img src={logo} alt='RankedWR' />
                     <Typography
                         variant="h5"
@@ -29,7 +28,7 @@ export function Navbar({ hasBg = true }) {
                     >
                         rankedwr
                     </Typography>
-                </div>
+                </div> : undefined}
                 <div className='navbar-items-container'>
                     {navItems.map(item =>
                         <Button key={item.title} onClick={() => navigate(item.url)} sx={{ color: 'white' }}>

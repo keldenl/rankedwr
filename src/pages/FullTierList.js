@@ -30,7 +30,7 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AppsIcon from '@mui/icons-material/Apps';
 
 
-import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier } from '../utils';
+import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier, getUrlFriendlyName } from '../utils';
 import './FullTierList.css';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -112,7 +112,7 @@ export function FullTierList() {
           <span className='avatar-img-container'>
             <img className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} />
           </span>
-          <Typography variant="p" sx={{fontWeight: 'bolder'}}>
+          <Typography variant="p" sx={{ fontWeight: 'bolder' }}>
             {params.row.name}
           </Typography>
         </div>
@@ -434,8 +434,7 @@ export function FullTierList() {
             onSelectionModelChange={(ids, details) => {
               // console.log(newSelectionModel);
               const item = ids.map((id) => rows.find((row) => row.id === id))[0];
-              const urlFriendlyName = item.name.split(' ').join('-');
-              !!navigate && navigate(`/champion/${urlFriendlyName}`)
+              !!navigate && navigate(`/champion/${getUrlFriendlyName(item.name)}`)
             }}
             onSortModelChange={(sortColumn) => {
               // Sorts go from asc -> desc -> none

@@ -5,6 +5,7 @@ import {
     Routes,
     Route,
 } from "react-router-dom";
+import { Home } from './pages/Home';
 import { FullTierList } from './pages/FullTierList';
 import { ChampionDetails } from './pages/ChampionDetails';
 
@@ -15,6 +16,10 @@ function App() {
             <div>
                 {/* <Navbar /> */}
                 <Routes>
+                    <Route
+                        path="/"
+                        element={<Home />}
+                    />
                     <Route
                         path="/tier-list"
                         element={<FullTierList />}
