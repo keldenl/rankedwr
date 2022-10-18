@@ -1,7 +1,9 @@
 @import '../globalVariables.css';
 .footer {
     background-color: var(--blue900);
-    padding: 15px 0;
+    padding: 15px;
+    text-align: center;
+    gap: 5px;
     align-self: stretch;
     display: flex;
     flex-direction: column;
