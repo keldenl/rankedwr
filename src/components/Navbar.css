@@ -1,20 +1,41 @@
 @import '../globalVariables.css';
-.nav-bar-title-container {
-    text-align: center;
-    max-height: 20px;
+.navbar-bg {
+    background-color: var(--blue500);
+    width: 100%;
+}
+
+.navbar-container {
+    max-width: 750px;
+    padding: 5px 20px;
+    align-items: center;
+    display: flex;
     margin: auto;
+    justify-content: space-between;
+}
+
+.navbar-title-container {
     font-family: Hellix !important;
     display: flex;
-    align-content: center;
     align-items: center;
     gap: 3px;
+    cursor: pointer;
 }
 
-.nav-bar-title {
+.navbar-title {
     font-family: Hellix !important;
 }
 
-.nav-bar-title-container>img {
+.navbar-title-container>img {
     max-height: 13px;
     margin-top: 4px;
+}
+
+.navbar-item {
+    font-weight: bolder;
+    text-transform: initial;
+    opacity: 0.6;
+}
+
+.navbar-item.active {
+    opacity: 1;
 }
