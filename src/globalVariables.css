@@ -11,3 +11,16 @@
     --blue800: #19364e;
     --blue500: #2196f3;
 }
+
+.gold-border {
+    /* golden game like border */
+    border: 3px solid transparent;
+    background: linear-gradient(var(--blue900) 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(to bottom, #dbc69c, #4d4229) border-box;
+    border-radius: 100%;
+}
+
+.gold-border.selected {
+    background: linear-gradient(var(--blue900) 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(to bottom, #bbe1ff, var(--blue500)) border-box;
+}

@@ -295,7 +295,9 @@ export function ChampionDetails({ }) {
             }
             {notFound ?
                 <div>
-                    <p>Champion Not Found</p>
+                    <Typography variant="p">
+                        Champion Not Found
+                    </Typography>
                 </div>
                 : undefined}
             <Footer />

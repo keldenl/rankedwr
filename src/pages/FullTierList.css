@@ -199,9 +199,8 @@
 
 .tier-table-footer {
     text-align: center;
-    margin: 0 10px;
     color: #aaa;
-    font-size: 0.8em;
+    padding: 10px;
 }
 
 .champion-container {
@@ -221,14 +220,15 @@
     width: 35px;
     height: 35px;
     background: #19364e;
-    border-radius: 10px;
+    border-radius: 100%;
 }
 
 img.avatar-img {
     width: 35px;
     height: 35px;
-    border-radius: 10px;
+    /* border-radius: 10px; */
     position: relative;
+    border-width: 2px;
 }
 
 .position-icon {

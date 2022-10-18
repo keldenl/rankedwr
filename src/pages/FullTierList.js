@@ -110,9 +110,11 @@ export function FullTierList() {
       renderCell: (params) => (
         <div className='champion-container'>
           <span className='avatar-img-container'>
-            <img className={'avatar-img'} src={params.row.avatar} alt={params.row.name} />
+            <img className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} />
           </span>
-          <p>{params.row.name}</p>
+          <Typography variant="p" sx={{fontWeight: 'bolder'}}>
+            {params.row.name}
+          </Typography>
         </div>
       ),
       renderHeader: mobileHeader(PersonIcon, 'Champion'),
@@ -422,9 +424,9 @@ export function FullTierList() {
               Footer: () => {
                 return (
                   <div className='tier-table-footer'>
-                    <p>
+                    <Typography variant="caption">
                       *= Tier is not provided by Riot. It is calculated by us based on the official win% / pick% / ban%
-                    </p>
+                    </Typography>
                   </div>
                 )
               }
