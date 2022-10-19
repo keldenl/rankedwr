@@ -11,11 +11,13 @@ import { ChampionDetails } from './pages/ChampionDetails';
 import { Champions } from './pages/Champions';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 
 function App() {
     return (
         <Router>
+            <ScrollToTop />
             <div>
                 <Navbar />
                 <Routes>

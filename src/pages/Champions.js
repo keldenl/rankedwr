@@ -1,15 +1,17 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { getUrlFriendlyName } from '../utils';
 
 import "./Champions.css"
 
 export function Champions({ }) {
+    const navigate = useNavigate()
+
     const [heroData, setHeroData] = useState([]);
     const [heroDataLoaded, setHeroDataLoaded] = useState(false);
 
     const bgImageFade = 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(20,20,20,1) 90%,rgba(20,20,20,1) 100%)'
-
-
 
     useEffect(() => {
         const fetchHeroes = fetch('http://localhost:5001/champion/')
@@ -30,7 +32,6 @@ export function Champions({ }) {
                 setHeroData(heroData)
                 setHeroDataLoaded(true)
             })
-
         Promise.all([fetchHeroes])
     }, [])
 
@@ -50,7 +51,7 @@ export function Champions({ }) {
                 <div className='champions-container'>
                     {heroDataLoaded && heroData.map(hero => {
                         return (
-                            <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
+                            <div key={hero.name} onClick={() => navigate(`/champion/${getUrlFriendlyName(hero.name)}`)} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
                                 <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
                             </div>
                         )
