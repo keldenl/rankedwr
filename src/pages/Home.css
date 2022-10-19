@@ -23,15 +23,10 @@
     flex: 1 1 auto;
 }
 
-.home-title {
-    margin-top: -60px;
-    margin-bottom: 10px;
-}
-
 .home-items>.navbar-title-container {
     gap: 6px;
-    margin-bottom: 10px;
-    margin-top: -70px;
+    margin-bottom: 20px;
+    margin-top: -80px;
 }
 
 .home-items>.navbar-title-container>img {

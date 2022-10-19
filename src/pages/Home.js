@@ -67,7 +67,6 @@ export function Home() {
                 <Autocomplete
                     disablePortal
                     autoFocus
-
                     disableClearable
                     popupIcon={""}
                     disabled={!heroDataLoaded}
@@ -78,7 +77,7 @@ export function Home() {
 
                     id="combo-box-demo"
                     options={heroData}
-                    sx={{ width: 300, borderRadius: 15 }}
+                    sx={{ width: '80%', maxWidth: 500, borderRadius: 15 }}
                     renderInput={(params) =>
                         <TextField
                             {...params}
