@@ -98,6 +98,7 @@
 
 .ability-thumb-container>img {
     max-width: 60px;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 540px) {
