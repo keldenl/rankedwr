@@ -2,38 +2,11 @@ import { DateTime } from "luxon"
 import clsx from 'clsx';
 import { renderProgress } from "./renderProgress";
 
-const championNameRemap = {
-    'Monkey King': 'Wukong'
-}
-
-export const getNameFromHero = (hero) => {
-    const urlSplit = hero.poster.split('/')
-    const nameWithNum = urlSplit[urlSplit.length - 1]
-    const nameNoSpaces = nameWithNum.split('_')[0];
-    const name = nameNoSpaces.replace(/([A-Z]+)/g, ' $1').trim();
-    return championNameRemap[name] ?? name;
-}
-
-export const positionIdToName = {
-    1: 'mid',
-    2: 'solo',
-    3: 'duo',
-    4: 'support',
-    5: 'jungle'
-}
-
-export const positionNametoId = {
-    mid: 1,
-    solo: 2,
-    duo: 3,
-    support: 4,
-    jungle: 5
-}
-
 export const positionOrder = ['all', 'solo', 'jungle', 'mid', 'duo', 'support']
 
 const patchDates = [
     { ver: '3.5', date: DateTime.fromISO('20221117') },
+    { ver: '3.4b', date: DateTime.fromISO('20221019') },
     { ver: '3.4a', date: DateTime.fromISO('20220928') },
     { ver: '3.4', date: DateTime.fromISO('20220915') },
     { ver: '3.3', date: DateTime.fromISO('20220714') },
@@ -74,8 +47,8 @@ const tiersByGrade = {
     46: 'D',
     40: 'F'
 }
-const tiersCutoffs = Object.keys(tiersByGrade);
 
+const tiersCutoffs = Object.keys(tiersByGrade);
 export const getTier = (grade) => {
     return tiersByGrade[binarySearch(tiersCutoffs, grade)];
 }
@@ -115,7 +88,7 @@ export const statFieldConfig = {
 export const getFloat = (nd) => parseFloat(nd.$numberDecimal);
 
 export const chartColorList = [
-    '#2196F3', // all will never be used
+    '#2196F3', // "all" role will never be used
     '#2196F3',
     '#ffffff',
     '#81F4E1',
