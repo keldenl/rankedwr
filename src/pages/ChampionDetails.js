@@ -25,11 +25,10 @@ import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
+import { BASE_URL } from '../api';
 import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../utils';
 import { Card } from '../components/Card';
 import './ChampionDetails.css';
-import { Navbar } from '../components/Navbar';
-import { Footer } from '../components/Footer';
 
 
 export function ChampionDetails({ }) {
@@ -74,7 +73,7 @@ export function ChampionDetails({ }) {
             Legend,
         );
 
-        const fetchChampData = fetch(`http://localhost:5001/champion/${championName}`)
+        const fetchChampData = fetch(`${BASE_URL}/champion/${championName}`)
             .then((res) => {
                 if (res.ok) return res.json()
                 throw new Error('Network response was not ok.')
@@ -94,8 +93,6 @@ export function ChampionDetails({ }) {
                 setChampPickData(pickData);
                 setChampCurrPickData(currPickData);
                 setChampBanData(banData);
-                // setChampPickOption(pickOptions);
-                console.log(lastChecked)
 
                 const dupedLatestStats = champStat.positionRanks.filter(r => r.dtstatdate === lastChecked.updateDate)
                 const latestStats =
@@ -113,35 +110,16 @@ export function ChampionDetails({ }) {
                         position
                     } = ls
 
-                    // console.log({
-                    //     win_bzc: winRank,
-                    //     appear_bzc: pickRank,
-                    //     forbid_bzc: banRank,
-                    //     win_rate,
-                    //     appear_rate,
-                    //     forbid_rate,
-                    // })
-
                     const winR = `${Number((getFloat(win_rate) * 100).toFixed(2))}%`
                     const pickR = `${Number((getFloat(appear_rate) * 100).toFixed(2))}%`
                     const banR = `${Number((getFloat(forbid_rate) * 100).toFixed(2))}%`
                     const tier = getTier(calculateTier(getFloat(win_rate), getFloat(appear_rate), getFloat(forbid_rate)));
 
-                    // console.log(tier)
                     return { tier, winR, pickR, banR, winRank, pickRank, banRank, position }
                 })
 
-                console.log(newTldr[0]);
-
                 setChampTldr(newTldr);
-                console.log({
-                    champDetails,
-                    champInfo,
-                    champStat
-                })
-
                 setIsLoading(false);
-
             })
             .catch((err) => {
                 setNotFound(true);
@@ -152,7 +130,7 @@ export function ChampionDetails({ }) {
 
 
     return (
-        <div>
+        <div style={{ overflow: 'hidden' }}>
             {!isLoading ?
                 <>
                     <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
@@ -176,6 +154,7 @@ export function ChampionDetails({ }) {
                                 </Typography>
                                 {champTldr.map((ct, i) =>
                                     <Typography
+                                        key={ct.position}
                                         variant="button"
                                         sx={{ fontWeight: 'bolder', opacity: 0.4, transition: '0.2s opacity ease-in-out' }}
                                         className={`${i === selectedChampTldr ? 'tldr-role-active' : ''}`}
@@ -246,9 +225,7 @@ export function ChampionDetails({ }) {
 
 
                         <Card title='Abilities' Icon={AutoFixHighIcon} color='primary.main'>
-
                             <div className='abilities-wrapper'>
-
                                 <video key={viewingAbility} className='ability-vid' preload="yes" autoPlay muted loop playsInline>
                                     <source src={champDetails.abilities[viewingAbility].videos[0].video.file.url} type="video/mp4" />
                                 </video>

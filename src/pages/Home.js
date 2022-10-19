@@ -1,13 +1,11 @@
-import { Autocomplete, Paper, TextField, Typography } from "@mui/material";
+import { Autocomplete, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Footer } from "../components/Footer";
-import { Navbar } from "../components/Navbar";
+
+import { BASE_URL } from "../api";
 import { getUrlFriendlyName } from "../utils";
 import logo from '../assets/ranked-icon.png';
-
-
 
 import './Home.css'
 
@@ -27,7 +25,7 @@ export function Home() {
             setBgSrc(currBgMobile);
         }
 
-        const fetchHeroes = fetch('http://localhost:5001/champion/')
+        const fetchHeroes = fetch(`${BASE_URL}/champion/`)
             .then((res) => {
                 if (res.ok) return res.json()
                 throw new Error('Network response was not ok.')
@@ -39,8 +37,6 @@ export function Home() {
                         avatar: hero.avatar
                     }
                 })
-                console.log(heroData)
-
                 setHeroData(heroData)
                 setHeroDataLoaded(true)
             })

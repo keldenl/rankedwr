@@ -30,6 +30,7 @@ import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConf
 import './FullTierList.css';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { BASE_URL } from '../api';
 
 export function FullTierList() {
   let navigate = useNavigate();
@@ -105,7 +106,6 @@ export function FullTierList() {
         </div>
       ),
       renderHeader: mobileHeader(PersonIcon, 'Champion'),
-      onColumnHeaderClick: () => console.log('hi!')
     },
     {
       field: 'tier',
@@ -142,7 +142,6 @@ export function FullTierList() {
   useEffect(() => {
     if (!heroRankListLoaded || !heroDataLoaded || !heroRankList || !heroRankList.length) { return }
     let rank = 0;
-    // console.log(heroRankList)
     const newRows = heroRankList.flatMap(wr => {
       if (currPosition !== positionOrder[0] && currPosition !== wr.position) {
         return [];
@@ -184,7 +183,7 @@ export function FullTierList() {
       handleAcceptCookie()
     }
 
-    const fetchHeroes = fetch('http://localhost:5001/champion/')
+    const fetchHeroes = fetch(`${BASE_URL}/champion/`)
       .then((res) => {
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
@@ -201,9 +200,8 @@ export function FullTierList() {
         setHeroDataLoaded(true)
       })
 
-    const fetchRankedList = fetch('http://localhost:5001/rank/getCurrentList')
+    const fetchRankedList = fetch(`${BASE_URL}/rank/getCurrentList`)
       .then((res) => {
-        console.log(res)
         if (res.ok) return res.json()
         throw new Error('Network response was not ok.')
       })
@@ -334,7 +332,6 @@ export function FullTierList() {
               }
             }}
             onSelectionModelChange={(ids, details) => {
-              // console.log(newSelectionModel);
               const item = ids.map((id) => rows.find((row) => row.id === id))[0];
               !!navigate && navigate(`/champion/${getUrlFriendlyName(item.name)}`)
             }}

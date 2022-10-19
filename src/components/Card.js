@@ -18,8 +18,8 @@ export function Card({ Icon, color, title, children }) {
                 <Icon sx={{ color: color || 'white' }} />{title.toUpperCase()}
             </Typography>
             <div className={`${isCarousal ? 'carousal' : ''}`}>
-                {childrenArray.map(c =>
-                    <div className={`card ${isCarousal ? 'carousal-child' : ''}`}>
+                {childrenArray.map((c, i) =>
+                    <div key={i} className={`card ${isCarousal ? 'carousal-child' : ''}`}>
                         {c}
                     </div>
                 )}

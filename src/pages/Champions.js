@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../api';
 import { getUrlFriendlyName } from '../utils';
 
 import "./Champions.css"
@@ -14,7 +15,7 @@ export function Champions({ }) {
     const bgImageFade = 'linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(20,20,20,1) 90%,rgba(20,20,20,1) 100%)'
 
     useEffect(() => {
-        const fetchHeroes = fetch('http://localhost:5001/champion/')
+        const fetchHeroes = fetch(`${BASE_URL}/champion/`)
             .then((res) => {
                 if (res.ok) return res.json()
                 throw new Error('Network response was not ok.')
@@ -28,7 +29,6 @@ export function Champions({ }) {
                 })
 
                 heroData.sort((a, b) => a.name.localeCompare(b.name))
-                // console.log(newData);
                 setHeroData(heroData)
                 setHeroDataLoaded(true)
             })
