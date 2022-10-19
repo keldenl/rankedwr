@@ -37,10 +37,6 @@
     align-items: center;
 }
 
-.footer {
-    margin-top: auto;
-}
-
 .tier-page-wrapper {
     width: 100%;
     padding: 20px;
@@ -250,6 +246,5 @@ img.avatar-img {
     .avatar-img-container {
         width: 25px;
         height: 25px;
-        border-radius: 5px;
     }
 }

@@ -103,6 +103,7 @@
 @media only screen and (max-width: 540px) {
     .champ-details-container {
         top: -225px;
+        margin-bottom: -90px;
     }
     .ability-thumb-container {
         gap: 5px;
