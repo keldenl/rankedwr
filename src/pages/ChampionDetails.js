@@ -153,7 +153,6 @@ export function ChampionDetails({ }) {
 
     return (
         <div>
-            <Navbar />
             {!isLoading ?
                 <>
                     <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
@@ -300,7 +299,6 @@ export function ChampionDetails({ }) {
                     </Typography>
                 </div>
                 : undefined}
-            <Footer />
         </div>
     )
 }

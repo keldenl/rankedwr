@@ -53,7 +53,6 @@ export function Home() {
             <video key={bgSrc} className='home-bg' preload="yes" autoPlay muted loop playsInline>
                 <source src={bgSrc} type="video/mp4" />
             </video>
-            <Navbar hasBg={false} hasIcon={false} />
             <div className='home-items'>
                 <div className='navbar-title-container' onClick={() => navigate('/')}>
                     <img src={logo} alt='RankedWR' />
@@ -123,7 +122,6 @@ export function Home() {
                     )}
                 />
             </div>
-            <Footer />
         </div>
     )
 }

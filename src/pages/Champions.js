@@ -1,7 +1,5 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Footer } from '../components/Footer';
-import { Navbar } from '../components/Navbar';
 
 import "./Champions.css"
 
@@ -27,6 +25,8 @@ export function Champions({ }) {
                     }
                 })
 
+                heroData.sort((a, b) => a.name.localeCompare(b.name))
+                // console.log(newData);
                 setHeroData(heroData)
                 setHeroDataLoaded(true)
             })
@@ -36,17 +36,27 @@ export function Champions({ }) {
 
     return (
         <div>
-            <Navbar />
-            <div className='champions-container tier-page-wrapper'>
-                {heroDataLoaded && heroData.map(hero => {
-                    return (
-                        <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
-                            <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
-                        </div>
-                    )
-                })}
+            <div className="tier-page-wrapper">
+                <Typography variant="h5">
+                    Wild Rift <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Champions </span>
+                </Typography>
+
+                <Typography
+                    variant="subtitle2"
+                    sx={{ opacity: 0.8, mt: 1, mb: 2 }}
+                >
+                    List of Champions that currently exist in Wild Rift. Click on champion cards to view their latest rankings, their historical statistical trends, and abilities descriptions.
+                </Typography>
+                <div className='champions-container'>
+                    {heroDataLoaded && heroData.map(hero => {
+                        return (
+                            <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
+                                <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
-            <Footer />
-        </div>
+        </div >
     )
 }

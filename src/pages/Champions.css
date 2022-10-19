@@ -3,7 +3,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px 10px;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: auto;
 }
 
@@ -15,8 +15,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    /* border: 5px solid transparent;
-    border-image-source: linear-gradient(to bottom, #dbc69c, #4d4229); */
     border-width: 3px;
     border-style: solid;
     border-image: linear-gradient(to bottom, #dbc69c, #4d4229) 1;
