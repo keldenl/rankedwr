@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import preval from 'preval.macro'
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import logo from '../assets/ranked-icon.png';
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,7 +7,7 @@ import Modal from '@mui/material/Modal';
 
 
 import './Navbar.css'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 
@@ -94,12 +92,10 @@ export function Navbar({ }) {
                 <Box sx={{ ...modalStyle }}>
                     <h3>What's New</h3>
                     <ul className='date-new-ul'>
-
                         {/* 
-            add role column
-            add all icon, change rank to match columns, use new api
-            
-            */}
+                            add role column
+                            add all icon, change rank to match columns, use new api
+                        */}
                         <li>{DateTime.fromISO('20221002').toFormat('d LLL y')}</li>
                         <ul className='new-things-ul'>
                             <li><b>New:</b> Table is now mobile friendly!</li>
@@ -135,7 +131,6 @@ export function Navbar({ }) {
             </Modal>
 
             {showBanner ?
-                
                 <div className='banner' style={isHome ? { position: 'absolute', marginTop: 46.5 } : {}}>
                     <Typography variant="p" onClick={handleOpen} style={{ cursor: 'pointer' }}>
                         ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : <CircularProgress size={10} thickness={7} />})
@@ -145,13 +140,6 @@ export function Navbar({ }) {
                 : null
             }
         </>
-        // <AppBar position="static" sx={{ bgcolor: 'primary.main', flexDirection: 'row', justifyContent: 'center' }}>
-        //     <Toolbar variant="dense" sx={{ maxWidth: 750, flex: 1 }}>
-        //         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, justifyContent: 'flex-end' }}>
-
-        //         </Box>
-        //     </Toolbar>
-        // </AppBar>
     )
 }
 
