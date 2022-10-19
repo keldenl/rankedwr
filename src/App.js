@@ -8,6 +8,7 @@ import {
 import { Home } from './pages/Home';
 import { FullTierList } from './pages/FullTierList';
 import { ChampionDetails } from './pages/ChampionDetails';
+import { Champions } from './pages/Champions';
 
 
 function App() {
@@ -19,6 +20,10 @@ function App() {
                     <Route
                         path="/"
                         element={<Home />}
+                    />
+                    <Route
+                        path="/champions"
+                        element={<Champions />}
                     />
                     <Route
                         path="/tier-list"

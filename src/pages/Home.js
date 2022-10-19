@@ -23,7 +23,6 @@ export function Home() {
 
 
     useEffect(() => {
-        console.log(window.innerWidth);
         if (window.innerWidth < 560) {
             setBgSrc(currBgMobile);
         }

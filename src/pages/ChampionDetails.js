@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -134,11 +134,6 @@ export function ChampionDetails({ }) {
                 console.log(newTldr[0]);
 
                 setChampTldr(newTldr);
-                // setSelectedChampTldr(0);
-                // champStat.positionRanks
-
-                // console.log(sets);
-
                 console.log({
                     champDetails,
                     champInfo,
@@ -153,7 +148,6 @@ export function ChampionDetails({ }) {
             })
 
         Promise.all([fetchChampData])
-
     }, [])
 
 
@@ -291,11 +285,17 @@ export function ChampionDetails({ }) {
 
                     </div>
                 </>
-                : undefined
+                :
+                <div className='full-page-load'>
+                    <CircularProgress />
+                    <Typography variant="subtitle1">
+                        Looking for {championName}
+                    </Typography>
+                </div>
             }
             {notFound ?
                 <div>
-                    <Typography variant="p">
+                    <Typography variant="subtitle1">
                         Champion Not Found
                     </Typography>
                 </div>

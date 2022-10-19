@@ -24,3 +24,13 @@
     background: linear-gradient(var(--blue900) 0 0) padding-box, /*this is your grey background*/
     linear-gradient(to bottom, #bbe1ff, var(--blue500)) border-box;
 }
+
+.full-page-load {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+}

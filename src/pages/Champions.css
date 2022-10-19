@@ -1,0 +1,29 @@
+@import '../globalVariables.css';
+.champions-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 10px;
+    justify-content: space-around;
+    margin: auto;
+}
+
+.champion-card {
+    width: 150px;
+    aspect-ratio: 2/3;
+    background-size: cover;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* border: 5px solid transparent;
+    border-image-source: linear-gradient(to bottom, #dbc69c, #4d4229); */
+    border-width: 3px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, #dbc69c, #4d4229) 1;
+    transition: 0.2s all ease-in-out;
+    cursor: pointer;
+}
+
+.champion-card:hover {
+    border-image: linear-gradient(to bottom, #bbe1ff, var(--blue500)) 1;
+}
