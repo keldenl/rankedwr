@@ -38,3 +38,7 @@
     max-height: 25px;
     margin-top: 8px;
 }
+
+.home-suggestions {
+    background-color: 'red';
+}

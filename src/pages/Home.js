@@ -1,4 +1,4 @@
-import { Autocomplete, TextField, Typography } from "@mui/material";
+import { Autocomplete, Paper, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ import logo from '../assets/ranked-icon.png';
 
 
 import './Home.css'
+
 
 export function Home() {
     const navigate = useNavigate()
@@ -98,15 +99,27 @@ export function Home() {
                     }
 
                     renderOption={(props, option) => (
-                        <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                        <Box className='home-suggestions' component="li"
+                            sx={{
+                                backgroundColor: 'transparent',
+                                '& > img': {
+                                    mr: 2,
+                                    mt: 1,
+                                    mb: 1,
+                                    flexShrink: 0,
+                                    borderRadius: '100%',
+                                }
+                            }}
+                            {...props}>
                             <img
                                 loading="lazy"
                                 width="25"
                                 src={option.avatar}
-                                // srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
                                 alt=""
                             />
-                            {option.label}
+                            <Typography variant="p">
+                                {option.label}
+                            </Typography>
                         </Box>
                     )}
                 />
