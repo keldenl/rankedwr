@@ -170,11 +170,8 @@ export function FullTierList() {
       })
     })
 
-    // console.log('rows: ', newRows)
-
     setRows(newRows)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currPosition, heroDataLoaded, heroRankListLoaded])
+  }, [currPosition, heroData, heroDataLoaded, heroRankList, heroRankListLoaded])
 
   const handleAcceptCookie = () => {
     ReactGA.initialize("G-C2S8YQDJBT", { debug: process.env.NODE_ENV === 'development' });
@@ -200,13 +197,10 @@ export function FullTierList() {
             avatar: hero.avatar
           }
         })
-        console.log(heroData)
-
         setHeroData(heroData)
         setHeroDataLoaded(true)
       })
 
-    // const fetchRankedList = fetchCORS(urls.heroRankList)
     const fetchRankedList = fetch('http://localhost:5001/rank/getCurrentList')
       .then((res) => {
         console.log(res)
