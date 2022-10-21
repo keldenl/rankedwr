@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom";
-
 import ReactGA from "react-ga4";
 import { DateTime } from 'luxon';
+import { useRouter } from 'next/router';
+import Image from 'next/future/image';
 import CookieConsent from "react-cookie-consent";
 
 
 import { blue } from '@mui/material/colors';
-
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
 import { LinearProgress, Link, TextField } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
-
-
 import { DataGrid } from '@mui/x-data-grid';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
@@ -26,12 +23,21 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AppsIcon from '@mui/icons-material/Apps';
 
 
-import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier, getUrlFriendlyName } from '../utils';
-import './FullTierList.css';
-import { BASE_URL } from '../api';
+import {
+  getPatchByDate,
+  getTier,
+  positionOrder,
+  headerSortConfig,
+  statFieldConfig,
+  getRole,
+  getFloat,
+  calculateTier,
+  getUrlFriendlyName
+} from '../../utils';
+import { BASE_URL } from '../../api';
 
 export function FullTierList() {
-  let navigate = useNavigate();
+  const router = useRouter()
 
 
   const [heroData, setHeroData] = useState({});
@@ -94,7 +100,7 @@ export function FullTierList() {
       renderCell: (params) => (
         <div className='champion-container'>
           <span className='avatar-img-container'>
-            <img className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} />
+            <Image className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} fill sizes="100vw"  />
           </span>
           <Typography variant="p" sx={{ fontWeight: 'bolder' }}>
             {params.row.name}
@@ -329,7 +335,7 @@ export function FullTierList() {
             }}
             onSelectionModelChange={(ids, details) => {
               const item = ids.map((id) => rows.find((row) => row.id === id))[0];
-              !!navigate && navigate(`/champion/${getUrlFriendlyName(item.name)}`)
+              !!router && router.push(`/champion/${getUrlFriendlyName(item.name)}`)
             }}
             onSortModelChange={(sortColumn) => {
               // Sorts go from asc -> desc -> none
@@ -355,3 +361,5 @@ export function FullTierList() {
     </div>
   )
 }
+
+export default FullTierList;

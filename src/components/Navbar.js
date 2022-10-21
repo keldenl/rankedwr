@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import preval from 'preval.macro'
-import logo from '../assets/ranked-icon.png';
+// import buildDate from '../getBuildDate.preval'
+
 import { Box, Button, CircularProgress, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import Modal from '@mui/material/Modal';
 
-
-import './Navbar.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import Image from 'next/future/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 
 export function Navbar({ }) {
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
+    const router = useRouter()
+    const { pathname } = router;
     const isHome = pathname === '/'
 
     const navItems = [
@@ -49,25 +50,28 @@ export function Navbar({ }) {
         pb: 2,
     }
 
-    useEffect(() => {
-        const dateTimeStamp = preval`module.exports = new Date().getTime()`
-        setBuildDate(DateTime.fromMillis(dateTimeStamp));
-    }, [])
+    // useEffect(() => {
+    //     const dateTimeStamp = JSON.stringify(buildDate);
+    //     console.log(dateTimeStamp);
+    //     setBuildDate(DateTime.fromMillis(dateTimeStamp));
+    // }, [])
 
 
     return (
         <>
             <div className='navbar-bg' style={isHome ? { backgroundColor: 'transparent', position: 'absolute' } : {}}>
                 <div className='navbar-container' style={isHome ? { justifyContent: 'flex-end' } : {}}>
-                    {!isHome ? <div className='navbar-title-container' onClick={() => navigate('/')}>
-                        <img src={logo} alt='RankedWR' />
-                        <Typography
-                            variant="h5"
-                            className='navbar-title-container'
-                        >
-                            rankedwr
-                        </Typography>
-                    </div> : undefined}
+                    {!isHome ? <Link href='/'>
+                        <a className='no-style navbar-title-container' >
+                            <Image src={'/assets/ranked-icon.png'} width='13' height='13' alt='RankedWR' />
+                            <Typography
+                                variant="h5"
+                                className='navbar-title-container'
+                            >
+                                rankedwr
+                            </Typography>
+                        </a>
+                    </Link> : undefined}
                     <div className='navbar-items-container'>
                         {navItems.map(item =>
                             <Button key={item.title} href={item.url} sx={{ color: 'white' }}>
@@ -133,7 +137,7 @@ export function Navbar({ }) {
             {showBanner ?
                 <div className='banner' style={isHome ? { position: 'absolute', marginTop: 46.5 } : {}}>
                     <Typography variant="p" onClick={handleOpen} style={{ cursor: 'pointer' }}>
-                        ✨ What's new (Last updated {!!buildDate ? buildDate.toFormat('d LLL y') : <CircularProgress size={10} thickness={7} />})
+                        ✨ what's new
                     </Typography>
                     <CloseIcon onClick={() => setShowBanner(false)} style={{ justifySelf: 'flex-end', fontSize: '1.25em', cursor: 'pointer' }} />
                 </div>

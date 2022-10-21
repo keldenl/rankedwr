@@ -4,8 +4,6 @@ import { DateTime } from 'luxon';
 import { Link, Typography } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-import './Footer.css'
-
 
 export function Footer({ }) {
     return (

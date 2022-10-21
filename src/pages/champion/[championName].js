@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 import 'chartjs-adapter-moment';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -25,14 +25,15 @@ import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
-import { BASE_URL } from '../api';
-import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../utils';
-import { Card } from '../components/Card';
-import './ChampionDetails.css';
+import { BASE_URL } from '../../api';
+import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../../utils';
+import { Card } from '../../components/Card';
+import Image from 'next/future/image';
 
 
 export function ChampionDetails({ }) {
-    const { championName } = useParams();
+    const router = useRouter()
+    const { championName } = router.query;
 
     const [isLoading, setIsLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
@@ -72,6 +73,11 @@ export function ChampionDetails({ }) {
             Tooltip,
             Legend,
         );
+    }, [])
+
+
+    useEffect(() => {
+        if (!championName) return;
 
         const fetchChampData = fetch(`${BASE_URL}/champion/${championName}`)
             .then((res) => {
@@ -126,8 +132,7 @@ export function ChampionDetails({ }) {
             })
 
         Promise.all([fetchChampData])
-    }, [])
-
+    }, [championName])
 
     return (
         <div style={{ overflow: 'hidden' }}>
@@ -138,7 +143,14 @@ export function ChampionDetails({ }) {
                     </video>
                     <div className='champ-details-container tier-page-wrapper'>
                         <div className='champ-header'>
-                            <img src={champInfo.avatar} className='champ-avatar gold-border' />
+                            <Image
+                                src={champInfo.avatar}
+                                alt={champInfo.engName}
+                                className='champ-avatar gold-border'
+                                width='150'
+                                height='150'
+                                priority
+                            />
                             <Typography variant="h4">
                                 {champInfo.engName}
                             </Typography>
@@ -233,12 +245,14 @@ export function ChampionDetails({ }) {
                                     {champDetails.abilities.map((ability, i) => {
                                         const { thumbnail, title } = ability;
                                         return (
-                                            <img
+                                            <Image
                                                 key={title}
                                                 className={`ability-thumb gold-border ${i === viewingAbility ? 'selected' : ''}`}
                                                 src={thumbnail.url}
                                                 alt={thumbnail.title}
                                                 onClick={() => setViewingAbility(i)}
+                                                width='60'
+                                                height='60'
                                             />
                                         )
                                     })}
@@ -279,3 +293,5 @@ export function ChampionDetails({ }) {
         </div>
     )
 }
+
+export default ChampionDetails;

@@ -1,6 +1,5 @@
 import React, { Children } from 'react';
 import { Typography } from "@mui/material";
-import './Card.css'
 
 
 export function Card({ Icon, color, title, children }) {

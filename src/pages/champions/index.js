@@ -1,14 +1,10 @@
 import { Typography } from '@mui/material';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../api';
-import { getUrlFriendlyName } from '../utils';
-
-import "./Champions.css"
+import { BASE_URL } from '../../api';
+import { getUrlFriendlyName } from '../../utils';
 
 export function Champions({ }) {
-    const navigate = useNavigate()
-
     const [heroData, setHeroData] = useState([]);
     const [heroDataLoaded, setHeroDataLoaded] = useState(false);
 
@@ -51,10 +47,12 @@ export function Champions({ }) {
                 <div className='champions-container'>
                     {heroDataLoaded && heroData.map(hero => {
                         return (
-                            <Link className='no-style' to={`/champion/${getUrlFriendlyName(hero.name)}`}>
-                                <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
-                                    <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
-                                </div>
+                            <Link key={hero.name} href={`/champion/${getUrlFriendlyName(hero.name)}`}>
+                                <a className='no-style'>
+                                    <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
+                                        <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
+                                    </div>
+                                </a>
                             </Link>
                         )
                     })}
@@ -63,3 +61,5 @@ export function Champions({ }) {
         </div >
     )
 }
+
+export default Champions;

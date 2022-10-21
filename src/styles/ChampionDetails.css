@@ -1,8 +1,5 @@
-@import '../globalVariables.css';
 .champ-avatar {
     margin-bottom: 10px;
-    width: 150px;
-    height: 150px;
 }
 
 .champ-turn,
@@ -97,7 +94,6 @@
 }
 
 .ability-thumb-container>img {
-    max-width: 60px;
     cursor: pointer;
 }
 
