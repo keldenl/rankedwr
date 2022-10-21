@@ -9,6 +9,7 @@ module.exports = withNextPluginPreval({
     experimental: {
         images: {
             allowFutureImage: true,
+            unoptimized: true
         }
     },
 });
