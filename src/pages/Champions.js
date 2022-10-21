@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../api';
 import { getUrlFriendlyName } from '../utils';
 
@@ -51,9 +51,11 @@ export function Champions({ }) {
                 <div className='champions-container'>
                     {heroDataLoaded && heroData.map(hero => {
                         return (
-                            <div key={hero.name} onClick={() => navigate(`/champion/${getUrlFriendlyName(hero.name)}`)} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
-                                <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
-                            </div>
+                            <Link className='no-style' to={`/champion/${getUrlFriendlyName(hero.name)}`}>
+                                <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
+                                    <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
+                                </div>
+                            </Link>
                         )
                     })}
                 </div>

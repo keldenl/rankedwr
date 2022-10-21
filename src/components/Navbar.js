@@ -70,7 +70,7 @@ export function Navbar({ }) {
                     </div> : undefined}
                     <div className='navbar-items-container'>
                         {navItems.map(item =>
-                            <Button key={item.title} onClick={() => navigate(item.url)} sx={{ color: 'white' }}>
+                            <Button key={item.title} href={item.url} sx={{ color: 'white' }}>
                                 <Typography
                                     variant="p"
                                     className={`navbar-item ${pathname === item.url ? 'active' : ''}`}

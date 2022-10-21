@@ -28,8 +28,6 @@ import AppsIcon from '@mui/icons-material/Apps';
 
 import { getPatchByDate, getTier, positionOrder, headerSortConfig, statFieldConfig, getRole, getFloat, calculateTier, getUrlFriendlyName } from '../utils';
 import './FullTierList.css';
-import { Navbar } from '../components/Navbar';
-import { Footer } from '../components/Footer';
 import { BASE_URL } from '../api';
 
 export function FullTierList() {
@@ -76,8 +74,6 @@ export function FullTierList() {
       width: 30,
       minWidth: 30,
       maxWidth: 30,
-      // flex: 1,
-      // renderHeader: mobileHeader(undefined, '#'),
       renderCell: (params) => {
         const { sort } = params.api.getSortModel()[0];
         const i = params.api.getRowIndex(params.row.id);
