@@ -35,6 +35,7 @@ import {
   getUrlFriendlyName
 } from '../../utils';
 import { BASE_URL } from '../../api';
+import { SocialHeader } from '../../components/SocialHeader';
 
 export function FullTierList() {
   const router = useRouter()
@@ -100,7 +101,7 @@ export function FullTierList() {
       renderCell: (params) => (
         <div className='champion-container'>
           <span className='avatar-img-container'>
-            <Image className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} fill sizes="100vw"  />
+            <Image className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} fill sizes="100vw" />
           </span>
           <Typography variant="p" sx={{ fontWeight: 'bolder' }}>
             {params.row.name}
@@ -225,8 +226,16 @@ export function FullTierList() {
 
 
   return (
-    <div className="App">
-      {/* <CookieConsent
+    <>
+      <SocialHeader
+        title='Wild Rift Tier List'
+        description="
+        Tier list for top champions for all positions from Riot's Official Wild Rift Stats. 
+        Ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
+    "
+      />
+      <div className="App">
+        {/* <CookieConsent
         enableDeclineButton
         flipButtons
         onAccept={handleAcceptCookie}
@@ -248,117 +257,118 @@ export function FullTierList() {
         Site (optionally) uses cookies that help me understand how to improve the website – accepting cookies helps me continue making this the best website it can be!
       </CookieConsent> */}
 
-      <div className='tier-page-wrapper'>
-        <div className='page-header'>
-          <Typography
-            variant="h5"
-          >
-            Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
-          </Typography>
-          <Tooltip title={!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toFormat('d LLL y') : ''} placement="right" arrow>
-            <div className='last-update-text'>
-              <Typography
-                variant="p"
-              >
-                <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar({ unit: 'days' }) : <CircularProgress size={10} thickness={7} />}
-              </Typography>
-            </div>
-          </Tooltip>
-          <Typography
-            variant="subtitle2"
-            sx={{ opacity: 0.8, marginTop: 1 }}
-          >
-            The only Wild Rift tier list based on <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
-            Updates in real-time when new data is published from Riot.
-          </Typography>
-        </div>
+        <div className='tier-page-wrapper'>
+          <div className='page-header'>
+            <Typography
+              variant="h5"
+            >
+              Wild Rift Tier List <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> for Diamond+ (Patch {!!lastUpdateDate ? getPatchByDate(DateTime.fromISO(lastUpdateDate)) : <CircularProgress size={20} thickness={5} />})</span>
+            </Typography>
+            <Tooltip title={!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toFormat('d LLL y') : ''} placement="right" arrow>
+              <div className='last-update-text'>
+                <Typography
+                  variant="p"
+                >
+                  <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Last Updated</span> {!!lastUpdateDate ? DateTime.fromISO(lastUpdateDate).toRelativeCalendar({ unit: 'days' }) : <CircularProgress size={10} thickness={7} />}
+                </Typography>
+              </div>
+            </Tooltip>
+            <Typography
+              variant="subtitle2"
+              sx={{ opacity: 0.8, marginTop: 1 }}
+            >
+              The only Wild Rift tier list based on <Link target='__blank' href='https://lolm.qq.com/act/a20220818raider/index.html'>Riot's official Wild Rift CN statistics</Link>.
+              Updates in real-time when new data is published from Riot.
+            </Typography>
+          </div>
 
-        <div className='table-options-container'>
-          <ToggleButtonGroup
-            value={currPosition}
-            exclusive
-            onChange={handlePositionChange}
-            className='position-container'
-          >
-            {positionList.length && positionList.map(posName => {
-              return (
-                <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} size="small">
-                  <span className={`position-icon ${posName}`} />
-                  <Typography
-                    variant="subtitle2"
-                    sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, marginRight: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
-                  >
-                    {posName}
-                  </Typography>
-                </ToggleButton>
-              )
-            })
-            }
-          </ToggleButtonGroup>
-
-          <TextField
-            onChange={(e) => setFilter(f => ({ ...f, value: e.target.value }))}
-            value={filter.value ?? ''}
-            label='Search Champion...'
-            variant="outlined"
-            size="small"
-            sx={{
-              flexGrow: 1,
-              fontSize: '0.9em'
-            }}
-          />
-        </div>
-
-        <div className='tier-table'>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            sortModel={currSortColumn}
-            filterModel={{ items: [filter] }}
-            stickyHeader
-            hideFooterPagination={true}
-            components={{
-              LoadingOverlay: LinearProgress,
-              ColumnSortedAscendingIcon: null,
-              ColumnSortedDescendingIcon: null,
-              ColumnUnsortedIcon: null,
-              ColumnHeaderFilterIconButton: () => <></>,
-              Footer: () => {
+          <div className='table-options-container'>
+            <ToggleButtonGroup
+              value={currPosition}
+              exclusive
+              onChange={handlePositionChange}
+              className='position-container'
+            >
+              {positionList.length && positionList.map(posName => {
                 return (
-                  <div className='tier-table-footer'>
-                    <Typography variant="caption">
-                      *= Tier is not provided by Riot. It is calculated by us based on the official win% / pick% / ban%
+                  <ToggleButton color="primary" key={posName} value={posName} aria-label={posName} size="small">
+                    <span className={`position-icon ${posName}`} />
+                    <Typography
+                      variant="subtitle2"
+                      sx={{ display: { xs: 'none', sm: 'block' }, marginLeft: 0.5, marginRight: 0.5, fontWeight: 600, textTransform: 'capitalize' }}
+                    >
+                      {posName}
                     </Typography>
-                  </div>
+                  </ToggleButton>
                 )
+              })
               }
-            }}
-            onSelectionModelChange={(ids, details) => {
-              const item = ids.map((id) => rows.find((row) => row.id === id))[0];
-              !!router && router.push(`/champion/${getUrlFriendlyName(item.name)}`)
-            }}
-            onSortModelChange={(sortColumn) => {
-              // Sorts go from asc -> desc -> none
-              // To avoid 'none' state, whenever we get it, take us back to asc (start of loop)
-              const newSortColumn = !sortColumn.length ? [{ ...currSortColumn[0], sort: 'asc' }] : sortColumn
-              setCurrSortColumn(newSortColumn);
-            }}
-            getRowClassName={(params) =>
-              params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
-            }
-            sx={{
-              bgcolor: 'footer.default',
-              borderRadius: 2.5,
-              border: 0,
-              padding: '0 20px',
-            }}
-            loading={!heroDataLoaded || !heroRankListLoaded}
-            disableColumnMenu={true}
-            disableVirtualization // disabling to improve movile performance
-          />
+            </ToggleButtonGroup>
+
+            <TextField
+              onChange={(e) => setFilter(f => ({ ...f, value: e.target.value }))}
+              value={filter.value ?? ''}
+              label='Search Champion...'
+              variant="outlined"
+              size="small"
+              sx={{
+                flexGrow: 1,
+                fontSize: '0.9em'
+              }}
+            />
+          </div>
+
+          <div className='tier-table'>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              sortModel={currSortColumn}
+              filterModel={{ items: [filter] }}
+              stickyHeader
+              hideFooterPagination={true}
+              components={{
+                LoadingOverlay: LinearProgress,
+                ColumnSortedAscendingIcon: null,
+                ColumnSortedDescendingIcon: null,
+                ColumnUnsortedIcon: null,
+                ColumnHeaderFilterIconButton: () => <></>,
+                Footer: () => {
+                  return (
+                    <div className='tier-table-footer'>
+                      <Typography variant="caption">
+                        *= Tier is not provided by Riot. It is calculated by us based on the official win% / pick% / ban%
+                      </Typography>
+                    </div>
+                  )
+                }
+              }}
+              onSelectionModelChange={(ids, details) => {
+                const item = ids.map((id) => rows.find((row) => row.id === id))[0];
+                !!router && router.push(`/champion/${getUrlFriendlyName(item.name)}`)
+              }}
+              onSortModelChange={(sortColumn) => {
+                // Sorts go from asc -> desc -> none
+                // To avoid 'none' state, whenever we get it, take us back to asc (start of loop)
+                const newSortColumn = !sortColumn.length ? [{ ...currSortColumn[0], sort: 'asc' }] : sortColumn
+                setCurrSortColumn(newSortColumn);
+              }}
+              getRowClassName={(params) =>
+                params.indexRelativeToCurrentPage % 2 === 0 ? 'even-row' : 'odd-row'
+              }
+              sx={{
+                bgcolor: 'footer.default',
+                borderRadius: 2.5,
+                border: 0,
+                padding: '0 20px',
+              }}
+              loading={!heroDataLoaded || !heroRankListLoaded}
+              disableColumnMenu={true}
+              disableVirtualization // disabling to improve movile performance
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

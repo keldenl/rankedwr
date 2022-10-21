@@ -29,6 +29,7 @@ import { BASE_URL } from '../../api';
 import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../../utils';
 import { Card } from '../../components/Card';
 import Image from 'next/future/image';
+import { SocialHeader } from '../../components/SocialHeader';
 
 
 export function ChampionDetails({ }) {
@@ -90,6 +91,8 @@ export function ChampionDetails({ }) {
                 setChampInfo(champInfo);
                 setChampStat(champStat);
 
+                console.log(champInfo)
+
                 const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
                 const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
                 const currPickData = convertStatToAppearPie(champStat.positionRanks);
@@ -135,162 +138,173 @@ export function ChampionDetails({ }) {
     }, [championName])
 
     return (
-        <div style={{ overflow: 'hidden' }}>
-            {!isLoading ?
-                <>
-                    <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
-                        <source src={champDetails.heroVideo[0].video.file.url} type="video/mp4" />
-                    </video>
-                    <div className='champ-details-container tier-page-wrapper'>
-                        <div className='champ-header'>
-                            <Image
-                                src={champInfo.avatar}
-                                alt={champInfo.engName}
-                                className='champ-avatar gold-border'
-                                width='150'
-                                height='150'
-                                priority
-                            />
-                            <Typography variant="h4">
-                                {champInfo.engName}
-                            </Typography>
-                            <Typography variant="p" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                {champDetails.subtitle}
-                            </Typography>
-                        </div>
-
-                        <div className='champ-tldr-wrapper'>
-                            <div className='champ-tldr-roles'>
-                                <Typography variant="button" sx={{ fontWeight: 'bolder', flex: 1 }}>
-                                    {champInfo.engRoles.join(', ')}
+        <>
+            <SocialHeader
+                title={`${championName} Wild Rift Champion Stats`}
+                imgSrc={champInfo.poster}
+                imgTallSrc={champInfo.card}
+                description="
+            All-in-one hub for Riot's Official Wild Rift Stats. 
+            Find top champions for all positions using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
+        "
+            />
+            <div style={{ overflow: 'hidden' }}>
+                {!isLoading ?
+                    <>
+                        <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
+                            <source src={champDetails.heroVideo[0].video.file.url} type="video/mp4" />
+                        </video>
+                        <div className='champ-details-container tier-page-wrapper'>
+                            <div className='champ-header'>
+                                <Image
+                                    src={champInfo.avatar}
+                                    alt={champInfo.engName}
+                                    className='champ-avatar gold-border'
+                                    width='150'
+                                    height='150'
+                                    priority
+                                />
+                                <Typography variant="h4">
+                                    {champInfo.engName}
                                 </Typography>
-                                {champTldr.map((ct, i) =>
-                                    <Typography
-                                        key={ct.position}
-                                        variant="button"
-                                        sx={{ fontWeight: 'bolder', opacity: 0.4, transition: '0.2s opacity ease-in-out' }}
-                                        className={`${i === selectedChampTldr ? 'tldr-role-active' : ''}`}
-                                        onClick={() => setSelectedChampTldr(i)}
-                                    >
-                                        {ct.position}
-                                    </Typography>
-                                )}
+                                <Typography variant="p" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                    {champDetails.subtitle}
+                                </Typography>
                             </div>
-                            <div className='champ-tldr'>
-                                <div>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
-                                        {champTldr[selectedChampTldr].tier}
+
+                            <div className='champ-tldr-wrapper'>
+                                <div className='champ-tldr-roles'>
+                                    <Typography variant="button" sx={{ fontWeight: 'bolder', flex: 1 }}>
+                                        {champInfo.engRoles.join(', ')}
                                     </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        TIER
-                                    </Typography>
+                                    {champTldr.map((ct, i) =>
+                                        <Typography
+                                            key={ct.position}
+                                            variant="button"
+                                            sx={{ fontWeight: 'bolder', opacity: 0.4, transition: '0.2s opacity ease-in-out' }}
+                                            className={`${i === selectedChampTldr ? 'tldr-role-active' : ''}`}
+                                            onClick={() => setSelectedChampTldr(i)}
+                                        >
+                                            {ct.position}
+                                        </Typography>
+                                    )}
                                 </div>
-                                <div>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
-                                        {champTldr[selectedChampTldr].winR}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        WIN%
-                                    </Typography>
-                                </div>
-                                <div>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
-                                        #{champTldr[selectedChampTldr].winRank}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        RANK
-                                    </Typography>
-                                </div>
-                                <div>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
-                                        {champTldr[selectedChampTldr].pickR}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        PICK%
-                                    </Typography>
-                                </div>
-                                <div>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
-                                        {champTldr[selectedChampTldr].banR}
-                                    </Typography>
-                                    <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        BAN%
-                                    </Typography>
+                                <div className='champ-tldr'>
+                                    <div>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                            {champTldr[selectedChampTldr].tier}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            TIER
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                            {champTldr[selectedChampTldr].winR}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            WIN%
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                            #{champTldr[selectedChampTldr].winRank}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            RANK
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                            {champTldr[selectedChampTldr].pickR}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            PICK%
+                                        </Typography>
+                                    </div>
+                                    <div>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
+                                            {champTldr[selectedChampTldr].banR}
+                                        </Typography>
+                                        <Typography variant="body2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            BAN%
+                                        </Typography>
+                                    </div>
                                 </div>
                             </div>
+
+                            <div className='rates-container'>
+                                <Card title='Win Rate' Icon={EmojiEventsIcon} color='gold'>
+                                    {!!champWinData && <Line options={lineOptions} data={champWinData} />}
+                                </Card>
+                                <Card title='Popular Roles' Icon={WhatshotIcon} color='orangered'>
+                                    {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
+                                </Card>
+                                <Card title='Ban Rate' Icon={DoNotDisturbIcon} color='red'>
+                                    {!!champBanData && <Line options={lineOptions} data={champBanData} />}
+                                </Card>
+                                <Card title='Pick Rate' Icon={PanToolAltIcon} color='lightskyblue'>
+                                    {!!champPickData && <div className='chart-child'><Line options={lineOptions} data={champPickData} /></div>}
+                                </Card>
+                            </div>
+
+
+                            <Card title='Abilities' Icon={AutoFixHighIcon} color='primary.main'>
+                                <div className='abilities-wrapper'>
+                                    <video key={viewingAbility} className='ability-vid' preload="yes" autoPlay muted loop playsInline>
+                                        <source src={champDetails.abilities[viewingAbility].videos[0].video.file.url} type="video/mp4" />
+                                    </video>
+                                    <div className='ability-thumb-container'>
+                                        {champDetails.abilities.map((ability, i) => {
+                                            const { thumbnail, title } = ability;
+                                            return (
+                                                <Image
+                                                    key={title}
+                                                    className={`ability-thumb gold-border ${i === viewingAbility ? 'selected' : ''}`}
+                                                    src={thumbnail.url}
+                                                    alt={thumbnail.title}
+                                                    onClick={() => setViewingAbility(i)}
+                                                    width='60'
+                                                    height='60'
+                                                />
+                                            )
+                                        })}
+                                    </div>
+
+                                    <div className='ability-curr-container'>
+                                        <Typography variant="subtitle2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
+                                            {abilityTypeToName(champDetails.abilities[viewingAbility].type)}
+                                        </Typography>
+                                        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
+                                            {champDetails.abilities[viewingAbility].title}
+                                        </Typography>
+                                        <Typography variant="p">
+                                            {champDetails.abilities[viewingAbility].description}
+                                        </Typography>
+                                    </div>
+                                </div>
+
+                            </Card>
+
                         </div>
-
-                        <div className='rates-container'>
-                            <Card title='Win Rate' Icon={EmojiEventsIcon} color='gold'>
-                                {!!champWinData && <Line options={lineOptions} data={champWinData} />}
-                            </Card>
-                            <Card title='Popular Roles' Icon={WhatshotIcon} color='orangered'>
-                                {!!champPickData && <div className='chart-child'><Doughnut options={pieOptions} data={champCurrPickData} /></div>}
-                            </Card>
-                            <Card title='Ban Rate' Icon={DoNotDisturbIcon} color='red'>
-                                {!!champBanData && <Line options={lineOptions} data={champBanData} />}
-                            </Card>
-                            <Card title='Pick Rate' Icon={PanToolAltIcon} color='lightskyblue'>
-                                {!!champPickData && <div className='chart-child'><Line options={lineOptions} data={champPickData} /></div>}
-                            </Card>
-                        </div>
-
-
-                        <Card title='Abilities' Icon={AutoFixHighIcon} color='primary.main'>
-                            <div className='abilities-wrapper'>
-                                <video key={viewingAbility} className='ability-vid' preload="yes" autoPlay muted loop playsInline>
-                                    <source src={champDetails.abilities[viewingAbility].videos[0].video.file.url} type="video/mp4" />
-                                </video>
-                                <div className='ability-thumb-container'>
-                                    {champDetails.abilities.map((ability, i) => {
-                                        const { thumbnail, title } = ability;
-                                        return (
-                                            <Image
-                                                key={title}
-                                                className={`ability-thumb gold-border ${i === viewingAbility ? 'selected' : ''}`}
-                                                src={thumbnail.url}
-                                                alt={thumbnail.title}
-                                                onClick={() => setViewingAbility(i)}
-                                                width='60'
-                                                height='60'
-                                            />
-                                        )
-                                    })}
-                                </div>
-
-                                <div className='ability-curr-container'>
-                                    <Typography variant="subtitle2" sx={{ fontWeight: 'lighter', opacity: 0.8 }}>
-                                        {abilityTypeToName(champDetails.abilities[viewingAbility].type)}
-                                    </Typography>
-                                    <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 1 }}>
-                                        {champDetails.abilities[viewingAbility].title}
-                                    </Typography>
-                                    <Typography variant="p">
-                                        {champDetails.abilities[viewingAbility].description}
-                                    </Typography>
-                                </div>
-                            </div>
-
-                        </Card>
-
+                    </>
+                    :
+                    <div className='full-page-load'>
+                        <CircularProgress />
+                        <Typography variant="subtitle1">
+                            Looking for {championName}
+                        </Typography>
                     </div>
-                </>
-                :
-                <div className='full-page-load'>
-                    <CircularProgress />
-                    <Typography variant="subtitle1">
-                        Looking for {championName}
-                    </Typography>
-                </div>
-            }
-            {notFound ?
-                <div>
-                    <Typography variant="subtitle1">
-                        Champion Not Found
-                    </Typography>
-                </div>
-                : undefined}
-        </div>
+                }
+                {notFound ?
+                    <div>
+                        <Typography variant="subtitle1">
+                            Champion Not Found
+                        </Typography>
+                    </div>
+                    : undefined}
+            </div>
+        </>
     )
 }
 

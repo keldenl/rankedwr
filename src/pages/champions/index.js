@@ -2,6 +2,7 @@ import { Typography } from '@mui/material';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../../api';
+import { SocialHeader } from '../../components/SocialHeader';
 import { getUrlFriendlyName } from '../../utils';
 
 export function Champions({ }) {
@@ -32,33 +33,39 @@ export function Champions({ }) {
     }, [])
 
     return (
-        <div>
-            <div className="tier-page-wrapper">
-                <Typography variant="h5">
-                    Wild Rift <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Champions </span>
-                </Typography>
+        <>
+            <SocialHeader
+                title='Wild Rift Champions'
+                description="View list of champions that currently exist in Wild Rift. See their latest rankings, their historical statistical trends, and abilities descriptions."
+            />
+            <div>
+                <div className="tier-page-wrapper">
+                    <Typography variant="h5">
+                        Wild Rift <span style={{ fontWeight: 'lighter', opacity: 0.8 }}> Champions </span>
+                    </Typography>
 
-                <Typography
-                    variant="subtitle2"
-                    sx={{ opacity: 0.8, mt: 1, mb: 2 }}
-                >
-                    List of Champions that currently exist in Wild Rift. Click on champion cards to view their latest rankings, their historical statistical trends, and abilities descriptions.
-                </Typography>
-                <div className='champions-container'>
-                    {heroDataLoaded && heroData.map(hero => {
-                        return (
-                            <Link key={hero.name} href={`/champion/${getUrlFriendlyName(hero.name)}`}>
-                                <a className='no-style'>
-                                    <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
-                                        <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
-                                    </div>
-                                </a>
-                            </Link>
-                        )
-                    })}
+                    <Typography
+                        variant="subtitle2"
+                        sx={{ opacity: 0.8, mt: 1, mb: 2 }}
+                    >
+                        List of champions that currently exist in Wild Rift. Click on champion cards to view their latest rankings, their historical statistical trends, and abilities descriptions.
+                    </Typography>
+                    <div className='champions-container'>
+                        {heroDataLoaded && heroData.map(hero => {
+                            return (
+                                <Link key={hero.name} href={`/champion/${getUrlFriendlyName(hero.name)}`}>
+                                    <a className='no-style'>
+                                        <div key={hero.name} className='champion-card' style={{ backgroundImage: `${bgImageFade},url(${hero.card})` }} >
+                                            <Typography variant="p" sx={{ mb: 2, opacity: 0.9 }}>{hero.name}</Typography>
+                                        </div>
+                                    </a>
+                                </Link>
+                            )
+                        })}
+                    </div>
                 </div>
             </div>
-        </div >
+        </>
     )
 }
 

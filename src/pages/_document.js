@@ -8,10 +8,6 @@ export default function Document() {
                 <link rel="icon" href="/favicon.ico" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <meta name="theme-color" content="#000000" />
-                <meta name="description" content="Find top champions for every position with our Official Wild Rift Stats. Using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players."
-                />
-                <meta name="keywords" content="wild rift, official stats, riot, stats, tier list, ranked list, champions, patch, new patch, ranking, rankedwr, league of legends, mobile, jinx from league of legends, wild rift ranked, champions, legendary queue" />
-
                 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
                 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -19,7 +15,18 @@ export default function Document() {
                 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
                 <meta name="msapplication-TileColor" content="#da532c" />
                 <link rel="manifest" href="/site.webmanifest" />
-                <title>Wild Rift Tier List Stats - RankedWR</title>
+
+
+                <meta property="og:site_name" content="RankedWR" />
+                <meta property="og:type" content="website" />
+                <meta property="og:locale" content="en_US" />
+                <meta name="twitter:card" content="summary" />
+
+                <meta name="keywords" content="wild rift, official stats, riot, stats, tier list, ranked list, champions, patch, new patch, ranking, rankedwr, league of legends, mobile, jinx from league of legends, wild rift ranked, champions, legendary queue" />
+                <meta name="author" content="RepotedWR" />
+                <link rel="canonical" href="https://www.rankedwr.com/" />
+                <meta name="robots" content="all, follow" />
+
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
