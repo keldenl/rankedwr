@@ -218,7 +218,6 @@ export function FullTierList() {
         setPositionList([...positionOrder]);
         setCurrPosition([...positionOrder][1]);
         setLastUpdateDate(lastUpdateDate);
-        document.title = `Wild Rift Tier List Stats (Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
@@ -228,7 +227,7 @@ export function FullTierList() {
   return (
     <>
       <SocialHeader
-        title='Wild Rift Tier List'
+        title={`Wild Rift Tier List Patch ${getPatchByDate(DateTime.fromISO(lastUpdateDate, { zone: 'UTC+8' }))}`}
         description="
         Tier list for top champions for all positions from Riot's Official Wild Rift Stats. 
         Ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
