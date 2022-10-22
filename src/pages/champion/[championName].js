@@ -26,22 +26,74 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 
 import { BASE_URL } from '../../api';
-import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, lineOptions, pieOptions } from '../../utils';
+import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, getUrlFriendlyName, lineOptions, pieOptions } from '../../utils';
 import { Card } from '../../components/Card';
 import Image from 'next/future/image';
 import { SocialHeader } from '../../components/SocialHeader';
 
+export async function getStaticPaths() {
+    return fetch(`${BASE_URL}/champion/`)
+        .then((res) => {
+            if (res.ok) return res.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then((contents) => {
+            const heroData = contents.heroList.map(hero => {
+                return {
+                    name: hero.engName,
+                    card: hero.card
+                }
+            })
 
-export function ChampionDetails({ }) {
+            heroData.sort((a, b) => a.name.localeCompare(b.name))
+            const paths = heroData.map(h => ({ params: { championName: getUrlFriendlyName(h.name) } }))
+            return {
+                paths,
+                fallback: true
+            }
+        })
+}
+
+// // Pre Rendering using 'getStaticProps' method for fetching the currency list
+export async function getStaticProps(context) {
+    const { championName } = context.params
+    return fetch(`${BASE_URL}/champion/${championName}`)
+        .then((res) => {
+            console.log(res);
+            if (res.ok) return res.json()
+            throw new Error('Network response was not ok.')
+        })
+        .then((contents) => {
+            const { champWRDetails: champDetails, champInfo, champStat, lastChecked } = contents;
+            return {
+                props: {
+                    champDetails, champInfo, champStat, lastChecked,
+                    championName,
+                },
+            }
+        })
+        .catch(e => {
+            console.log(e);
+            return {
+                props: {
+                    championName
+                }
+            }
+        })
+}
+
+
+
+export function ChampionDetails({ championName, champDetails, champInfo, champStat, lastChecked }) {
     const router = useRouter()
-    const { championName } = router.query;
+    // const { championName } = router.query;
 
     const [isLoading, setIsLoading] = useState(true);
     const [notFound, setNotFound] = useState(false);
 
-    const [champDetails, setChampDetails] = useState({});
-    const [champInfo, setChampInfo] = useState({});
-    const [champStat, setChampStat] = useState({});
+    // const [champDetails, setChampDetails] = useState({});
+    // const [champInfo, setChampInfo] = useState({});
+    // const [champStat, setChampStat] = useState({});
     const [champTldr, setChampTldr] = useState([]);
     const [selectedChampTldr, setSelectedChampTldr] = useState(0);
 
@@ -78,71 +130,70 @@ export function ChampionDetails({ }) {
 
 
     useEffect(() => {
-        if (!championName) return;
+        console.log(router.isFallback)
+        if (router.isFallback) {
+            return;
+        }
 
-        const fetchChampData = fetch(`${BASE_URL}/champion/${championName}`)
-            .then((res) => {
-                if (res.ok) return res.json()
-                throw new Error('Network response was not ok.')
-            })
-            .then((contents) => {
-                const { champWRDetails: champDetails, champInfo, champStat, lastChecked } = contents;
-                setChampDetails(champDetails);
-                setChampInfo(champInfo);
-                setChampStat(champStat);
 
-                console.log(champInfo)
+        console.log(champStat)
+        console.log(championName)
 
-                const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
-                const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
-                const currPickData = convertStatToAppearPie(champStat.positionRanks);
-                const banData = convertStatToLineGraph(champStat.positionRanks, 'forbid_rate')
+        if (!champStat || !championName) {
+            setNotFound(true);
+            return;
+        }
 
-                setChampWinData(winData);
-                setChampPickData(pickData);
-                setChampCurrPickData(currPickData);
-                setChampBanData(banData);
+        const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
+        const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
+        const currPickData = convertStatToAppearPie(champStat.positionRanks);
+        const banData = convertStatToLineGraph(champStat.positionRanks, 'forbid_rate')
 
-                const dupedLatestStats = champStat.positionRanks.filter(r => r.dtstatdate === lastChecked.updateDate)
-                const latestStats =
-                    dupedLatestStats
-                        .filter((v, i, a) => a.findIndex(v2 => (v2.position === v.position)) === i)
-                        .sort((a, b) => getFloat(b.appear_rate) - getFloat(a.appear_rate))
-                const newTldr = latestStats.map(ls => {
-                    const {
-                        win_bzc: winRank,
-                        appear_bzc: pickRank,
-                        forbid_bzc: banRank,
-                        win_rate,
-                        appear_rate,
-                        forbid_rate,
-                        position
-                    } = ls
+        setChampWinData(winData);
+        setChampPickData(pickData);
+        setChampCurrPickData(currPickData);
+        setChampBanData(banData);
 
-                    const winR = `${Number((getFloat(win_rate) * 100).toFixed(2))}%`
-                    const pickR = `${Number((getFloat(appear_rate) * 100).toFixed(2))}%`
-                    const banR = `${Number((getFloat(forbid_rate) * 100).toFixed(2))}%`
-                    const tier = getTier(calculateTier(getFloat(win_rate), getFloat(appear_rate), getFloat(forbid_rate)));
+        const dupedLatestStats = champStat.positionRanks.filter(r => r.dtstatdate === lastChecked.updateDate)
+        const latestStats =
+            dupedLatestStats
+                .filter((v, i, a) => a.findIndex(v2 => (v2.position === v.position)) === i)
+                .sort((a, b) => getFloat(b.appear_rate) - getFloat(a.appear_rate))
+        const newTldr = latestStats.map(ls => {
+            const {
+                win_bzc: winRank,
+                appear_bzc: pickRank,
+                forbid_bzc: banRank,
+                win_rate,
+                appear_rate,
+                forbid_rate,
+                position
+            } = ls
 
-                    return { tier, winR, pickR, banR, winRank, pickRank, banRank, position }
-                })
+            const winR = `${Number((getFloat(win_rate) * 100).toFixed(2))}%`
+            const pickR = `${Number((getFloat(appear_rate) * 100).toFixed(2))}%`
+            const banR = `${Number((getFloat(forbid_rate) * 100).toFixed(2))}%`
+            const tier = getTier(calculateTier(getFloat(win_rate), getFloat(appear_rate), getFloat(forbid_rate)));
 
-                setChampTldr(newTldr);
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                setNotFound(true);
-            })
+            return { tier, winR, pickR, banR, winRank, pickRank, banRank, position }
+        })
 
-        Promise.all([fetchChampData])
-    }, [championName])
+        setChampTldr(newTldr);
+        setIsLoading(false);
+        // })
+        //     .catch((err) => {
+        //         setNotFound(true);
+        //     })
+
+        // Promise.all([fetchHeroes, fetchChampData])
+    }, [router.isFallback])
 
     return (
         <>
             <SocialHeader
                 title={`${championName || ''} Wild Rift Champion Stats`}
-                imgSrc={champInfo.poster}
-                imgTallSrc={champInfo.card}
+                imgSrc={champInfo?.poster}
+                imgTallSrc={champInfo?.card}
                 description="
             All-in-one hub for Riot's Official Wild Rift Stats. 
             Find top champions for all positions using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
@@ -289,20 +340,21 @@ export function ChampionDetails({ }) {
                         </div>
                     </>
                     :
-                    <div className='full-page-load'>
-                        <CircularProgress />
-                        <Typography variant="subtitle1">
-                            Looking for {championName}
-                        </Typography>
-                    </div>
+                    notFound ?
+                        <div>
+                            <Typography variant="subtitle1">
+                                Champion Not Found
+                            </Typography>
+                        </div>
+                        :
+                        <div className='full-page-load'>
+                            <CircularProgress />
+                            <Typography variant="subtitle1">
+                                Looking for {championName}
+                            </Typography>
+                        </div>
                 }
-                {notFound ?
-                    <div>
-                        <Typography variant="subtitle1">
-                            Champion Not Found
-                        </Typography>
-                    </div>
-                    : undefined}
+
             </div>
         </>
     )
