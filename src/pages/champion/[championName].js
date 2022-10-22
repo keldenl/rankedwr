@@ -173,12 +173,6 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
 
         setChampTldr(newTldr);
         setIsLoading(false);
-        // })
-        //     .catch((err) => {
-        //         setNotFound(true);
-        //     })
-
-        // Promise.all([fetchHeroes, fetchChampData])
     }, [router.isFallback])
 
     return (
@@ -188,9 +182,9 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                 imgSrc={champInfo?.poster}
                 imgTallSrc={champInfo?.card}
                 description="
-            All-in-one hub for Riot's Official Wild Rift Stats. 
-            Find top champions for all positions using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
-        "
+                    All-in-one hub for Riot's Official Wild Rift Stats. 
+                    Find top champions for all positions using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
+                "
             />
             <div style={{ overflow: 'hidden' }}>
                 {!isLoading ?
