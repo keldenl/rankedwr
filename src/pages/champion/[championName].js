@@ -354,7 +354,6 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                             </Typography>
                         </div>
                 }
-
             </div>
         </>
     )

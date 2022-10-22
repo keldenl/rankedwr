@@ -27,18 +27,23 @@ export default function Document() {
                 <link rel="canonical" href="https://www.rankedwr.com/" />
                 <meta name="robots" content="all, follow" />
 
+                {/* Global Site Tag (gtag.js) - Google Analytics */}
+                <script
+                    async
+                    src={`https://www.googletagmanager.com/gtag/js?id=G-C2S8YQDJBT`}
+                />
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
-                            window.dataLayer = window.dataLayer || [];
-
-                            function gtag() {
-                                dataLayer.push(arguments);
-                            }
-                            gtag('js', new Date());
-
-                            gtag('config', 'G-C2S8YQDJBT');
-                        `}} />
+                        window.dataLayer = window.dataLayer || [];
+                        function gtag(){dataLayer.push(arguments);}
+                        gtag('js', new Date());
+                        gtag('config', 'G-C2S8YQDJBT', {
+                            page_path: window.location.pathname,
+                        });
+                    `,
+                    }}
+                />
             </Head>
             <body>
                 <Main />
