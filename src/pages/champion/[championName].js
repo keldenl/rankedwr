@@ -178,7 +178,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
     return (
         <>
             <SocialHeader
-                title={`${championName || ''} Wild Rift Champion Stats`}
+                title={`${champInfo.engName || ''} Wild Rift Champion Stats`}
                 imgSrc={champInfo?.poster}
                 imgTallSrc={champInfo?.card}
                 description="
