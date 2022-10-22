@@ -221,6 +221,7 @@ export function FullTierList() {
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
+    document.title = `Wild Rift Tier List Patch ${getPatchByDate(updateDate)}) - RankedWR`
   }, [])
 
 
