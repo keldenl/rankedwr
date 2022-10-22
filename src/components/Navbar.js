@@ -50,13 +50,6 @@ export function Navbar({ }) {
         pb: 2,
     }
 
-    // useEffect(() => {
-    //     const dateTimeStamp = JSON.stringify(buildDate);
-    //     console.log(dateTimeStamp);
-    //     setBuildDate(DateTime.fromMillis(dateTimeStamp));
-    // }, [])
-
-
     return (
         <>
             <div className='navbar-bg' style={isHome ? { backgroundColor: 'transparent', position: 'absolute' } : {}}>
@@ -96,10 +89,15 @@ export function Navbar({ }) {
                 <Box sx={{ ...modalStyle }}>
                     <h3>What's New</h3>
                     <ul className='date-new-ul'>
-                        {/* 
-                            add role column
-                            add all icon, change rank to match columns, use new api
-                        */}
+                        <li>{DateTime.fromISO('20221021').toFormat('d LLL y')}</li>
+                        <ul className='new-things-ul'>
+                            <li><b>New:</b> Individual champion pages with history stat trends!</li>
+                            <li><b>New:</b> New homepage with search!</li>
+                            <li><b>New:</b> New page with list of all champions</li>
+                            <li><b>New:</b> You can now view all champions on the tier list table</li>
+                            <li><b>New:</b> New "role" column in tier list</li>
+                            <li><i>Too many updates to list here TBH but TLDR this is the v2 release!</i></li>
+                        </ul>
                         <li>{DateTime.fromISO('20221002').toFormat('d LLL y')}</li>
                         <ul className='new-things-ul'>
                             <li><b>New:</b> Table is now mobile friendly!</li>

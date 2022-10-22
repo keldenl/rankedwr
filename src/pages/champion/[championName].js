@@ -59,7 +59,6 @@ export async function getStaticProps(context) {
     const { championName } = context.params
     return fetch(`${BASE_URL}/champion/${championName}`)
         .then((res) => {
-            console.log(res);
             if (res.ok) return res.json()
             throw new Error('Network response was not ok.')
         })
@@ -73,7 +72,6 @@ export async function getStaticProps(context) {
             }
         })
         .catch(e => {
-            console.log(e);
             return {
                 props: {
                     championName
@@ -130,14 +128,9 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
 
 
     useEffect(() => {
-        console.log(router.isFallback)
         if (router.isFallback) {
             return;
         }
-
-
-        console.log(champStat)
-        console.log(championName)
 
         if (!champStat || !championName) {
             setNotFound(true);

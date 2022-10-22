@@ -216,12 +216,12 @@ export function FullTierList() {
         setHeroRankListLoaded(true);
 
         setPositionList([...positionOrder]);
-        setCurrPosition([...positionOrder][1]);
+        setCurrPosition([...positionOrder][0]);
         setLastUpdateDate(lastUpdateDate);
+        document.title = `Wild Rift Tier List Patch ${getPatchByDate(updateDate)}) - RankedWR`
       })
 
     Promise.all([fetchHeroes, fetchRankedList])
-    document.title = `Wild Rift Tier List Patch ${getPatchByDate(updateDate)}) - RankedWR`
   }, [])
 
 
