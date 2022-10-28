@@ -5,10 +5,13 @@ import { useRouter } from 'next/router';
 
 import { BASE_URL } from "../api";
 import { getUrlFriendlyName } from "../utils";
+import { useRef } from "react";
 
-export function Search({ size = "medium" }) {
+export function Search({ autoFocus = false, size = "medium" }) {
     const router = useRouter();
+    const inputRef = useRef();
 
+    const [inputValue, setInputValue] = useState('')
     const [heroData, setHeroData] = useState([]);
     const [heroDataLoaded, setHeroDataLoaded] = useState(false);
 
@@ -31,6 +34,12 @@ export function Search({ size = "medium" }) {
         Promise.all([fetchHeroes])
     }, [])
 
+    useEffect(() => {
+        if (!heroDataLoaded) return;
+        if (!autoFocus) return;
+        inputRef.current.focus();
+    }, [heroDataLoaded])
+
     const sizeProps = {
         medium: {},
         small: {
@@ -47,9 +56,12 @@ export function Search({ size = "medium" }) {
             disableClearable
             popupIcon={""}
             disabled={!heroDataLoaded}
+            value={inputValue}
             onChange={(e, value) => {
                 e.preventDefault();
+                inputRef.current && inputRef.current.blur()
                 router.push(`/champion/${getUrlFriendlyName(value.label)}`)
+                setInputValue('')
             }}
 
             id="combo-box-demo"
@@ -58,7 +70,9 @@ export function Search({ size = "medium" }) {
             renderInput={(params) =>
                 <TextField
                     {...params}
-                    autoFocus
+                    inputRef={inputRef}
+                    value={inputValue}
+                    onChange={e => setInputValue(e.target.value)}
                     variant="outlined"
                     {...sizeProps[size]}
                     label="Search Champion..."
