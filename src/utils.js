@@ -5,11 +5,11 @@ import { renderProgress } from "./renderProgress";
 export const positionOrder = ['all', 'solo', 'jungle', 'mid', 'duo', 'support']
 
 const patchDates = [
-    { ver: '3.5', date: DateTime.fromISO('20221117') },
+    // { ver: '3.5', date: DateTime.fromISO('20221117') },
     { ver: '3.4b', date: DateTime.fromISO('20221019') },
     { ver: '3.4a', date: DateTime.fromISO('20220928') },
     { ver: '3.4', date: DateTime.fromISO('20220915') },
-    { ver: '3.3', date: DateTime.fromISO('20220714') },
+    // { ver: '3.3', date: DateTime.fromISO('20220714') },
 ]
 
 export const getPatchByDate = (date) => {
@@ -125,7 +125,7 @@ export const convertStatToLineGraph = (positionRanks, statToGet) => {
                 data,
                 borderColor: chartColorList[i],
                 backgroundColor: chartColorList[i],
-                lineTension: 0.5,
+                lineTension: 0.1,
                 spanGaps: true,
             } :
             [];
@@ -160,6 +160,33 @@ export const convertStatToAppearPie = (positionRanks) => {
     }
 }
 
+const patchVerOptions = ({ver, date}) => {
+    return [{
+        type: "line",
+        mode: "vertical",
+        scaleID: "x",
+        value: date.toMillis(),
+        borderColor: '#4d4229',
+        borderWidth: 2,
+        drawTime: 'afterDraw',
+    },
+    {
+        type: 'label',
+        xValue: date.toMillis(),
+        color: 'white',
+        drawTime: 'afterDraw',
+        xAdjust: 10,
+        yAdjust: 50,
+        backgroundColor: '#4d4229',
+        content: [ver],
+        font: {
+            size: 10,
+            weight: 'bold'
+        },
+        padding: 2.5,
+    }]
+}
+
 const commonOptions = {
     responsive: true,
     maintainAspectRatio: true,
@@ -186,6 +213,11 @@ const commonOptions = {
                 return Number((value).toFixed(1)) + '%';
             },
         },
+        annotation: {
+            annotations: patchDates.flatMap(patch => {
+                return patchVerOptions(patch)
+            })
+        }
     },
 }
 
@@ -203,7 +235,7 @@ export const lineOptions =
             type: 'time',
             display: true,
             ticks: {
-                color: () => '#fff'
+                color: () => '#fff',
             },
             time: {
                 tooltipFormat: 'll',
@@ -212,7 +244,7 @@ export const lineOptions =
         y: {
             ticks: {
                 callback: (value, index, ticks) => Number((value).toFixed(1)) + '%',
-                color: '#fff'
+                color: '#fff',
             },
         }
     },

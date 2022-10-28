@@ -10,6 +10,7 @@ import { DateTime } from 'luxon';
 import Image from 'next/future/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { Search } from './Search';
 
 
 export function Navbar({ }) {
@@ -53,19 +54,23 @@ export function Navbar({ }) {
     return (
         <>
             <div className='navbar-bg' style={isHome ? { backgroundColor: 'transparent', position: 'absolute' } : {}}>
-                <div className='navbar-container' style={isHome ? { justifyContent: 'flex-end' } : {}}>
-                    {!isHome ? <Link href='/'>
-                        <a className='no-style navbar-title-container' >
-                            <Image src={'/assets/ranked-icon.png'} width='13' height='13' alt='RankedWR' />
-                            <Typography
-                                variant="h5"
-                                className='navbar-title-container'
-                            >
-                                rankedwr
-                            </Typography>
-                        </a>
-                    </Link> : undefined}
-                    <div className='navbar-items-container'>
+                <div className='navbar-container' style={isHome ? { justifyContent: 'flex-end', paddingTop: 5 } : {}}>
+                    {!isHome ?
+                        <>
+                            <Link href='/'>
+                                <a className='no-style navbar-title-container' >
+                                    <Image src={'/assets/ranked-icon.png'} width='13' height='13' alt='RankedWR' />
+                                    <Typography
+                                        variant="h5"
+                                        className='navbar-title-container'
+                                    >
+                                        rankedwr
+                                    </Typography>
+                                </a>
+                            </Link>
+                            <Search size="small" />
+                        </> : undefined}
+                    <div className='navbar-items-container' style={isHome ? { backgroundColor: 'transparent' } : {}}>
                         {navItems.map(item =>
                             <Button key={item.title} href={item.url} sx={{ color: 'white' }}>
                                 <Typography
@@ -89,6 +94,14 @@ export function Navbar({ }) {
                 <Box sx={{ ...modalStyle }}>
                     <h3>What's New</h3>
                     <ul className='date-new-ul'>
+                        <li>{DateTime.fromISO('20221028').toFormat('d LLL y')}</li>
+                        <ul className='new-things-ul'>
+                            <li><b>New:</b> Individual champion pages now show most recent changes to win/pick/ban% and rankings</li>
+                            <li><b>New:</b> Champion historical trending charts now indicate when each patch came out</li>
+                            <li><b>New:</b> Search added to the navbar!</li>
+                            <li><b>Improved:</b> Roles in tier table moved to the second to the left for better scanability</li>
+                            <li><b>Improved:</b> Mobile support for search, navbar, and tier list table</li>
+                        </ul>
                         <li>{DateTime.fromISO('20221021').toFormat('d LLL y')}</li>
                         <ul className='new-things-ul'>
                             <li><b>New:</b> Individual champion pages with history stat trends!</li>
@@ -133,7 +146,7 @@ export function Navbar({ }) {
             </Modal>
 
             {showBanner ?
-                <div className='banner' style={isHome ? { position: 'absolute', marginTop: 46.5 } : {}}>
+                <div className='banner' style={isHome ? { position: 'absolute', marginTop: 50, backgroundColor: 'rgba(255,255,255,0.1)' } : {}}>
                     <Typography variant="p" onClick={handleOpen} style={{ cursor: 'pointer' }}>
                         ✨ what's new
                     </Typography>

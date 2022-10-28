@@ -92,6 +92,16 @@ export function FullTierList() {
       },
     },
     {
+      field: 'role',
+      headerName: 'Role',
+      ...tierHeaderSortConfig,
+      ...statFieldConfig,
+      width: 50,
+      minWidth: 10,
+      renderHeader: mobileHeader(AppsIcon, 'Role'),
+      renderCell: (params) => getRole(params.row.role),
+    },
+    {
       field: 'champion',
       headerName: 'Champion',
       minWidth: 30,
@@ -103,7 +113,7 @@ export function FullTierList() {
           <span className='avatar-img-container'>
             <Image className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} fill sizes="100vw" />
           </span>
-          <Typography variant="p" sx={{ fontWeight: 'bolder' }}>
+          <Typography className='desktop-only' variant="p" sx={{ fontWeight: 'bolder' }}>
             {params.row.name}
           </Typography>
         </div>
@@ -120,16 +130,6 @@ export function FullTierList() {
       // width: 55,
       renderHeader: mobileHeader(WorkspacePremiumIcon, 'Tier*', '*'),
       renderCell: (params) => getTier(params.row.tier),
-    },
-    {
-      field: 'role',
-      headerName: 'Role',
-      ...tierHeaderSortConfig,
-      ...statFieldConfig,
-      width: 50,
-      minWidth: 10,
-      renderHeader: mobileHeader(AppsIcon, 'Role'),
-      renderCell: (params) => getRole(params.row.role),
     },
     { field: 'win', headerName: 'Win %', renderHeader: mobileHeader(EmojiEventsIcon, 'Win %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
     { field: 'pick', headerName: 'Pick %', renderHeader: mobileHeader(PanToolAltIcon, 'Pick %'), ...tierHeaderSortConfig, ...statFieldConfig, flex: 1 },
