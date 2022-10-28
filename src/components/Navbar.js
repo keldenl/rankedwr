@@ -94,11 +94,14 @@ export function Navbar({ }) {
                 <Box sx={{ ...modalStyle }}>
                     <h3>What's New</h3>
                     <ul className='date-new-ul'>
-                        {/* 
-                        - better mobile support for search, navbar, and tier list table
-                        - moved role to the left fo rbetter scanning
-                        - added indicators for pathch numbers
-                        */}
+                        <li>{DateTime.fromISO('20221028').toFormat('d LLL y')}</li>
+                        <ul className='new-things-ul'>
+                            <li><b>New:</b> Individual champion pages now show most recent changes to win/pick/ban% and rankings</li>
+                            <li><b>New:</b> Champion historical trending charts now indicate when each patch came out</li>
+                            <li><b>New:</b> Search added to the navbar!</li>
+                            <li><b>Improved:</b> Roles in tier table moved to the second to the left for better scanability</li>
+                            <li><b>Improved:</b> Mobile support for search, navbar, and tier list table</li>
+                        </ul>
                         <li>{DateTime.fromISO('20221021').toFormat('d LLL y')}</li>
                         <ul className='new-things-ul'>
                             <li><b>New:</b> Individual champion pages with history stat trends!</li>
