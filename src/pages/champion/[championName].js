@@ -81,7 +81,7 @@ export async function getStaticProps(context) {
         .catch(e => {
             return {
                 props: {
-                    championName
+                    championName,
                 }
             }
         })
@@ -245,7 +245,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
 
         setChampTldr(newTldr);
         setIsLoading(false);
-    }, [router.isFallback])
+    }, [championName, router.isFallback])
 
     return (
         <>
@@ -258,7 +258,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                     Find top champions for all positions using Riot's official ranked stats for solo top, mid, jungle, duo ADC, and support champions updated for China Diamond and above ranked players.
                 "
             />
-            <div style={{ overflow: 'hidden' }}>
+            <div key={championName} style={{ overflow: 'hidden' }}>
                 {!isLoading ?
                     <>
                         <video className='champ-turn' preload="yes" autoPlay muted loop playsInline>
