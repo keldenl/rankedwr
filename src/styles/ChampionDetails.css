@@ -41,6 +41,14 @@
     opacity: 1 !important;
 }
 
+.tldr-diff {
+    display: inline-flex;
+    border-radius: 5px;
+    padding: 2.5px 5px;
+    align-items: center;
+    justify-content: center;
+}
+
 .champ-tldr-wrapper {
     background-color: var(--blue500);
     border-radius: 15px;
@@ -63,6 +71,11 @@
     position: relative;
     text-align: center;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 5px; */
 }
 
 .champ-tldr>div:last-child {

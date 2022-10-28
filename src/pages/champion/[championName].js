@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 
 import 'chartjs-adapter-moment';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import AnnotationPlugin from "chartjs-plugin-annotation";
 
 import {
     Chart as ChartJS,
@@ -30,6 +31,11 @@ import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat
 import { Card } from '../../components/Card';
 import Image from 'next/future/image';
 import { SocialHeader } from '../../components/SocialHeader';
+import { DateTime } from 'luxon';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 export async function getStaticPaths() {
     return fetch(`${BASE_URL}/champion/`)
@@ -99,6 +105,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
     const [champPickData, setChampPickData] = useState();
     const [champCurrPickData, setChampCurrPickData] = useState();
     const [champBanData, setChampBanData] = useState();
+    const [champDiffData, setChampDiffData] = useState();
 
     const [viewingAbility, setViewingAbility] = useState(0);
 
@@ -111,6 +118,25 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
     const abilityTypeToName = (type) =>
         !isNaN(type) ? `${getNumberWithOrdinal(+type)} ability`.toUpperCase() : type.toUpperCase()
 
+    const getChampDiffData = (name) => {
+        const diffName = `${name}Diff`
+        const data = champDiffData[champTldr[selectedChampTldr].position]
+        if (!data || data.isNew) {
+            return {
+                value: 'New',
+                icon: <AutoAwesomeIcon fontSize='small' />,
+                color: 'rgba(255,255,255,0.3)',
+            }
+        }
+        const value = data[diffName]
+
+        return {
+            value: Math.abs(champDiffData[champTldr[selectedChampTldr].position][diffName]),
+            icon: value === 0 ? <HorizontalRuleIcon fontSize='small' /> : (value > 0 ? <ArrowDropUpIcon fontSize='small' /> : <ArrowDropDownIcon fontSize='small' />),
+            color: value === 0 ? 'rgba(255,255,255,0.3)' : (value > 0 ? 'rgba(0,255,0,0.35)' : 'rgba(255,0,0,0.45)')
+        }
+    }
+
     useEffect(() => {
         ChartJS.register(
             CategoryScale,
@@ -120,6 +146,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
             LineElement,
             ArcElement,
             ChartDataLabels,
+            AnnotationPlugin,
             Title,
             Tooltip,
             Legend,
@@ -136,6 +163,50 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
             setNotFound(true);
             return;
         }
+
+        // Get recent stats diff
+        const sortedStats = [...champStat.positionRanks].sort((a, b) => DateTime.fromISO(b.updateDate) - DateTime.fromISO(a.updateDate))
+        const statDates = []
+        const recentStats = {} // ordered by newest -> oldest
+        const numOfDates = 2
+
+        sortedStats.forEach(stat => {
+            // Add to list of stat dates if not existed yet
+            if (!statDates.includes(stat.updateDate)) {
+                if (statDates.length > numOfDates - 1) {
+                    return;
+                } else {
+                    statDates.push(stat.updateDate)
+                }
+            }
+            recentStats[stat.position] = [...recentStats[stat.position] || [], stat];
+        })
+
+        const statsDiff = {}
+        Object.keys(recentStats).forEach(pos => {
+            const posStats = recentStats[pos];
+            const isNew = posStats.length === 1;
+            if (isNew) {
+                return {
+                    isNew,
+                    winDiff: 0,
+                    rankDiff: 0,
+                    pickDiff: 0,
+                    banDiff: 0,
+                }
+            }
+
+            const { appear_rate: pickNew, win_rate: winNew, forbid_rate: banNew, win_bzc: rankNew } = posStats[0];
+            const { appear_rate: pickOld, win_rate: winOld, forbid_rate: banOld, win_bzc: rankOld } = posStats[1];
+            statsDiff[pos] = {
+                isNew,
+                winDiff: Number((getFloat(winNew) - getFloat(winOld)) * 100).toFixed(2),
+                rankDiff: rankNew - rankOld,
+                pickDiff: Number((getFloat(pickNew) - getFloat(pickOld)) * 100).toFixed(2),
+                banDiff: Number((getFloat(banNew) - getFloat(banOld)) * 100).toFixed(2),
+            }
+        })
+        setChampDiffData(statsDiff);
 
         const winData = convertStatToLineGraph(champStat.positionRanks, 'win_rate')
         const pickData = convertStatToLineGraph(champStat.positionRanks, 'appear_rate')
@@ -237,6 +308,10 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                                         </Typography>
                                     </div>
                                     <div>
+                                        <Typography variant="caption" sx={{ fontWeight: 'bolder', backgroundColor: getChampDiffData('win').color }} className='tldr-diff'>
+                                            {getChampDiffData('win').icon}
+                                            {getChampDiffData('win').value}%
+                                        </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
                                             {champTldr[selectedChampTldr].winR}
                                         </Typography>
@@ -245,6 +320,10 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                                         </Typography>
                                     </div>
                                     <div>
+                                        <Typography variant="caption" sx={{ fontWeight: 'bolder', backgroundColor: getChampDiffData('rank').color }} className='tldr-diff'>
+                                            {getChampDiffData('rank').icon}
+                                            {getChampDiffData('rank').value}
+                                        </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
                                             #{champTldr[selectedChampTldr].winRank}
                                         </Typography>
@@ -253,6 +332,10 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                                         </Typography>
                                     </div>
                                     <div>
+                                        <Typography variant="caption" sx={{ fontWeight: 'bolder', backgroundColor: getChampDiffData('pick').color }} className='tldr-diff'>
+                                            {getChampDiffData('pick').icon}
+                                            {getChampDiffData('pick').value}%
+                                        </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
                                             {champTldr[selectedChampTldr].pickR}
                                         </Typography>
@@ -261,6 +344,10 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
                                         </Typography>
                                     </div>
                                     <div>
+                                        <Typography variant="caption" sx={{ fontWeight: 'bolder', backgroundColor: getChampDiffData('ban').color }} className='tldr-diff'>
+                                            {getChampDiffData('ban').icon}
+                                            {getChampDiffData('ban').value}%
+                                        </Typography>
                                         <Typography variant="h6" sx={{ fontWeight: 'bolder' }}>
                                             {champTldr[selectedChampTldr].banR}
                                         </Typography>
