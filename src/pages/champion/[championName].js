@@ -1,6 +1,9 @@
-import { CircularProgress, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/future/image';
+import { DateTime } from 'luxon';
+import { CircularProgress, Typography } from '@mui/material';
+
 
 import 'chartjs-adapter-moment';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -25,17 +28,15 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import PanToolAltIcon from '@mui/icons-material/PanToolAlt';
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
-
-import { BASE_URL } from '../../api';
-import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, getUrlFriendlyName, lineOptions, pieOptions } from '../../utils';
-import { Card } from '../../components/Card';
-import Image from 'next/future/image';
-import { SocialHeader } from '../../components/SocialHeader';
-import { DateTime } from 'luxon';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+
+import { BASE_URL } from '../../api';
+import { calculateTier, convertStatToAppearPie, convertStatToLineGraph, getFloat, getTier, getUrlFriendlyName, lineOptions, pieOptions } from '../../utils';
+import { Card } from '../../components/Card';
+import { SocialHeader } from '../../components/SocialHeader';
 
 export async function getStaticPaths() {
     return fetch(`${BASE_URL}/champion/`)
@@ -249,7 +250,7 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
     return (
         <>
             <SocialHeader
-                title={`${champInfo.engName || ''} Wild Rift Champion Stats`}
+                title={`${!!champInfo ? champInfo.engName : championName || ''} Wild Rift Champion Stats`}
                 imgSrc={champInfo?.poster}
                 imgTallSrc={champInfo?.card}
                 description="
