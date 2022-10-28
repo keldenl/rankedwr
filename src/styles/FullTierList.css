@@ -238,9 +238,11 @@ img.avatar-img {
     .champion-container>p {
         display: none;
     }
-    /* img.avatar-img, */
     .avatar-img-container {
         width: 25px;
         height: 25px;
+    }
+    .table-options-container {
+        flex-direction: column;
     }
 }
