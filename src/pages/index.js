@@ -44,10 +44,10 @@ export function Home() {
                             </Typography>
                         </a>
                     </Link>
-                    {/* <Typography variant='caption' sx={{ }}>
-                    The Ultimate Wild Rift Hub
-                </Typography> */}
-                    <Search />
+                    {/* <Typography variant='subtitle2' sx={{ opacity: 0.7}}>
+                        The Ultimate Wild Rift Hub
+                    </Typography> */}
+                    <Search autoFocus />
 
                 </div>
             </div>
