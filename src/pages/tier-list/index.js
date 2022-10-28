@@ -103,7 +103,7 @@ export function FullTierList() {
           <span className='avatar-img-container'>
             <Image className={'avatar-img gold-border'} src={params.row.avatar} alt={params.row.name} fill sizes="100vw" />
           </span>
-          <Typography variant="p" sx={{ fontWeight: 'bolder' }}>
+          <Typography className='desktop-only' variant="p" sx={{ fontWeight: 'bolder' }}>
             {params.row.name}
           </Typography>
         </div>
