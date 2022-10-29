@@ -165,6 +165,10 @@ export function ChampionDetails({ championName, champDetails, champInfo, champSt
             return;
         }
 
+        // Reset some state when searching for a champ from the same page
+        setSelectedChampTldr(0)
+        setViewingAbility(0)
+
         // Get recent stats diff
         const sortedStats = [...champStat.positionRanks].sort((a, b) => DateTime.fromISO(b.updateDate) - DateTime.fromISO(a.updateDate))
         const statDates = []
