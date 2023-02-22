@@ -5,7 +5,13 @@ import { renderProgress } from "./renderProgress";
 export const positionOrder = ['all', 'solo', 'jungle', 'mid', 'duo', 'support']
 
 const patchDates = [
-    // { ver: '3.5', date: DateTime.fromISO('20221117') },
+    { ver: '4.0', date: DateTime.fromISO('20230215') },
+    { ver: '4.0a', date: DateTime.fromISO('20230201') },
+    { ver: '4.0', date: DateTime.fromISO('20230112') },
+    { ver: '3.5b', date: DateTime.fromISO('20221214') },
+    { ver: '3.5a', date: DateTime.fromISO('20221130') },
+    { ver: '3.5', date: DateTime.fromISO('20221117') },
+    { ver: '3.4c', date: DateTime.fromISO('20221102') },
     { ver: '3.4b', date: DateTime.fromISO('20221019') },
     { ver: '3.4a', date: DateTime.fromISO('20220928') },
     { ver: '3.4', date: DateTime.fromISO('20220915') },
