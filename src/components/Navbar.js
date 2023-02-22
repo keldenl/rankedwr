@@ -94,6 +94,12 @@ export function Navbar({ }) {
                 <Box sx={{ ...modalStyle }}>
                     <h3>What's New</h3>
                     <ul className='date-new-ul'>
+                        <li>{DateTime.fromISO('20230221').toFormat('d LLL y')}</li>
+                        <ul className='new-things-ul'>
+                            <li><b>New:</b>⚡️ Zeri on the homepage! ⚡️</li>
+                            <li><b>Improved:</b> Charts now only show last 10 data points (~3.5 months of data)</li>
+                            <li><b>Improved:</b> Charts now only show the last 5 patch versions in charts.</li>
+                        </ul>
                         <li>{DateTime.fromISO('20221028').toFormat('d LLL y')}</li>
                         <ul className='new-things-ul'>
                             <li><b>New:</b> Individual champion pages now show most recent changes to win/pick/ban% and rankings</li>
