@@ -10,8 +10,8 @@ import { Search } from "../components/Search";
 
 
 export function Home() {
-    const currBg = 'https://assets.contentstack.io/v3/assets/blt370612131b6e0756/blt490ef68cbbd7a071/6324af2e8a5a2b30fbe29c01/Yone_TurnTable_DesktopHeader.mp4'
-    const currBgMobile = "https://assets.contentstack.io/v3/assets/blt370612131b6e0756/blt813e67cbaa036e2c/6324af2d0faea1497015fa57/Yone_TurnTable_MobileHeader.mp4"
+    const currBg = 'https://assets.contentstack.io/v3/assets/blt370612131b6e0756/blt1b3094569abfd62a/63ec067a3b3df420b764404a/Zeri_Header_Desktop_1440x810.mp4'
+    const currBgMobile = "https://assets.contentstack.io/v3/assets/blt370612131b6e0756/blt1b3094569abfd62a/63ec067a3b3df420b764404a/Zeri_Header_Desktop_1440x810.mp4"
 
     const [bgSrc, setBgSrc] = useState(currBg);
 
